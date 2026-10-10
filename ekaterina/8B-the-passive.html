@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
 <title>The Passive, Said Clearly</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -211,101 +212,98 @@ textarea.draft{width:100%;min-height:150px;border:1px solid var(--line2);border-
 @media (max-width:420px){ .sum td,.sum th{padding-inline:12px} }
 footer.fin{color:var(--soft);font-size:14.5px;border-top:1px solid var(--line2);padding-top:18px}
 
+.order{list-style:none;display:flex;flex-direction:column;gap:8px}
+.ev{width:100%;display:flex;gap:12px;align-items:center;text-align:left;border:1px solid var(--line2);background:var(--surface);border-radius:8px;padding:9px 14px;font-size:16.5px}
+.ev:hover:not(:disabled){border-color:var(--accent)}
+.ev > span:nth-child(2){flex:1;min-width:0}
+.ev-no{flex:none;width:26px;height:26px;border-radius:50%;border:1px dashed var(--line2);display:grid;place-items:center;font:600 13.5px/1 var(--display)}
+.ev.placed{background:var(--good-bg);border-color:var(--good);cursor:default;color:var(--text)}
+.ev.placed .ev-no{border:0;background:var(--good);color:var(--surface)}
+.silent{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:10px 18px}
+.sw{display:flex;align-items:center;gap:10px;min-width:0}
+.letters{display:flex;gap:3px;flex-wrap:wrap;min-width:0}
+.lt{width:32px;height:40px;border:1px solid var(--line2);background:var(--surface);border-radius:6px;font:500 19px/1 var(--display);padding:0}
+.lt:hover:not(:disabled){border-color:var(--accent)}
+.lt:disabled{cursor:default;color:var(--text)}
+.lt.mute{background:var(--bad-bg);border-color:var(--bad);color:var(--soft);text-decoration:line-through}
+.sw.solved .lt:not(.mute){border-color:transparent;background:transparent}
+.forms td:nth-child(2){white-space:normal;min-width:11em}
+/* teacher-only parts: every one sits between a pair of T comment markers, which scripts/student-site.sh cuts out of the student copy */
+.tbadge{align-self:flex-start;font:600 12.5px/1 var(--body);letter-spacing:.1em;text-transform:uppercase;background:var(--mark);border-radius:6px;padding:7px 10px}
+.tnote{border:1px dashed var(--line2);background:var(--mark);border-radius:10px;padding:12px 16px;font-size:15px;line-height:1.5;display:flex;flex-direction:column;gap:6px}
+.tnote b:first-child{font:600 12px/1.2 var(--body);letter-spacing:.1em;text-transform:uppercase}
+.tnote p{max-width:72ch}
+.key{font-size:14.5px;background:var(--mark);border-radius:6px;padding:2px 8px;justify-self:start}
+.key-n{flex:none;white-space:nowrap;font-size:13.5px;background:var(--mark);border-radius:6px;padding:2px 8px}
+.lt.tkey{box-shadow:inset 0 -4px 0 var(--dot)}
+[data-view="student"] .tnote,[data-view="student"] .key,[data-view="student"] .key-n,[data-view="student"] .tbadge{display:none}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
 .shake{animation:shake .28s ease}
 @media (prefers-reduced-motion: reduce){ *{transition:none!important;animation:none!important;scroll-behavior:auto!important} }
 </style>
 
-<main class="page">
+<main class="page" data-view="student">
 
   <header class="mast">
-    <p class="eyebrow">English File Intermediate Plus &middot; follow-up to 8B</p>
     <h1>The passive, <span>said clearly</span></h1>
-    <p class="dek">We use the passive when what happened matters more than who did it: in history, in the news and in medicine. Today you practise every form of it, and you practise saying whole passive sentences so that each one is easy to understand.</p>
-    <dl class="meta">
-      <div><dt>Student</dt><dd>Ekaterina</dd></div>
-      <div><dt>Level</dt><dd>B1+</dd></div>
-      <div><dt>Time</dt><dd>about 60 minutes</dd></div>
-      <div><dt>Recycles</dt><dd>8A, have something done</dd></div>
-    </dl>
+    <p class="dek">Castles, cathedrals, battles and one very old hospital. When we talk about history, what happened matters more than who did it, so we need the passive. Today you practise every form of it, the words you need for battles and buildings, and saying them clearly.</p>
     <div class="flip" role="group" aria-label="One fact, active and passive">
-      <div><span class="lab">Active</span><p><span class="weak">A</span> <span class="s">doctor</span> <span class="s">built</span> <span class="weak">the</span> <span class="s">machine</span>.</p></div>
-      <div><span class="lab">Passive</span><p><span class="weak">The</span> <span class="s">machine</span> <span class="weak">was</span> <span class="s">built</span> <span class="weak">by a</span> <span class="s">doctor</span>.</p></div>
+      <div><span class="lab">Active</span><p><span class="weak">A</span> <span class="s">king</span> <span class="s">built</span> <span class="weak">the</span> <span class="s">castle</span>.</p></div>
+      <div><span class="lab">Passive</span><p><span class="weak">The</span> <span class="s">castle</span> <span class="weak">was</span> <span class="s">built</span> <span class="weak">by a</span> <span class="s">king</span>.</p></div>
     </div>
     <p class="legend">A dot marks a word you say strongly. Grey words are said quickly and quietly.</p>
   </header>
 
   <nav aria-label="Contents"><ol class="toc" id="toc"></ol></nav>
 
-  <details class="plan" id="plan">
-    <summary>Teacher plan, 60 minutes</summary>
-    <div class="plan-body">
-      <p class="aim">Aim: consolidate all forms of the passive from 8B and the history vocabulary, with sentence-level pronunciation (stress, weak forms, linking) and a first medical English corner. Recycle <i>have something done</i> from 8A.</p>
-      <div class="scroll">
-        <table>
-          <thead><tr><th>Min</th><th>Stage</th><th>What to do</th></tr></thead>
-          <tbody>
-            <tr><td>0&ndash;5</td><td>1 Warm-up</td><td>Check homework, then the five items. Ask the two questions; listen for <i>have + object + past participle</i>.</td></tr>
-            <tr><td>5&ndash;9</td><td>2 Words</td><td>She reads each definition aloud, then chooses. Check stress: ci<u>vil</u>ians, <u>ca</u>sualties, refu<u>gees</u>, su<u>rren</u>der.</td></tr>
-            <tr><td>9&ndash;14</td><td>3 Forms</td><td>She reads the table aloud with the speaker buttons. Ask: where is <i>be</i>, where is the past participle?</td></tr>
-            <tr><td>14&ndash;18</td><td>4 Active or passive</td><td>Quick. She says the full sentence after each answer.</td></tr>
-            <tr><td>18&ndash;24</td><td>5 Right form</td><td>Typed. Ask which word in the sentence told her the tense.</td></tr>
-            <tr><td>24&ndash;34</td><td>6 Say it clearly</td><td>The main pronunciation block. Listen, repeat, tap the stress, then the two build-up drills, slowly first and then at natural speed. Do not let her stress <i>was</i> / <i>been</i> / <i>by</i>.</td></tr>
-            <tr><td>34&ndash;42</td><td>7 Reading</td><td>She reads silently (2 min), does true / false, then reads paragraph 3 aloud with good stress.</td></tr>
-            <tr><td>42&ndash;48</td><td>8 Rewrite</td><td>Do the first one together. If she gives a correct answer the page doesn&rsquo;t accept, accept it.</td></tr>
-            <tr><td>48&ndash;54</td><td>9 At the scan</td><td>She listens, then reads the script line by line, then all of it. Role-play: you are a nervous parent with questions.</td></tr>
-            <tr><td>54&ndash;60</td><td>10 Speaking</td><td>Three or four questions. Then set the homework in section 11.</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </details>
 
   <!-- 1 -->
   <section class="sec" id="warm" data-title="Warm-up: have something done">
     <header class="sec-head">
       <span class="sec-no">1</span>
-      <div class="sec-title"><h2>Warm-up: have something done</h2><p class="lede">From 8A. Another person does the job for you. Choose the correct form; only your first choice counts.</p></div>
+      <div class="sec-title"><h2>Warm-up: have something done</h2><p class="lede">Another person does the job for you. Choose the correct form; only your first choice counts.</p></div>
       <span class="score" data-score="warm">0 / 0</span>
     </header>
     <ol class="items" id="warm-list"></ol>
     <ol class="talk">
       <li>What do you have done regularly, and what do you always do yourself?</li>
-      <li>Have you had anything repaired or checked recently, for example your car, your phone or your teeth?</li>
+      <li>Have you had anything repaired, checked or renewed recently, for example your car, your phone or your passport?</li>
     </ol>
     <div class="tools"><button type="button" class="btn" id="warm-reset">Start again</button></div>
   </section>
 
   <!-- 2 -->
-  <section class="sec" id="words" data-title="Words for history">
+  <section class="sec" id="quiz" data-title="History quiz">
     <header class="sec-head">
       <span class="sec-no">2</span>
-      <div class="sec-title"><h2>Words for history</h2><p class="lede">Read the definition and choose the word. You need these words for history, for the news and for historical films.</p></div>
-      <span class="score" data-score="words">0 / 0</span>
+      <div class="sec-title"><h2>History quiz</h2><p class="lede">How much do you know? Every question has a passive in it. After you answer, say which form it is.</p></div>
+      <span class="score" data-score="quiz">0 / 0</span>
     </header>
-    <ol class="items" id="words-list"></ol>
-    <div class="tools"><button type="button" class="btn" id="words-reset">Start again</button></div>
+    <ol class="items" id="quiz-list"></ol>
+    <div class="tools"><button type="button" class="btn" id="quiz-reset">Start again</button></div>
   </section>
 
   <!-- 3 -->
-  <section class="sec" id="forms" data-title="The passive in every tense">
+  <section class="sec" id="forms" data-title="The passive in every form">
     <header class="sec-head">
       <span class="sec-no">3</span>
-      <div class="sec-title"><h2>The passive in every tense</h2><p class="lede">The recipe never changes: a form of <i>be</i> + the past participle. Only <i>be</i> changes with the tense. Tap the speaker and repeat.</p></div>
+      <div class="sec-title"><h2>The passive in every form</h2><p class="lede">The recipe never changes: a form of <i>be</i> + the past participle. Only <i>be</i> changes. Tap the speaker and repeat, copying the rhythm.</p></div>
     </header>
     <div class="panel">
       <div class="scroll">
         <table class="forms">
-          <thead><tr><th>Tense</th><th>be + past participle</th><th>Example</th></tr></thead>
+          <thead><tr><th>Form</th><th>be + past participle</th><th>Example</th></tr></thead>
           <tbody>
-            <tr><th>Present simple</th><td>am / is / are + done</td><td><span class="line" data-say><span>Thousands of scans <b>are done</b> every day.</span></span></td></tr>
-            <tr><th>Present continuous</th><td>is / are being + done</td><td><span class="line" data-say><span>A new hospital <b>is being built</b> near the station.</span></span></td></tr>
-            <tr><th>Past simple</th><td>was / were + done</td><td><span class="line" data-say><span>The city <b>was captured</b> in 1812.</span></span></td></tr>
-            <tr><th>Past continuous</th><td>was / were being + done</td><td><span class="line" data-say><span>The patient <b>was being examined</b> when I arrived.</span></span></td></tr>
-            <tr><th>Present perfect</th><td>has / have been + done</td><td><span class="line" data-say><span>The results <b>have been sent</b> to your doctor.</span></span></td></tr>
-            <tr><th>Past perfect</th><td>had been + done</td><td><span class="line" data-say><span>The bridge <b>had been destroyed</b> before the army arrived.</span></span></td></tr>
-            <tr><th>Future</th><td>will be + done</td><td><span class="line" data-say><span>You <b>will be told</b> the results tomorrow.</span></span></td></tr>
-            <tr><th>After a modal or <i>to</i></th><td>(to) be + done</td><td><span class="line" data-say><span>Children must <b>be vaccinated</b>. He needs <b>to be seen</b> by a doctor.</span></span></td></tr>
+            <tr><th>Present simple</th><td>am / is / are + done</td><td><span class="line" data-say><span>The museum <b>is visited</b> by thousands of tourists every summer.</span></span></td></tr>
+            <tr><th>Present continuous</th><td>is / are being + done</td><td><span class="line" data-say><span>The old theatre <b>is being restored</b> at the moment.</span></span></td></tr>
+            <tr><th>Present perfect</th><td>has / have been + done</td><td><span class="line" data-say><span>The stolen painting <b>has never been found</b>.</span></span></td></tr>
+            <tr><th>Past simple</th><td>was / were + done</td><td><span class="line" data-say><span>The city <b>was founded</b> in 1703.</span></span></td></tr>
+            <tr><th>Past continuous</th><td>was / were being + done</td><td><span class="line" data-say><span>The square was closed because a film <b>was being made</b> there.</span></span></td></tr>
+            <tr><th>Past perfect</th><td>had been + done</td><td><span class="line" data-say><span>The church <b>had been damaged</b> in the war, so it was rebuilt.</span></span></td></tr>
+            <tr><th>will / be going to</th><td>will be + done<br>is going to be + done</td><td><span class="line" data-say><span>A new children&rsquo;s clinic <b>will be opened</b> next year. We <b>are going to be shown</b> round the palace.</span></span></td></tr>
+            <tr><th>Infinitive with <i>to</i></th><td>to be + done</td><td><span class="line" data-say><span>The bridge had <b>to be closed</b> for repairs.</span></span></td></tr>
+            <tr><th>Infinitive without <i>to</i></th><td>be + done</td><td><span class="line" data-say><span>Tickets can <b>be bought</b> online.</span></span></td></tr>
+            <tr><th>-ing form</th><td>being + done</td><td><span class="line" data-say><span>Nobody likes <b>being told</b> what to do.</span></span></td></tr>
           </tbody>
         </table>
       </div>
@@ -314,17 +312,17 @@ footer.fin{color:var(--soft);font-size:14.5px;border-top:1px solid var(--line2);
       <div class="panel">
         <h3>When do we use it?</h3>
         <ul class="plain">
-          <li>When we don&rsquo;t know or don&rsquo;t need to say who did it: <i>My car <b class="hl">was stolen</b> last night.</i></li>
-          <li>When the action or the result is the important thing: <i>Penicillin <b class="hl">was discovered</b> in 1928.</i></li>
-          <li>In formal and scientific writing: <i>The patients <b class="hl">were divided</b> into two groups.</i></li>
+          <li>When it isn&rsquo;t known or important who did it: <i>My bike <b class="hl">has been stolen</b>.</i></li>
+          <li>For processes and in formal writing: <i>The blood <b class="hl">is tested</b> in the laboratory.</i></li>
+          <li>To change the focus. <i>A fire destroyed the church</i> is about the fire. <i>The church <b class="hl">was destroyed</b> by a fire</i> is about the church.</li>
         </ul>
       </div>
       <div class="panel">
         <h3>Three things to remember</h3>
         <ul class="plain">
-          <li>Say who did it with <b class="hl">by</b>, only if it matters: <i>It was built <b class="hl">by</b> an engineer.</i></li>
-          <li>A person can be the subject: <i>They gave me a leaflet.</i> &rarr; <i><b class="hl">I was given</b> a leaflet.</i></li>
-          <li>We say <i>I <b class="hl">was born</b> in 1999</i>, never <s>I born</s>.</li>
+          <li>Don&rsquo;t forget <b class="hl">be</b>. Not <s>The house is going to paint</s> but <i>The house is going to <b class="hl">be</b> painted.</i></li>
+          <li>Use <b class="hl">by</b> only when the person matters: <i>It was designed <b class="hl">by</b> Rastrelli.</i> Most passive sentences have no <i>by</i>.</li>
+          <li>A person can be the subject: <i>They gave us a map.</i> &rarr; <i><b class="hl">We were given</b> a map.</i></li>
         </ul>
       </div>
     </div>
@@ -345,7 +343,7 @@ footer.fin{color:var(--soft);font-size:14.5px;border-top:1px solid var(--line2);
   <section class="sec" id="gap" data-title="Put the verb in the right passive form">
     <header class="sec-head">
       <span class="sec-no">5</span>
-      <div class="sec-title"><h2>Put the verb in the right passive form</h2><p class="lede">Type the verb in brackets in the passive. Look for the word that shows the tense. Press Enter to check one sentence, or check them all at the end.</p></div>
+      <div class="sec-title"><h2>Put the verb in the right passive form</h2><p class="lede">Type the verb in brackets in the passive. Look for the word that shows the form you need. Press Enter to check one sentence, or check them all at the end.</p></div>
       <span class="score" data-score="gap">0 / 0</span>
     </header>
     <ol class="items" id="gap-list"></ol>
@@ -357,114 +355,81 @@ footer.fin{color:var(--soft);font-size:14.5px;border-top:1px solid var(--line2);
   </section>
 
   <!-- 6 -->
-  <section class="sec" id="say" data-title="Say it clearly">
+  <section class="sec" id="words" data-title="Words: battles and buildings">
     <header class="sec-head">
       <span class="sec-no">6</span>
-      <div class="sec-title"><h2>Say it clearly</h2><p class="lede">A sentence is clear when the important words are strong and the small grammar words are weak. In a passive sentence, the strong words are the noun and the past participle, not <i>was</i>, <i>been</i> or <i>by</i>.</p></div>
-      <span class="score" data-score="stress">0 / 0</span>
+      <div class="sec-title"><h2>Words: battles and buildings</h2><p class="lede">Read the definition and choose the word.</p></div>
+      <span class="score" data-score="wordsA wordsB">0 / 0</span>
     </header>
-
-    <div class="grid2">
-      <div class="panel">
-        <h3>Weak words</h3>
-        <p class="note">In the middle of a sentence these words are short and quiet.</p>
-        <ul class="weak-list">
-          <li>was <span>/wəz/</span></li><li>were <span>/wə/</span></li><li>are <span>/ə/</span></li><li>been <span>/bɪn/</span></li>
-          <li>be <span>/bi/</span></li><li>has <span>/əz/</span></li><li>have <span>/əv/</span></li><li>to <span>/tə/</span></li><li>a <span>/ə/</span></li><li>the <span>/ðə/</span></li>
-        </ul>
-      </div>
-      <div class="panel">
-        <h3>Listen and repeat</h3>
-        <ul class="plain dotted">
-          <li class="line" data-say><span><span class="weak">The</span> <span class="s">city</span> <span class="weak">was</span> <span class="s">captured</span>.</span></li>
-          <li class="line" data-say><span><span class="weak">The</span> <span class="s">soldiers</span> <span class="weak">were</span> <span class="s">sent</span> <span class="s">home</span>.</span></li>
-          <li class="line" data-say><span><span class="weak">The</span> <span class="s">results</span> <span class="weak">have been</span> <span class="s">checked</span>.</span></li>
-          <li class="line" data-say><span><span class="weak">It</span> <span class="s">can&rsquo;t</span> <span class="weak">be</span> <span class="s">done</span> <span class="weak">to</span><span class="s">day</span>.</span></li>
-        </ul>
-      </div>
-    </div>
-
-    <h3 class="sub">A. Tap the strong words</h3>
-    <p class="note">Say the sentence aloud. Tap every word you say strongly, then press Check. A sentence counts if it is right the first time you check it.</p>
-    <ol class="items" id="stress-list"></ol>
-
-    <h3 class="sub">B. Build the sentence from the end</h3>
-    <p class="note">Start with the last piece and add one piece at a time. Keep the same rhythm and don&rsquo;t stop between words. First slowly, then at natural speed.</p>
-    <div class="grid2">
-      <ol class="build panel">
-        <li data-say><span>in Glasgow.</span></li>
-        <li data-say><span>and an engineer in Glasgow.</span></li>
-        <li data-say><span>by a doctor and an engineer in Glasgow.</span></li>
-        <li data-say><span>was built by a doctor and an engineer in Glasgow.</span></li>
-        <li data-say><span>The first machine was built by a doctor and an engineer in Glasgow.</span></li>
-      </ol>
-      <ol class="build panel">
-        <li data-say><span>before you leave.</span></li>
-        <li data-say><span>the results before you leave.</span></li>
-        <li data-say><span>be given the results before you leave.</span></li>
-        <li data-say><span>and you&rsquo;ll be given the results before you leave.</span></li>
-        <li data-say><span>The images will be checked, and you&rsquo;ll be given the results before you leave.</span></li>
-      </ol>
-    </div>
-    <div class="tools"><button type="button" class="btn" id="stress-reset">Start part A again</button></div>
+    <h3 class="sub">A. Wars and battles</h3>
+    <ol class="items" id="wordsA-list"></ol>
+    <h3 class="sub">B. Historic buildings</h3>
+    <ol class="items" id="wordsB-list"></ol>
+    <div class="tools"><button type="button" class="btn" id="words-reset">Start again</button></div>
   </section>
 
   <!-- 7 -->
-  <section class="sec" id="reading" data-title="Reading: from submarines to babies">
+  <section class="sec" id="reading" data-title="Reading: mud, arrows and a king">
     <header class="sec-head">
       <span class="sec-no">7</span>
-      <div class="sec-title"><h2>Reading: from submarines to babies</h2><p class="lede">Read the text once without stopping. Then decide if the sentences are true or false.</p></div>
-      <span class="score" data-score="tf">0 / 0</span>
+      <div class="sec-title"><h2>Reading: mud, arrows and a king</h2><p class="lede">Read the text once without stopping. Then put the events in the order they happened.</p></div>
+      <span class="score" data-score="order">0 / 0</span>
     </header>
     <article class="read">
-      <p class="by">A short history of ultrasound</p>
-      <h3>How a tool of war became a window into the body</h3>
-      <p>Ultrasound is sound that is too high for people to hear. During the First World War it <b>was developed</b> for a military purpose: finding enemy submarines under the sea. Short signals <b>were sent</b> through the water, and when they hit something, an echo came back. This technology <b>is known</b> as sonar.</p>
-      <p>After the war, the same idea <b>was used</b> in industry. In shipyards and factories, metal <b>was tested</b> with ultrasound to find cracks that couldn&rsquo;t be seen from the outside. Then, in 1942, ultrasound <b>was tried</b> in medicine for the first time by an Austrian doctor, Karl Dussik, who hoped to find brain tumours with it.</p>
-      <p>The real breakthrough came in Scotland. Ian Donald, a doctor in Glasgow, had learned about radar and sonar when he served in the air force during the Second World War. In the 1950s he borrowed an industrial machine from a local factory and worked with a young engineer, Tom Brown. Together they built a scanner for patients. One woman <b>had been told</b> that she had cancer and that nothing could be done. With the new scanner, a large cyst <b>was found</b> instead. It <b>was removed</b>, and she recovered.</p>
-      <p>Their results <b>were published</b> in 1958. At first, the unclear grey pictures <b>were not taken</b> seriously by many doctors. Today ultrasound <b>is used</b> in almost every hospital in the world. No radiation <b>is needed</b>, so it is safe for babies and children, and millions of scans <b>are done</b> every year.</p>
+      <p class="by">The Battle of Agincourt, 1415</p>
+      <h3>How a small, tired army won one of the most famous battles in history</h3>
+      <p>In August 1415 the young English king, Henry V, <b>invaded</b> France. The port of Harfleur was captured after five weeks, but the victory was expensive: many of Henry&rsquo;s soldiers <b>were killed</b> by disease, not by the enemy. Henry decided to march north to the port of Calais and sail home.</p>
+      <p>But he didn&rsquo;t get there without a fight. Near the village of Agincourt his hungry army was stopped by a much bigger French one. It rained all night, and by the morning the field between the two armies had been turned into deep mud.</p>
+      <p>The battle <b>was fought</b> on 25 October. Most of the English soldiers were <b>archers</b>. The French knights, who were wearing heavy metal <b>armour</b>, attacked across the mud. Thousands of arrows were shot at them. Many knights fell and could not get up again. In about three hours the French army <b>was defeated</b>, and the soldiers who were still able to walk <b>retreated</b>.</p>
+      <p>Five years later a peace treaty was signed. Henry married the French king&rsquo;s daughter, and it was agreed that he would be the next King of France. But he <b>was</b> never <b>crowned</b> in Paris. In 1422 he fell ill and died, at the age of thirty-five.</p>
+      <p>Almost two hundred years later the story was turned into a play by William Shakespeare. Since then <i>Henry V</i> has been performed all over the world, and it has been filmed several times.</p>
     </article>
-    <ol class="items" id="tf-list"></ol>
-    <div class="tools"><button type="button" class="btn" id="tf-reset">Start again</button></div>
+    <h3 class="sub">Put the events in order</h3>
+    <p class="note">Tap the event that happened first, then the next one, and so on. An event counts if you get it right the first time.</p>
+    <ol class="order" id="order-list"></ol>
+    <p class="fb" id="order-fb" aria-live="polite"></p>
+    <div class="tools"><button type="button" class="btn" id="order-reset">Start again</button></div>
   </section>
 
   <!-- 8 -->
-  <section class="sec" id="rw" data-title="Rewrite in the passive">
+  <section class="sec" id="say" data-title="Silent letters">
     <header class="sec-head">
       <span class="sec-no">8</span>
-      <div class="sec-title"><h2>Rewrite in the passive</h2><p class="lede">Things people say at a clinic. Complete the second sentence so that it means the same. Keep the same tense, and leave out <i>by&hellip;</i> when it isn&rsquo;t important.</p></div>
-      <span class="score" data-score="rw">0 / 0</span>
+      <div class="sec-title"><h2>Silent letters</h2><p class="lede">Say the word, then tap the consonant you don&rsquo;t pronounce. The first six words are about buildings. The last six are words a doctor needs.</p></div>
+      <span class="score" data-score="silent">0 / 0</span>
     </header>
-    <ol class="items" id="rw-list"></ol>
-    <div class="tools">
-      <button type="button" class="btn primary" id="rw-check">Check answers</button>
-      <button type="button" class="btn" id="rw-show">Show remaining answers</button>
-      <button type="button" class="btn quiet" id="rw-reset">Clear</button>
-    </div>
+    <div class="silent" id="silent-list"></div>
+    <p class="note">Now listen and say the sentences. A dot marks a word you say strongly.</p>
+    <ul class="plain dotted panel">
+      <li class="line" data-say><span><span class="weak">The</span> <span class="s">tomb</span> <span class="weak">is</span> <span class="s">under</span> <span class="weak">the</span> <span class="s">dome</span>, <span class="s">next</span> <span class="weak">to a</span> <span class="s">column</span>.</span></li>
+      <li class="line" data-say><span><span class="weak">I</span> <span class="s">doubt</span> <span class="weak">the</span> <span class="s">castle</span> <span class="weak">is</span> <span class="s">open</span> <span class="weak">on</span> <span class="s">Mondays</span>.</span></li>
+      <li class="line" data-say><span><span class="weak">He</span> <span class="s">fell</span> <span class="weak">and</span> <span class="s">hurt</span> <span class="weak">his</span> <span class="s">wrist</span>, <span class="weak">his</span> <span class="s">knee</span> <span class="weak">and his</span> <span class="s">thumb</span>.</span></li>
+    </ul>
+    <div class="tools"><button type="button" class="btn" id="say-reset">Start again</button></div>
   </section>
 
   <!-- 9 -->
-  <section class="sec" id="clinic" data-title="Medical English: at the scan">
+  <section class="sec" id="tour" data-title="Medical English: a hospital tour">
     <header class="sec-head">
       <span class="sec-no">9</span>
-      <div class="sec-title"><h2>Medical English: at the scan</h2><p class="lede">You are explaining an ultrasound scan to the mother of a five-year-old boy. Doctors use the passive a lot here, because the procedure is more important than who does it.</p></div>
+      <div class="sec-title"><h2>Medical English: a hospital tour</h2><p class="lede">A guide is showing visitors round one of the most famous children&rsquo;s hospitals in the world, Great Ormond Street Hospital in London.</p></div>
     </header>
     <div class="panel">
-      <p class="note">Listen to a line, then say it. A dot marks a strong word; <i style="font-style:normal;color:var(--frost)">/</i> marks a short pause. Then read the whole script without stopping.</p>
+      <p class="note">Listen to a line, then say it. A dot marks a strong word; <i style="font-style:normal;color:var(--frost)">/</i> marks a short pause. Then give the whole tour without stopping.</p>
       <ol class="script" id="script">
-        <li data-say><span><span class="s">Hello</span>. <i>/</i> Your <span class="s">son</span> is going to have an <span class="s">ul</span>trasound <span class="s">scan</span> <i>/</i> of his <span class="s">tum</span>my.</span></li>
-        <li data-say><span>It <span class="s">doesn&rsquo;t</span> <span class="s">hurt</span>, <i>/</i> and <span class="s">no</span> radi<span class="s">a</span>tion is <span class="s">used</span>.</span></li>
-        <li data-say><span>Some <span class="s">warm</span> <span class="s">gel</span> <i>/</i> will be <span class="s">put</span> on his <span class="s">skin</span>.</span></li>
-        <li data-say><span>Then a <span class="s">small</span> <span class="s">probe</span> <i>/</i> is <span class="s">moved</span> <span class="s">slow</span>ly over his <span class="s">tum</span>my.</span></li>
-        <li data-say><span>The <span class="s">pic</span>tures are <span class="s">shown</span> on this <span class="s">screen</span>, <i>/</i> so you can <span class="s">watch</span>.</span></li>
-        <li data-say><span>He <span class="s">needs</span> to be <span class="s">kept</span> <span class="s">still</span> <i>/</i> for a <span class="s">few</span> <span class="s">min</span>utes.</span></li>
-        <li data-say><span>The <span class="s">im</span>ages will be <span class="s">checked</span> to<span class="s">day</span>, <i>/</i> and you&rsquo;ll be <span class="s">giv</span>en the re<span class="s">sults</span> <i>/</i> be<span class="s">fore</span> you <span class="s">leave</span>.</span></li>
-        <li data-say><span>Do you have <span class="s">a</span>ny <span class="s">ques</span>tions?</span></li>
+        <li data-say><span><span class="s">Good</span> <span class="s">morning</span>, everyone, <i>/</i> and <span class="s">welcome</span> to <span class="s">Great</span> <span class="s">Ormond</span> Street <span class="s">Hospital</span>.</span></li>
+        <li data-say><span>The <span class="s">hospital</span> was <span class="s">opened</span> in <span class="s">eighteen</span> <span class="s">fifty-two</span> <i>/</i> by <span class="s">Doctor</span> <span class="s">Charles</span> <span class="s">West</span>.</span></li>
+        <li data-say><span>It was the <span class="s">first</span> <span class="s">hospital</span> in <span class="s">England</span> <i>/</i> <span class="s">just</span> for <span class="s">children</span>, <i>/</i> and it had <span class="s">only</span> <span class="s">ten</span> <span class="s">beds</span>.</span></li>
+        <li data-say><span>A <span class="s">lot</span> of <span class="s">money</span> was <span class="s">raised</span> for it <i>/</i> by the <span class="s">writer</span> <span class="s">Charles</span> <span class="s">Dickens</span>.</span></li>
+        <li data-say><span>In <span class="s">nineteen</span> <span class="s">twenty-nine</span> <i>/</i> the <span class="s">rights</span> to <span class="s">Peter</span> <span class="s">Pan</span> <i>/</i> were <span class="s">given</span> to the <span class="s">hospital</span> <i>/</i> by its <span class="s">author</span>.</span></li>
+        <li data-say><span>To<span class="s">day</span> <i>/</i> <span class="s">children</span> are <span class="s">sent</span> here <i>/</i> from <span class="s">all</span> over the <span class="s">country</span>.</span></li>
+        <li data-say><span><span class="s">New</span> <span class="s">treatments</span> are being de<span class="s">vel</span>oped here <i>/</i> <span class="s">all</span> the <span class="s">time</span>.</span></li>
+        <li data-say><span>Now <span class="s">please</span> <span class="s">follow</span> me. <i>/</i> You&rsquo;ll be <span class="s">shown</span> the <span class="s">chapel</span>, <i>/</i> which was <span class="s">built</span> in <span class="s">eighteen</span> <span class="s">seventy-five</span>.</span></li>
       </ol>
     </div>
     <div class="panel">
-      <h3>Role-play</h3>
-      <p>Your teacher is the parent, and she is nervous. Explain the scan in your own words, then answer her questions: <i>Will it hurt? Is it safe? How long will it take? When will we be told the results?</i></p>
+      <h3>Role-play: your hospital</h3>
+      <p>A doctor from another country is visiting your hospital, and you are the guide. Show your teacher round. Say when it was built or opened, what is done in each department, what is being repaired or changed now, and what will be opened soon. Your visitor will ask a lot of questions.</p>
     </div>
   </section>
 
@@ -475,13 +440,13 @@ footer.fin{color:var(--soft);font-size:14.5px;border-top:1px solid var(--line2);
       <div class="sec-title"><h2>Speaking</h2><p class="lede">Answer in full sentences. Speak slowly enough to keep the strong words strong.</p></div>
     </header>
     <ol class="talk">
-      <li>Where and when were you born? Which hospital were you born in?</li>
-      <li>Think of a historical film or series you have seen. When is it set? Is it based on a true story? Who was it directed by?</li>
-      <li>Which medical discovery do you think was the most important in history? Who was it made by, and how was it discovered?</li>
-      <li>What is being built or repaired in your city at the moment?</li>
-      <li>Have you ever been given a present you really didn&rsquo;t like? What was done with it?</li>
-      <li>How are doctors trained in your country? What are students taught in the first years?</li>
-      <li>What will be done by machines, not people, in hospitals in twenty years&rsquo; time?</li>
+      <li>What is the most interesting historical site you have ever visited? Were you shown round by a guide?</li>
+      <li>Think of a famous building in your city. When was it built? Who was it designed by? What is it used for today?</li>
+      <li>Is anything in your city being restored or rebuilt at the moment? Has any old building been destroyed that you miss?</li>
+      <li>Which battle or war were you taught most about at school? What do you remember?</li>
+      <li>Have you seen a historical film or series recently? Which period is it set in? Is it based on real events?</li>
+      <li>Would you like to see a battle acted out by people in costumes and armour? Why, or why not?</li>
+      <li>Which medical discovery do you think was the most important in history? Who was it made by?</li>
     </ol>
   </section>
 
@@ -492,10 +457,10 @@ footer.fin{color:var(--soft);font-size:14.5px;border-top:1px solid var(--line2);
       <div class="sec-title"><h2>Homework</h2><p class="lede">Four tasks for the week.</p></div>
     </header>
     <ul class="hw">
-      <li><span class="tag">Write</span><div><b>A discovery that changed medicine.</b> Choose one (X-rays, penicillin, vaccines, insulin, anaesthesia) and write 120&ndash;150 words. Use at least six passive verbs in at least three different tenses.</div></li>
-      <li><span class="tag">Speak</span><div>Record yourself reading the script from section 9 on your phone. Listen to it: are the dotted words strong and the small words weak? Record it again and send the better one to Alena.</div></li>
-      <li><span class="tag">Grammar</span><div><i>Essential Grammar in Use</i>: the two units on the passive (units 21 and 22 in the 4th edition: <i>is done / was done</i> and <i>is being done / has been done</i>).</div></li>
-      <li><span class="tag">Watch</span><div>Find a short video that explains how ultrasound works: <a href="https://www.youtube.com/results?search_query=how+does+ultrasound+work+explained" target="_blank" rel="noopener">search on YouTube</a>. Watch it twice. Write down five passive sentences you hear, and be ready to explain the video in one minute.</div></li>
+      <li><span class="tag">Write</span><div><b>Describe a building.</b> Look at the model on p. 121 of the Student&rsquo;s Book. Write 120&ndash;150 words about a famous building in your city for a tourism website: where it is, when and why it was built, what it looks like, what visitors can see, and one interesting story. Use at least five passive verbs and two sentences with <i>which</i> or <i>where</i>.</div></li>
+      <li><span class="tag">Speak</span><div>Record yourself giving the hospital tour from section 9 on your phone. Listen to it: are the dotted words strong and the small words weak? Record it again and send the better one to Alena.</div></li>
+      <li><span class="tag">Workbook</span><div>Workbook 8B, and Grammar Bank 8B exercises a and b on p. 147 if you didn&rsquo;t do them in class.</div></li>
+      <li><span class="tag">Grammar</span><div><i>Essential Grammar in Use</i>: the two units on the passive (<i>is done / was done</i> and <i>is being done / has been done</i>).</div></li>
     </ul>
     <div class="panel">
       <label class="sub" for="draft" style="margin:0">Your writing</label>
@@ -504,16 +469,6 @@ footer.fin{color:var(--soft);font-size:14.5px;border-top:1px solid var(--line2);
     </div>
   </section>
 
-  <!-- SUMMARY -->
-  <section class="sec" id="summary" data-title="Your scores">
-    <header class="sec-head">
-      <div class="sec-title"><h2>Your scores</h2><p class="lede">Correct answers per section. Answers you revealed don&rsquo;t count, and in the multiple-choice sections only the first choice counts.</p></div>
-    </header>
-    <div class="sum"><table id="sum-table"><tbody></tbody><tfoot></tfoot></table></div>
-    <div class="tools"><button type="button" class="btn quiet" id="reset-all">Reset all exercises</button></div>
-  </section>
-
-  <footer class="fin">Follow-up to English File Intermediate Plus, unit 8B. Prepared for Ekaterina&rsquo;s lesson with Alena.</footer>
 </main>
 
 <script>
@@ -521,6 +476,8 @@ footer.fin{color:var(--soft);font-size:14.5px;border-top:1px solid var(--line2);
   'use strict';
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+  // the teacher's page shows the answers; scripts/student-site.sh turns data-view into "student"
+  const TEACHER = (($('main.page') || document.body).getAttribute('data-view')) === 'teacher';
 
   function el(tag, props, ...kids){
     const e = document.createElement(tag);
@@ -614,6 +571,7 @@ footer.fin{color:var(--soft);font-size:14.5px;border-top:1px solid var(--line2);
       tocBuilt = true;
     }
     $$('[data-toc]').forEach(x => { const s = SECTIONS.find(q => q.id === x.dataset.toc); const t = partsTotal(s.parts); x.textContent = t.got + ' / ' + t.total; });
+    if (!$('#sum-table')) return;
     const body = $('#sum-table tbody'), foot = $('#sum-table tfoot');
     body.replaceChildren(); foot.replaceChildren();
     let G = 0, T = 0;
@@ -671,6 +629,7 @@ footer.fin{color:var(--soft);font-size:14.5px;border-top:1px solid var(--line2);
           opts.append(b);
         });
         li.append(q, opts, why);
+        if (TEACHER) li.append(el('p', {class: 'key', text: 'Answer: ' + it.o[it.a]}));
         list.append(li);
         return st;
       });
@@ -721,7 +680,9 @@ footer.fin{color:var(--soft);font-size:14.5px;border-top:1px solid var(--line2);
         };
         input.addEventListener('keydown', e => { if (e.key === 'Enter'){ e.preventDefault(); st.check(); } });
         input.addEventListener('input', () => { if (st.state === 'wrong'){ st.state = 'idle'; mark(''); } });
-        list.append(el('li', {class: 'item'}, q, fb));
+        const li = el('li', {class: 'item'}, q, fb);
+        if (TEACHER) li.append(el('p', {class: 'key', text: 'Answer: ' + it.a.join(' / ')}));
+        list.append(li);
         return st;
       });
       score();
@@ -733,50 +694,75 @@ footer.fin{color:var(--soft);font-size:14.5px;border-top:1px solid var(--line2);
     $('#' + key + '-reset').addEventListener('click', render);
   }
 
-  // ---------- tap the stressed words: {t:'words', s:[indexes]} ----------
-  function buildStress(listId, items, key){
-    const list = $('#' + listId);
-    let state = [];
-    function score(){ setScore(key, state.filter(s => s.done && !s.missed).length, items.length); }
+  // ---------- put events in order: events are given in the correct order ----------
+  function buildOrder(listId, events, key){
+    const list = $('#' + listId), fb = $('#' + key + '-fb');
+    let next, missed, got;
+    function score(){ setScore(key, got, events.length); }
     function render(){
+      next = 0; missed = false; got = 0;
+      fb.replaceChildren();
       list.replaceChildren();
-      state = items.map((it, i) => {
-        const st = {done: false, missed: false};
-        const words = it.t.split(' ');
-        const row = el('div', {class: 'words', role: 'group', 'aria-label': 'Words of sentence ' + (i + 1)});
-        const btns = words.map((w, j) => {
-          const b = el('button', {type: 'button', class: 'wd', id: listId + '-' + i + '-' + j, 'aria-pressed': 'false', text: w});
-          b.addEventListener('click', () => { if (!st.done) b.setAttribute('aria-pressed', b.getAttribute('aria-pressed') === 'true' ? 'false' : 'true'); });
-          row.append(b);
-          return b;
-        });
-        const fb = el('p', {class: 'fb', 'aria-live': 'polite'});
-        function lock(){
-          st.done = true;
-          btns.forEach((b, j) => { b.setAttribute('aria-pressed', it.s.includes(j) ? 'true' : 'false'); b.disabled = true; b.classList.add('fixed'); });
-          check.hidden = true;
-        }
-        const check = el('button', {type: 'button', class: 'btn', id: listId + '-check-' + i, text: 'Check'});
-        check.addEventListener('click', () => {
-          if (st.done) return;
-          const picked = btns.map((b, j) => b.getAttribute('aria-pressed') === 'true' ? j : -1).filter(j => j >= 0);
-          if (!picked.length){ fb.replaceChildren('Tap the strong words first.'); return; }
-          const right = picked.length === it.s.length && picked.every(j => it.s.includes(j));
-          if (right){
-            const first = !st.missed;
-            lock();
-            fb.replaceChildren(el('span', {class: 'ok', text: first ? 'Correct.' : 'Got it.'}), ' Now say it with that rhythm.');
+      // fixed mixed-up order, the same every time
+      const shown = events.map((t, i) => ({t, i})).sort((a, b) => ((a.i * 5 + 3) % events.length) - ((b.i * 5 + 3) % events.length));
+      shown.forEach(ev => {
+        const no = el('span', {class: 'ev-no', 'aria-hidden': 'true'});
+        const b = el('button', {type: 'button', class: 'ev', id: listId + '-' + ev.i}, no, el('span', {text: ev.t}));
+        b.addEventListener('click', () => {
+          if (b.disabled) return;
+          if (ev.i === next){
+            b.disabled = true; b.classList.add('placed'); no.textContent = String(next + 1);
+            b.parentNode.style.order = String(next);
+            if (!missed) got++;
+            next++; missed = false;
+            fb.replaceChildren();
+            if (next === events.length) fb.append(el('span', {class: 'ok', text: 'All in order. Now tell the story from the list.'}));
           } else {
-            st.missed = true; nudge(row);
-            const extra = picked.filter(j => !it.s.includes(j)).length;
-            const link = el('button', {type: 'button', class: 'link', text: 'Show answer'});
-            link.addEventListener('click', () => { lock(); fb.replaceChildren('Answer shown. Say it with that rhythm.'); score(); });
-            fb.replaceChildren(el('span', {class: 'badw', text: 'Not quite.'}), extra ? 'One of your words is a weak grammar word.' : 'A strong word is missing.', link);
+            missed = true; nudge(b);
+            fb.replaceChildren(el('span', {class: 'badw', text: 'Not yet.'}), 'Something else happened before that.');
           }
           score();
         });
-        const tools = el('div', {class: 'tools'}, sayButton(it.t, listId + '-say-' + i), check);
-        list.append(el('li', {class: 'item'}, row, tools, fb));
+        if (TEACHER) b.append(el('span', {class: 'key-n', text: 'key: ' + (ev.i + 1)}));
+        const li = el('li', null, b); li.style.order = '100';
+        list.append(li);
+      });
+      score();
+    }
+    render();
+    RESETS.push(render);
+    return render;
+  }
+
+  // ---------- tap the silent letter: words written like 'cas(t)le' ----------
+  function buildSilent(boxId, words, key){
+    const box = $('#' + boxId);
+    let state = [];
+    function score(){ setScore(key, state.filter(s => s.done && !s.missed).length, words.length); }
+    function render(){
+      box.replaceChildren();
+      state = words.map((raw, i) => {
+        const st = {done: false, missed: false};
+        const at = raw.indexOf('('), word = raw.replace(/[()]/g, '');
+        const row = el('div', {class: 'sw', role: 'group', 'aria-label': 'Letters of ' + word});
+        row.append(sayButton(word, boxId + '-say-' + i));
+        const letters = el('span', {class: 'letters'});
+        word.split('').forEach((ch, j) => {
+          const b = el('button', {type: 'button', class: 'lt', id: boxId + '-' + i + '-' + j, text: ch, 'aria-label': 'letter ' + ch});
+          b.addEventListener('click', () => {
+            if (st.done) return;
+            if (j === at){
+              st.done = true; b.classList.add('mute');
+              $$('.lt', letters).forEach(x => { x.disabled = true; });
+              row.classList.add('solved');
+            } else { st.missed = true; nudge(b); }
+            score();
+          });
+          if (TEACHER && j === at) b.classList.add('tkey');
+          letters.append(b);
+        });
+        row.append(letters);
+        box.append(row);
         return st;
       });
       score();
@@ -791,72 +777,80 @@ footer.fin{color:var(--soft);font-size:14.5px;border-top:1px solid var(--line2);
     {q: 'I don’t cut my own hair. I ___ once a month.', o: ['have it cut', 'have cut it', 'am cut it'], a: 0, why: 'have + object + past participle.'},
     {q: 'We didn’t paint the flat ourselves. We ___.', o: ['had painted it', 'had it painted', 'were painted it'], a: 1, why: 'A painter did it for us.'},
     {q: 'Where do you ___?', o: ['have serviced your car', 'service have your car', 'have your car serviced'], a: 2, why: 'The object goes before the past participle.'},
-    {q: 'I can’t see the board. I need to ___.', o: ['have my eyes tested', 'have tested my eyes', 'be tested my eyes'], a: 0, why: 'An optician tests them for you.'},
-    {q: 'She ___ at the dentist’s yesterday.', o: ['was taken out a tooth', 'had a tooth taken out', 'had taken out a tooth'], a: 1, why: 'Past simple of have: had + object + past participle.'}
+    {q: 'I can’t read the board. I need to ___.', o: ['have my eyes tested', 'have tested my eyes', 'be tested my eyes'], a: 0, why: 'An optician tests them for you.'},
+    {q: 'My passport is out of date. I’m ___ next week.', o: ['having renewed it', 'renewing it have', 'having it renewed'], a: 2, why: 'Present continuous of have + object + past participle.'}
   ], 'warm'));
 
-  $('#words-reset').addEventListener('click', buildMC('words-list', [
-    {q: 'An agreement between countries, for example to end a war: a peace ___', o: ['siege', 'treaty', 'troop'], a: 1, why: 'A peace treaty is signed.'},
-    {q: 'People who are not members of the army: ___', o: ['civilians', 'allies', 'troops'], a: 0, why: 'Stress: ciVILians.'},
-    {q: 'When an army surrounds a city and stops food getting in: a ___', o: ['retreat', 'ceasefire', 'siege'], a: 2, why: 'The city was under siege.'},
-    {q: 'People who have to leave their country because of war: ___', o: ['refugees', 'rebels', 'soldiers'], a: 0, why: 'Stress on the end: refuGEES.'},
-    {q: 'To enter another country with an army to take control of it: to ___', o: ['defeat', 'invade', 'surrender'], a: 1, why: 'The noun is invasion.'},
-    {q: 'To stop fighting and say that you have lost: to ___', o: ['capture', 'invade', 'surrender'], a: 2, why: 'Stress: suRRENder.'},
-    {q: 'An agreement to stop fighting for a time: a ___', o: ['ceasefire', 'battle', 'siege'], a: 0, why: 'A ceasefire is agreed or declared.'},
-    {q: 'To win against an enemy in a battle or a war: to ___ them', o: ['retreat', 'defeat', 'surrender'], a: 1, why: 'The army was defeated.'},
-    {q: 'People who are killed or injured in a war or an accident: ___', o: ['civilians', 'allies', 'casualties'], a: 2, why: 'In the UK, the emergency department used to be called Casualty.'}
-  ], 'words'));
+  $('#quiz-reset').addEventListener('click', buildMC('quiz-list', [
+    {q: 'Which city was founded by Peter the Great in 1703?', o: ['Moscow', 'St Petersburg', 'Kazan'], a: 1, why: 'was founded: past simple passive.'},
+    {q: 'The Eiffel Tower was built for the World’s Fair of…', o: ['1789', '1889', '1989'], a: 1, why: 'was built: past simple passive.'},
+    {q: 'Which Roman city was destroyed by a volcano in 79 AD?', o: ['Pompeii', 'Venice', 'Florence'], a: 0, why: 'was destroyed: past simple passive. The volcano was Vesuvius.'},
+    {q: 'Where were the first modern Olympic Games held, in 1896?', o: ['Paris', 'London', 'Athens'], a: 2, why: 'were held: past simple passive.'},
+    {q: 'Who was the Mona Lisa painted by?', o: ['Michelangelo', 'Leonardo da Vinci', 'Raphael'], a: 1, why: 'was painted by: past simple passive. In a question, by goes at the end.'},
+    {q: 'The mountain city of Machu Picchu was built by…', o: ['the Incas', 'the Mayans', 'the Aztecs'], a: 0, why: 'was built by: past simple passive.'},
+    {q: 'The first human heart transplant was performed in 1967. In which country?', o: ['the USA', 'the UK', 'South Africa'], a: 2, why: 'was performed: past simple passive. It was done in Cape Town.'},
+    {q: 'Which disease has been wiped out everywhere in the world?', o: ['measles', 'smallpox', 'polio'], a: 1, why: 'has been wiped out: present perfect passive. The world was declared free of smallpox in 1980.'}
+  ], 'quiz'));
 
   $('#ap-reset').addEventListener('click', buildMC('ap-list', [
-    {q: 'The first X-ray ___ in 1895.', o: ['took', 'was taken'], a: 1, why: 'The X-ray didn’t take anything; someone took it.'},
-    {q: 'Wilhelm Röntgen ___ the first X-ray of his wife’s hand.', o: ['took', 'was taken'], a: 0, why: 'Röntgen did the action, so it is active.'},
-    {q: 'My grandmother ___ in a small village in 1938.', o: ['born', 'was born'], a: 1, why: 'Always be + born.'},
-    {q: 'Thousands of civilians ___ during the siege.', o: ['killed', 'were killed'], a: 1, why: 'It happened to them.'},
-    {q: 'The army ___ the city after three months.', o: ['captured', 'was captured'], a: 0, why: 'The army did the action.'},
-    {q: 'A new children’s hospital ___ in our city at the moment.', o: ['is building', 'is being built'], a: 1, why: 'Present continuous passive: is being + past participle.'},
-    {q: 'Marie Curie ___ the Nobel Prize in Chemistry in 1911.', o: ['awarded', 'was awarded'], a: 1, why: 'Someone gave it to her.'},
-    {q: 'The film is ___ on a true story.', o: ['based', 'basing'], a: 0, why: 'be based on something.'}
+    {q: 'The Winter Palace ___ in the eighteenth century.', o: ['built', 'was built'], a: 1, why: 'The palace didn’t build anything.'},
+    {q: 'The Normans ___ England in 1066.', o: ['invaded', 'were invaded'], a: 0, why: 'The Normans did the action.'},
+    {q: 'The English king ___ in the battle.', o: ['killed', 'was killed'], a: 1, why: 'It happened to him.'},
+    {q: 'Thousands of tourists ___ the castle every year.', o: ['visit', 'are visited'], a: 0, why: 'The tourists do the action.'},
+    {q: 'The cathedral ___ at the moment, so we can’t go in.', o: ['is restoring', 'is being restored'], a: 1, why: 'Present continuous passive: is being + past participle.'},
+    {q: 'The king’s treasure has never ___.', o: ['found', 'been found'], a: 1, why: 'Present perfect passive: has been + past participle.'},
+    {q: 'Catherine the Great ___ the Hermitage collection in 1764.', o: ['started', 'was started'], a: 0, why: 'She did the action.'},
+    {q: 'You ___ to take photos inside the museum.', o: ['don’t allow', 'aren’t allowed'], a: 1, why: 'Somebody doesn’t allow you: you aren’t allowed.'}
   ], 'ap'));
 
   buildTyped('gap-list', [
-    {q: 'Penicillin ___ by Alexander Fleming in 1928.', hint: 'discover', a: ['was discovered']},
-    {q: 'Today millions of ultrasound scans ___ every year.', hint: 'do', a: ['are done']},
-    {q: 'Look! The old hospital ___ right now.', hint: 'pull down', a: ['is being pulled down']},
-    {q: 'Don’t worry. The results ___ to you tomorrow.', hint: 'send', a: ['will be sent', 'are going to be sent']},
-    {q: 'Several new vaccines ___ since 2020.', hint: 'develop', a: ['have been developed']},
-    {q: 'When we arrived, the boy ___ by a nurse, so we waited outside.', hint: 'examine', a: ['was being examined']},
-    {q: 'In many countries children must ___ before they start school.', hint: 'vaccinate', a: ['be vaccinated']},
-    {q: 'The scan can’t ___ today because the machine is broken.', hint: 'do', a: ['be done']}
+    {q: 'The Colosseum in Rome ___ in 80 AD.', hint: 'finish', a: ['was finished']},
+    {q: 'The Tower of London ___ by millions of people every year.', hint: 'visit', a: ['is visited']},
+    {q: 'We can’t use the main entrance. It ___ at the moment.', hint: 'repair', a: ['is being repaired']},
+    {q: 'In recent years many films ___ about the Second World War.', hint: 'make', a: ['have been made']},
+    {q: 'The bridge was closed last week because it ___.', hint: 'paint', a: ['was being painted']},
+    {q: 'The new museum ___ next spring.', hint: 'open', a: ['will be opened', 'is going to be opened', 'is being opened']},
+    {q: 'The crown jewels can ___ in the Tower of London.', hint: 'see', a: ['be seen']},
+    {q: 'The old hospital had to ___ after the fire.', hint: 'close', a: ['be closed']},
+    {q: 'Our cat hates ___ alone at the weekend.', hint: 'leave', a: ['being left']}
   ], 'gap', 20);
 
-  $('#stress-reset').addEventListener('click', buildStress('stress-list', [
-    {t: 'The scan was done by a nurse.', s: [1, 3, 6]},
-    {t: 'Penicillin was discovered in London.', s: [0, 2, 4]},
-    {t: 'The results will be sent to your doctor.', s: [1, 4, 7]},
-    {t: 'The bridge has been destroyed.', s: [1, 4]},
-    {t: 'She was told to wait outside.', s: [2, 4, 5]}
-  ], 'stress'));
+  const wordsA = buildMC('wordsA-list', [
+    {q: 'To enter a country with an army in order to take control of it: to ___', o: ['retreat', 'invade', 'crown'], a: 1, why: 'The noun is invasion.'},
+    {q: 'To win against an enemy in a war or a battle: to ___ them', o: ['defeat', 'succeed', 'destroy'], a: 0, why: 'The army was defeated.'},
+    {q: 'To move back, away from the enemy, because you are losing: to ___', o: ['invade', 'fight', 'retreat'], a: 2, why: 'Stress on the end: reTREAT.'},
+    {q: 'To make somebody king or queen in a ceremony: to ___ them', o: ['crown', 'defeat', 'kill'], a: 0, why: 'She was crowned in 1953.'},
+    {q: 'To damage something so badly that it doesn’t exist any more: to ___ it', o: ['retreat', 'destroy', 'succeed'], a: 1, why: 'The town was destroyed.'},
+    {q: 'To manage to do what you were trying to do: to ___', o: ['invade', 'defeat', 'succeed'], a: 2, why: 'succeed in doing something.'},
+    {q: 'The past simple and past participle of fight: ___', o: ['fighted', 'fought', 'fight'], a: 1, why: 'It rhymes with bought and caught.'},
+    {q: 'A soldier who shoots arrows with a bow: an ___', o: ['archer', 'armour', 'arrow'], a: 0, why: 'ch is /tʃ/ here: ARcher.'},
+    {q: 'Metal clothes that soldiers wore to protect their bodies: ___', o: ['a shield', 'a helmet', 'armour'], a: 2, why: 'Armour is uncountable. A helmet protects only the head.'},
+    {q: 'A soldier held it on one arm to protect himself: a ___', o: ['bow', 'shield', 'helmet'], a: 1, why: 'A sword in one hand and a shield on the other arm.'}
+  ], 'wordsA');
+  const wordsB = buildMC('wordsB-list', [
+    {q: 'A large building with thick, high walls, built to protect people from attack: a ___', o: ['palace', 'castle', 'cathedral'], a: 1, why: 'The t is silent.'},
+    {q: 'The most important church of a city or region: a ___', o: ['cathedral', 'tower', 'abbey'], a: 0, why: 'Stress: caTHEdral.'},
+    {q: 'A round roof: a ___', o: ['tomb', 'column', 'dome'], a: 2, why: 'The cathedral has a golden dome.'},
+    {q: 'A room under a church, often with tombs in it: a ___', o: ['gallery', 'crypt', 'aisle'], a: 1, why: 'It is below the ground.'},
+    {q: 'A stone box or room where a dead person is buried: a ___', o: ['tomb', 'dome', 'crypt'], a: 0, why: 'It rhymes with room. The b is silent.'},
+    {q: 'A passage between the rows of seats in a church, a theatre or a plane: an ___', o: ['abbey', 'aisle', 'arch'], a: 1, why: 'It sounds exactly like “I’ll”.'},
+    {q: 'A tall stone post that holds up a roof: a ___', o: ['column', 'gallery', 'tower'], a: 0, why: 'The n is silent.'}
+  ], 'wordsB');
+  $('#words-reset').addEventListener('click', () => { wordsA(); wordsB(); });
 
-  $('#tf-reset').addEventListener('click', buildMC('tf-list', [
-    {q: 'Ultrasound was first developed to help doctors.', o: ['True', 'False'], a: 1, why: 'It was developed to find submarines in the First World War.'},
-    {q: 'In factories, ultrasound was used to find cracks in metal.', o: ['True', 'False'], a: 0, why: 'Metal was tested with it in shipyards and factories.'},
-    {q: 'Ian Donald was the first doctor who tried ultrasound in medicine.', o: ['True', 'False'], a: 1, why: 'It was tried by Karl Dussik in 1942, before Donald.'},
-    {q: 'Donald’s first scanner was built with the help of an engineer.', o: ['True', 'False'], a: 0, why: 'He worked with Tom Brown.'},
-    {q: 'The woman in the story really had cancer.', o: ['True', 'False'], a: 1, why: 'A large cyst was found instead, and it was removed.'},
-    {q: 'All doctors were excited about the first ultrasound pictures.', o: ['True', 'False'], a: 1, why: 'At first the pictures were not taken seriously by many doctors.'},
-    {q: 'Radiation is not used in an ultrasound scan.', o: ['True', 'False'], a: 0, why: 'That is why it is safe for babies and children.'}
-  ], 'tf'));
+  $('#order-reset').addEventListener('click', buildOrder('order-list', [
+    'Henry V invaded France.',
+    'The port of Harfleur was captured.',
+    'The English army was stopped near Agincourt.',
+    'The French knights attacked across the mud.',
+    'The French army was defeated.',
+    'A peace treaty was signed.',
+    'Henry died before he could be crowned in Paris.',
+    'The story was turned into a play.'
+  ], 'order'));
 
-  buildTyped('rw-list', [
-    {src: 'A specialist will look at the images.', q: 'The images ___ a specialist.', a: ['will be looked at by', 'are going to be looked at by']},
-    {src: 'We don’t use radiation in an ultrasound scan.', q: 'Radiation ___ in an ultrasound scan.', a: ['is not used', 'is never used']},
-    {src: 'The nurse is preparing your daughter for the scan.', q: 'Your daughter ___ for the scan.', a: ['is being prepared', 'is being prepared by the nurse']},
-    {src: 'Someone has already sent the results to your GP.', q: 'The results ___ to your GP.', a: ['have already been sent', 'have been sent', 'have been sent already', 'have been already sent']},
-    {src: 'You must keep the child still during the scan.', q: 'The child ___ still during the scan.', a: ['must be kept']},
-    {src: 'They gave us the results the same day.', q: 'We ___ the results the same day.', a: ['were given']},
-    {src: 'Nobody told me about the side effects.', q: 'I ___ about the side effects.', a: ['was not told', 'was never told'], note: 'Nobody told me = I wasn’t told.'},
-    {src: 'They were cleaning the room when we arrived.', q: 'The room ___ when we arrived.', a: ['was being cleaned']}
-  ], 'rw', 26);
+  const silent = buildSilent('silent-list', ['cas(t)le', 'colum(n)', 'tom(b)', 'ai(s)le', 'i(s)land', 'dou(b)t', '(k)nee', '(w)rist', 'thum(b)', 'mus(c)le', 's(w)ord', 'lis(t)en'], 'silent');
+  $('#say-reset').addEventListener('click', silent);
 
   // ---------- homework draft (this browser only) ----------
   const draft = $('#draft'), count = $('#draft-count');
@@ -865,7 +859,6 @@ footer.fin{color:var(--soft);font-size:14.5px;border-top:1px solid var(--line2);
   countWords();
   draft.addEventListener('input', () => { countWords(); try { localStorage.setItem('ekaterina-8b-draft', draft.value); } catch (e) {} });
 
-  $('#reset-all').addEventListener('click', () => { RESETS.forEach(r => r()); });
   renderScores();
 })();
 </script>
