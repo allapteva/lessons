@@ -1,0 +1,1366 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta charset="utf-8">
+<title>Where Were You?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@600;700;800;900&display=swap">
+<style>
+/* Layout: a game lobby, matching Aron's present continuous page. Dark striped arena, chunky white "event" cards
+   with thick black outlines and coloured header bands, yellow 3D buttons, a trophy road and ranks.
+   Fan-made look inspired by arena brawler games; no official logos or art. Single dark-arena theme on purpose.
+   The older token names (--red-d, --pop-blue …) are kept because the markup and script use them; their values are the arena palette. */
+:root{
+  --night:#0a1a4f; --arena:#1238a8; --arena-2:#1b4fd6; --stripe:rgba(255,255,255,.045);
+  --panel:#ffffff; --panel-2:#eef3ff; --ink:#0d0f1a; --muted:#4a5272; --on-dark:#ffffff; --on-dark-dim:#c9d6ff;
+  --yellow:#ffd23f; --orange:#ff8a1f; --pink:#ff4fa3; --purple:#8a3ffc; --sky:#38c6ff; --green:#4fd93a; --red:#ff3b4e;
+  /* header-band colours used by the markup */
+  --red-d:#ff3b4e; --aqua-d:#1fd1b8; --orange-d:#ff8a1f; --blue-d:#38c6ff; --purple-d:#8a3ffc; --green-d:#4fd93a; --yellow-d:#ffd23f; --ink2:#c9d6ff;
+  /* chip / card fills used by the script */
+  --pop-yellow:#ffd23f; --pop-blue:#7fd9ff; --pop-purple:#c9a2ff; --pop-orange:#ffa04d; --pop-aqua:#5ff0d0; --pop-green:#8af06e;
+  --t-yellow:#fff1b3; --t-blue:#c9efff; --t-red:#ffd3dc; --t-purple:#e4d4ff;
+  --screen:#0a1a4f; --screen-2:#16307e; --screen-line:#2c4bb0;
+  --ok:#22a311; --ok-ink:#126b06; --ok-bg:#dcf9d4; --bad:#ff3b4e; --bad-ink:#c3142a;
+  --display:"Lilita One","Arial Black",Impact,sans-serif;
+  --body:"Nunito","Segoe UI",system-ui,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background-color:var(--night);background-image:repeating-linear-gradient(135deg,var(--stripe) 0 22px,transparent 22px 44px),radial-gradient(ellipse at 50% -10%,var(--arena-2),var(--arena) 38%,var(--night) 85%);background-attachment:fixed;color:var(--on-dark);font-family:var(--body);font-size:17px;line-height:1.5}
+.wrap{max-width:1000px;margin:0 auto;padding-inline:16px;padding-block:20px 110px;display:flex;flex-direction:column;gap:26px}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer;-webkit-tap-highlight-color:transparent}
+:focus-visible{outline:4px solid var(--sky);outline-offset:3px}
+h1,h2,h3{margin:0;text-wrap:balance;font-weight:400}
+p{margin:0}
+[hidden]{display:none!important}
+.stages{display:flex;flex-direction:column;gap:28px;min-width:0}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.outline{font-family:var(--display);color:var(--on-dark);-webkit-text-stroke:2px var(--ink);paint-order:stroke fill;text-shadow:0 4px 0 var(--ink)}
+
+/* ---------- lobby ---------- */
+.lobby{display:flex;flex-direction:column;gap:16px}
+.topbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.player{display:flex;align-items:center;gap:12px;background:rgba(0,0,0,.35);border:3px solid var(--ink);border-radius:14px;padding:6px 14px 6px 6px}
+.avatar{width:52px;height:52px;border-radius:10px;border:3px solid var(--ink);background:linear-gradient(var(--yellow),var(--orange));display:grid;place-items:center;font:400 26px/1 var(--display);color:var(--ink)}
+.player .name{font-size:24px;line-height:1;letter-spacing:.02em}
+.player .lvl-txt{font-weight:800;font-size:13px;color:var(--on-dark-dim)}
+.rank{display:flex;align-items:center;gap:10px;background:rgba(0,0,0,.35);border:3px solid var(--ink);border-radius:14px;padding:6px 14px}
+.rank .tier{font-size:18px;line-height:1;letter-spacing:.03em}
+.title-card{position:relative;background:linear-gradient(160deg,#1fd1b8,#0e8f9c);border:4px solid var(--ink);border-radius:20px;box-shadow:0 8px 0 var(--ink);padding:clamp(18px,4vw,36px);overflow:hidden}
+.title-card::after{content:"";position:absolute;inset:auto -40px -60px auto;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(255,210,63,.5),transparent 65%)}
+.mode{display:inline-block;background:var(--yellow);color:var(--ink);border:3px solid var(--ink);border-radius:8px;padding:2px 12px;font:400 15px/1.3 var(--display);letter-spacing:.06em;transform:rotate(-3deg)}
+.title-card h1{font-size:clamp(40px,9vw,88px);line-height:.95;margin-top:12px;position:relative;z-index:1;transform:rotate(-2deg);transform-origin:left}
+.title-card h1 span{color:var(--yellow)}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;position:relative;z-index:1}
+.tag{background:rgba(0,0,0,.3);border:2px solid var(--ink);border-radius:999px;padding:3px 12px;font-weight:800;font-size:15px}
+.levels{display:flex;flex-wrap:wrap;gap:8px}
+.levels a{display:inline-flex;align-items:center;gap:6px;color:var(--ink);text-decoration:none;background:var(--panel);border:3px solid var(--ink);border-radius:10px;padding:4px 12px;font-weight:900;font-size:14px;box-shadow:0 3px 0 var(--ink)}
+.levels a b{font:400 14px/1 var(--display);color:var(--purple)}
+.levels a:hover{background:var(--yellow)}
+.road{background:rgba(0,0,0,.35);border:3px solid var(--ink);border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.road-top{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-weight:800}
+.road-top b{font:400 18px/1 var(--display);color:var(--yellow)}
+.bar{height:18px;border:3px solid var(--ink);border-radius:999px;background:var(--night);overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(var(--yellow),var(--orange));transition:width .4s}
+.tiers{display:flex;justify-content:space-between;font:400 12px/1 var(--display);letter-spacing:.04em;color:var(--on-dark-dim);gap:4px;flex-wrap:wrap}
+.tiers span.on{color:var(--yellow)}
+
+/* teacher plan */
+details.plan{background:rgba(0,0,0,.35);border:3px dashed var(--on-dark-dim);border-radius:14px;padding:14px 20px}
+details.plan summary{font-weight:900;cursor:pointer}
+.plan ol{margin:10px 0 4px;padding-left:22px;display:flex;flex-direction:column;gap:4px}
+.plan .min{font-variant-numeric:tabular-nums;color:var(--on-dark-dim)}
+.plan p{color:var(--on-dark-dim);font-size:15px;margin-top:8px}
+.plan p b{color:var(--on-dark)}
+
+/* ---------- event cards (stages) ---------- */
+.stage{--pad:clamp(14px,3vw,26px);background:var(--panel);color:var(--ink);border:4px solid var(--ink);border-radius:20px;box-shadow:0 8px 0 var(--ink);padding:0 var(--pad) var(--pad);display:flex;flex-direction:column;gap:16px;scroll-margin-top:14px;min-width:0;overflow:hidden}
+.stage-head{display:flex;gap:14px;align-items:center;margin-inline:calc(-1 * var(--pad));padding:14px var(--pad);background:var(--acc,var(--sky));border-bottom:4px solid var(--ink)}
+.lvl{flex:none;width:54px;height:54px;display:grid;place-items:center;background:var(--panel);color:var(--ink);border:3px solid var(--ink);border-radius:12px;font:400 26px/1 var(--display);box-shadow:0 3px 0 var(--ink)}
+.head-txt{display:flex;flex-direction:column;gap:2px;min-width:0}
+.eyebrow{font:400 13px/1.2 var(--display);letter-spacing:.08em;color:var(--ink);opacity:.85}
+.stage-head h2{font-family:var(--display);font-size:clamp(24px,4.4vw,36px);line-height:1.05;color:var(--on-dark);-webkit-text-stroke:2px var(--ink);paint-order:stroke fill;text-shadow:0 4px 0 var(--ink)}
+.stage-head .hint{color:var(--ink);font-weight:800}
+.stage-head .hint b{background:rgba(255,255,255,.55);border-radius:4px;padding:0 3px}
+h3{font-family:var(--display);font-size:20px;letter-spacing:.02em}
+.hint{color:var(--muted);font-size:15px;font-weight:700}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.btn{border:3px solid var(--ink);background:var(--yellow);color:var(--ink);border-radius:12px;padding:6px 18px;font:400 17px/1.2 var(--display);letter-spacing:.03em;box-shadow:0 4px 0 var(--ink);transition:transform .08s,box-shadow .08s}
+.btn:hover{background:var(--orange)}
+.btn:active{transform:translateY(4px);box-shadow:0 0 0 var(--ink)}
+.btn.go{background:var(--green)}
+.btn.go:hover{background:var(--ok);color:var(--on-dark)}
+.status{font-weight:900;font-variant-numeric:tabular-nums}
+.say{display:inline-grid;place-items:center;width:38px;height:38px;flex:none;border-radius:10px;border:3px solid var(--ink);background:var(--sky);color:var(--ink);padding:0;box-shadow:0 3px 0 var(--ink)}
+.say svg{width:18px;height:18px}
+.say:hover{background:var(--yellow)}
+
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-7px)}40%{transform:translateX(7px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+.shake{animation:shake .35s;border-color:var(--bad)!important;background-color:var(--t-red)!important}
+@keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.25) rotate(-4deg)}100%{transform:scale(1)}}
+.pop{animation:pop .45s}
+
+/* 1 warm-up quiz (dark match screen) */
+.quiz{background:var(--screen);color:var(--on-dark);border:3px solid var(--ink);border-radius:16px;padding:clamp(14px,3vw,24px);display:flex;flex-direction:column;gap:14px}
+.quiz-top{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.quiz-count{font:400 18px/1 var(--display);color:var(--yellow);letter-spacing:.06em}
+.dots{display:flex;gap:6px}
+.dots i{width:16px;height:16px;border:2px solid var(--on-dark-dim);border-radius:3px;transform:rotate(45deg)}
+.dots i.on{background:var(--green);border-color:var(--ink)}
+.quiz-q{font-size:clamp(20px,3.4vw,28px);font-weight:800;line-height:1.35;min-width:0}
+.quiz-q .slot{border-bottom-color:var(--yellow);color:var(--yellow)}
+.quiz-opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(200px,100%),1fr));gap:12px}
+.qopt{border:3px solid var(--ink);border-radius:12px;padding:14px;font:900 20px/1.2 var(--body);color:var(--ink);background:var(--c);box-shadow:0 5px 0 var(--ink)}
+.qopt:hover{transform:translateY(-2px)}
+.qopt[disabled]{cursor:default;transform:none;opacity:.5}
+.qopt.ok{opacity:1;background:var(--green);outline:3px solid var(--yellow);outline-offset:3px}
+.quiz-msg{min-height:1.5em;font-weight:900;color:var(--green)}
+
+/* 2 the rule */
+.shift{display:flex;flex-wrap:wrap;gap:12px 22px;align-items:center;background:var(--t-yellow);border:3px solid var(--ink);border-radius:14px;padding:12px 16px}
+.shift .grp{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.shift .k{border:3px solid var(--ink);border-radius:10px;background:var(--panel);padding:2px 12px;font-weight:900;font-size:20px}
+.shift .k.past{background:var(--yellow);font:400 22px/1.3 var(--display);box-shadow:0 3px 0 var(--ink)}
+.shift .arr{font:400 24px/1 var(--display);color:var(--orange)}
+.shift .lbl{font:400 14px/1 var(--display);letter-spacing:.08em;color:var(--muted);flex-basis:100%}
+.chart{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(270px,100%),1fr));gap:14px}
+.gcol{border:3px solid var(--ink);border-radius:14px;overflow:hidden;background:var(--panel-2);display:flex;flex-direction:column;min-width:0;box-shadow:0 4px 0 var(--ink)}
+.gcol h3{font-family:var(--display);font-size:20px;letter-spacing:.06em;color:var(--on-dark);background:var(--h);padding:8px 14px;text-align:center;border-bottom:3px solid var(--ink);-webkit-text-stroke:1.5px var(--ink);paint-order:stroke fill}
+.g{display:grid;grid-template-columns:auto auto minmax(0,1fr);gap:6px 10px;align-items:center;padding:11px 14px;border-bottom:2px dashed var(--muted)}
+.g:last-of-type{border-bottom:none}
+.subj{font-weight:900;color:#5d1fc4;line-height:1.25}
+.be{background:var(--yellow);border:2px solid var(--ink);border-radius:8px;padding:1px 9px;font-weight:900;text-align:center}
+.rest{font-weight:800;min-width:0}
+.gcol .ex{padding:10px 14px 14px;font-size:15px;color:var(--muted);margin-top:auto;border-top:2px solid var(--muted);font-weight:700}
+.gcol .ex b{color:var(--ink)}
+.exs{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.exs li{display:flex;gap:10px;align-items:center;min-width:0;font-weight:700}
+.exs li span{min-width:0}
+.exs b{color:var(--bad-ink)}
+.times{display:flex;flex-wrap:wrap;gap:8px}
+.times span{border:2px solid var(--ink);background:var(--t-blue);border-radius:10px;padding:3px 10px;font-weight:800}
+.times span b{color:var(--bad-ink)}
+
+/* choice gaps */
+.gaps{display:flex;flex-direction:column;gap:8px}
+.gap{display:grid;grid-template-columns:34px minmax(0,1fr);gap:6px 10px;padding:10px 12px;border-radius:12px;background:var(--panel-2);border:3px solid var(--ink)}
+.gap.done{background:var(--ok-bg)}
+.gap .n{display:grid;place-items:center;width:30px;height:30px;border:2px solid var(--ink);border-radius:8px;background:var(--acc,var(--purple));color:var(--ink);font:400 16px/1 var(--display)}
+.gap.done .n{background:var(--green)}
+.gap .s{font-size:19px;font-weight:700;min-width:0}
+.slot{display:inline-block;min-width:4.6em;border-bottom:3px solid var(--ink);text-align:center;color:var(--ok-ink);font-weight:900}
+.gap .opts{grid-column:2;display:flex;flex-wrap:wrap;gap:6px}
+.opt{border:3px solid var(--ink);background:var(--panel);border-radius:10px;padding:3px 12px;font-weight:900;box-shadow:0 3px 0 var(--ink)}
+.opt:hover{background:var(--t-yellow)}
+.gap.done .opts{display:none}
+.mini{display:flex;flex-direction:column;gap:10px;background:var(--t-blue);border:3px solid var(--ink);border-radius:14px;padding:14px}
+
+/* 4 typing dialogue */
+.qa-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(330px,100%),1fr));gap:12px}
+.qa{display:flex;flex-direction:column;gap:6px;border:3px solid var(--ink);border-radius:14px;background:var(--panel-2);padding:12px 14px;min-width:0;box-shadow:0 4px 0 var(--ink)}
+.qa .line{display:flex;flex-wrap:wrap;gap:4px 6px;align-items:baseline;font-size:18px;font-weight:700;min-width:0}
+.qa .who{flex:none;width:26px;height:26px;display:inline-grid;place-items:center;border:2px solid var(--ink);border-radius:7px;font:400 14px/1 var(--display);align-self:center}
+.qa .who.a{background:var(--sky)}
+.qa .who.b{background:var(--orange)}
+.tin{width:5.2em;min-width:0;border:none;border-bottom:3px solid var(--ink);background:var(--t-yellow);border-radius:6px 6px 0 0;padding:2px 6px;font-weight:900;font-size:18px;text-align:center}
+.tin:focus{outline:none;border-bottom-color:var(--sky);background:var(--t-blue)}
+.tin:focus-visible{outline:3px solid var(--sky);outline-offset:2px}
+.tin.right{background:var(--ok-bg);border-bottom-color:var(--ok);color:var(--ok-ink)}
+.tin.wrong{border-bottom-color:var(--bad);background:var(--t-red)}
+.qa .foot{display:flex;justify-content:flex-end}
+.qa .tight{margin-left:-4px}
+
+/* 5 party picture */
+.party-wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:18px;align-items:start}
+.party{background:var(--t-purple);border:3px solid var(--ink);border-radius:14px;padding:16px 14px 0;display:flex;flex-direction:column;align-items:center;gap:6px;overflow:hidden}
+.party-title{font:400 18px/1.2 var(--display);letter-spacing:.04em;text-align:center}
+.party-title small{display:block;font:800 14px/1.4 var(--body);letter-spacing:0;color:var(--muted)}
+.balloons{font-size:34px;line-height:1.1;display:flex;flex-wrap:wrap;justify-content:center;gap:2px}
+.balloons span:nth-child(odd){transform:translateY(8px)}
+.table{width:min(360px,100%);margin-top:6px}
+.table-top{display:flex;flex-wrap:wrap;justify-content:center;align-items:flex-end;gap:2px 6px;font-size:34px;line-height:1}
+.table-top .big{font-size:52px}
+.board{height:14px;background:var(--orange);border:3px solid var(--ink);border-radius:4px}
+.under{display:flex;justify-content:space-between;align-items:flex-end;padding-inline:16px;height:78px}
+.leg{width:14px;height:100%;background:var(--orange);border:3px solid var(--ink);border-top:none}
+.dog{font-size:46px;line-height:1}
+.floor{align-self:stretch;height:14px;background:var(--purple);border-top:3px solid var(--ink);margin-inline:-14px}
+
+/* 6 -ed spelling */
+.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(210px,100%),1fr));gap:12px}
+.rcard{border:3px solid var(--ink);border-radius:14px;background:var(--c);padding:12px 14px;display:flex;flex-direction:column;gap:6px;min-width:0;box-shadow:0 4px 0 var(--ink)}
+.rcard h3{font-size:17px;line-height:1.25;letter-spacing:.02em}
+.rcard p{font-weight:800}
+.rcard p b{color:var(--bad-ink)}
+.rcard .note{font-size:14px;color:var(--muted);font-weight:700}
+.typer{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(210px,100%),1fr));gap:10px}
+.typer label{display:flex;align-items:center;gap:8px;background:var(--panel-2);border:3px solid var(--ink);border-radius:12px;padding:8px 10px;font-weight:900;min-width:0}
+.typer label > span:first-child{min-width:54px}
+.typer input{flex:1;min-width:0;border:none;border-bottom:3px solid var(--ink);padding:3px 2px;font-weight:800;font-size:18px;background:transparent}
+.typer input:focus{outline:none;border-bottom-color:var(--sky)}
+.typer label:focus-within{background:var(--t-blue)}
+.typer label.right{border-color:var(--ok);background:var(--ok-bg)}
+.typer label.wrong{border-color:var(--bad)}
+.typer .fix{color:var(--bad-ink);font-size:14px;font-weight:900}
+
+/* 7 sound sort */
+.pool{display:flex;flex-wrap:wrap;gap:10px;min-height:52px;padding:12px;border:3px dashed var(--muted);border-radius:14px;background:var(--panel-2)}
+.chip{border:3px solid var(--ink);background:var(--c,var(--pop-yellow));color:var(--ink);border-radius:10px;padding:7px 14px;font:900 19px/1.2 var(--body);box-shadow:0 3px 0 var(--ink)}
+.chip.sel{background:var(--panel);outline:4px solid var(--sky);outline-offset:2px;transform:translateY(-4px) rotate(-2deg)}
+.chip.placed{cursor:default;box-shadow:none;font-size:16px;padding:4px 10px;background:var(--panel)}
+.bins{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr));gap:12px}
+.bin{display:flex;flex-direction:column;gap:10px;border:3px solid var(--ink);border-radius:14px;padding:10px;background:var(--c)}
+.bin-drop{display:flex;align-items:baseline;gap:12px;border:3px solid var(--ink);background:var(--panel);border-radius:10px;padding:8px 14px;text-align:left;box-shadow:0 4px 0 var(--ink)}
+.bin-drop:hover{background:var(--yellow)}
+.bin-drop .ipa{font-family:"Nunito","Segoe UI","Arial Unicode MS",sans-serif;font-weight:900;font-size:28px;line-height:1}
+.bin-drop .eg{font-weight:800;color:var(--muted)}
+.bin-words{display:flex;flex-wrap:wrap;gap:6px;min-height:34px}
+.ipa-h{font-family:var(--body);font-weight:900;-webkit-text-stroke:0;text-shadow:none;color:var(--ink)}
+.sound-tip{background:var(--t-yellow);border:3px solid var(--ink);border-radius:14px;padding:10px 14px;font-weight:700}
+.sound-tip b{color:var(--bad-ink)}
+
+/* 8 blog */
+.read-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:18px;align-items:start}
+.blog{background:var(--panel-2);border:3px solid var(--ink);border-radius:14px;overflow:hidden}
+.blog-top{background:var(--green);color:var(--ink);padding:10px 16px;display:flex;justify-content:space-between;gap:6px 10px;flex-wrap:wrap;align-items:center;border-bottom:3px solid var(--ink)}
+.blog-top h3{font-size:19px;letter-spacing:.04em}
+.blog-top span{font-weight:900;font-size:14px}
+.blog-body{padding:14px 18px;display:flex;flex-direction:column;gap:10px;font-weight:600}
+.blog-body .post-title{font:400 22px/1.2 var(--display)}
+.blog-body .by{font-weight:900;color:#5d1fc4;font-size:15px}
+.tf{display:flex;flex-direction:column;gap:8px}
+.tf-item{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 10px;align-items:center;padding:8px 10px;border-radius:12px;border:3px solid var(--ink);background:var(--panel-2);font-weight:700}
+.tf-item.done{background:var(--ok-bg)}
+.tf-item .opts{display:flex;gap:6px}
+.tf-item .opts button{border:3px solid var(--ink);background:var(--yellow);border-radius:10px;width:42px;height:36px;font:400 18px/1 var(--display);padding:0;box-shadow:0 3px 0 var(--ink)}
+.tf-item .opts button:hover{background:var(--orange)}
+.tf-item .why{grid-column:1/3;font-size:14px;color:var(--ok-ink);font-weight:900}
+.timeline{display:flex;flex-direction:column;gap:12px;background:var(--t-blue);border:3px solid var(--ink);border-radius:14px;padding:14px}
+.tl-slots{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(150px,100%),1fr));gap:10px;counter-reset:tl}
+.tl-slot{position:relative;min-height:96px;border:3px dashed var(--muted);border-radius:12px;background:var(--panel);padding:26px 10px 10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;text-align:center;font-weight:800;font-size:15px}
+.tl-slot::before{counter-increment:tl;content:counter(tl);position:absolute;top:6px;left:8px;font:400 16px/1 var(--display);color:var(--muted)}
+.tl-slot.filled{border-style:solid;border-color:var(--ok);background:var(--ok-bg)}
+.tl-slot .em,.tl-card .em{font-size:30px;line-height:1.1}
+.tl-pool{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(170px,100%),1fr));gap:10px}
+.tl-card{display:flex;flex-direction:column;align-items:center;gap:4px;border:3px solid var(--ink);border-radius:12px;background:var(--c);color:var(--ink);padding:10px;font-weight:800;font-size:15px;box-shadow:0 4px 0 var(--ink);text-align:center}
+.comment{display:flex;flex-direction:column;gap:6px}
+.comment label{font-weight:900}
+.comment textarea{width:100%;min-height:100px;border:3px solid var(--ink);border-radius:12px;padding:10px;resize:vertical;background:var(--panel-2);font-weight:600}
+
+/* 9 builder */
+.builder{display:flex;flex-direction:column;gap:12px;background:var(--t-purple);border:3px solid var(--ink);border-radius:14px;padding:14px}
+.answer-line{display:flex;align-items:flex-end;gap:6px;border:3px dashed #5d1fc4;border-radius:12px;padding:8px;min-height:60px;background:var(--panel)}
+.answer-line.right{border-style:solid;border-color:var(--ok);background:var(--ok-bg)}
+.answer{display:flex;flex-wrap:wrap;gap:8px;align-items:center;flex:1;min-width:0;min-height:42px}
+.end-p{font:400 32px/1 var(--display);color:#5d1fc4}
+.words-pool{display:flex;flex-wrap:wrap;gap:8px;min-height:46px}
+.wchip{border:3px solid var(--ink);padding:7px 14px;font:900 19px/1.2 var(--body);border-radius:10px;background:var(--c);color:var(--ink);box-shadow:0 3px 0 var(--ink)}
+
+/* 10 match replay */
+.replay{background:var(--screen);color:var(--on-dark);border:3px solid var(--ink);border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:12px}
+.score{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px}
+.team{border:3px solid var(--ink);border-radius:12px;padding:6px 10px;font:400 18px/1.1 var(--display);text-align:center;letter-spacing:.03em}
+.team.blue{background:var(--sky);color:var(--ink)}
+.team.red{background:var(--red);color:var(--on-dark)}
+.team small{display:block;font:800 13px/1.2 var(--body)}
+.final{background:var(--yellow);color:var(--ink);border:3px solid var(--ink);border-radius:8px;padding:3px 10px;font:400 15px/1 var(--display);letter-spacing:.08em}
+.comms{display:flex;flex-direction:column;gap:10px}
+.comm{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px 12px;align-items:center;background:var(--panel);color:var(--ink);border:3px solid var(--ink);border-radius:12px;padding:10px 12px}
+.comm .em{font-size:34px;line-height:1;grid-row:span 2}
+.comm .s{font-weight:900;font-size:19px;min-width:0}
+.comm .opts{display:flex;flex-wrap:wrap;gap:6px}
+.comm .opts button{border:3px solid var(--ink);background:var(--yellow);border-radius:10px;padding:3px 12px;font-weight:900;box-shadow:0 3px 0 var(--ink)}
+.comm .opts button:hover{background:var(--orange)}
+.comm.done{background:var(--ok-bg)}
+.comm.done .opts{display:none}
+
+/* 11 mystery game */
+.game{background:var(--screen);color:var(--on-dark);border:3px solid var(--ink);border-radius:16px;padding:clamp(14px,3vw,24px);display:flex;flex-direction:column;gap:14px}
+.mystery{font:400 clamp(20px,3.6vw,30px)/1.2 var(--display);color:var(--yellow);-webkit-text-stroke:1.5px var(--ink);paint-order:stroke fill}
+.game .hint{color:var(--on-dark-dim)}
+.places{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(142px,100%),1fr));gap:10px}
+.place{display:flex;flex-direction:column;align-items:center;gap:4px;border:3px solid var(--ink);background:var(--screen-2);color:var(--on-dark);border-radius:12px;padding:10px 6px;font-weight:800;font-size:15px;text-align:center;box-shadow:0 4px 0 var(--ink)}
+.place:hover{background:var(--screen-line)}
+.place .em{font-size:30px;line-height:1.1}
+.place.no{opacity:.4;cursor:default;text-decoration:line-through}
+.place.no:hover{background:var(--screen-2)}
+.place.yes{background:var(--green);color:var(--ink);cursor:default}
+.log{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px;min-height:1.5em}
+.log li{font-weight:800}
+.log .q{color:var(--sky)}
+.log .a{color:var(--on-dark)}
+.log .a.win{color:var(--green)}
+.game .status{color:var(--green)}
+.talk{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(210px,100%),1fr));gap:10px}
+.tcard{min-height:112px;border:3px solid var(--ink);border-radius:14px;background:var(--c);color:var(--ink);padding:12px;display:grid;place-items:center;text-align:center;font-weight:900;font-size:17px;box-shadow:0 5px 0 var(--ink)}
+.tcard .num{font:400 38px/1 var(--display);color:var(--on-dark);-webkit-text-stroke:2px var(--ink);paint-order:stroke fill}
+
+.hw ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px;font-weight:700}
+.hw a{color:#5d1fc4;font-weight:900}
+
+/* trophy counter + toast */
+.trophies{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:10;display:flex;align-items:center;gap:8px;background:var(--night);color:var(--yellow);border:3px solid var(--ink);border-radius:14px;padding:8px 16px 8px 12px;font:400 24px/1 var(--display);box-shadow:0 5px 0 var(--ink);outline:2px solid var(--yellow);outline-offset:-6px}
+.toast{position:fixed;left:50%;top:calc(18px + env(safe-area-inset-top,0px));transform:translateX(-50%);z-index:11;background:var(--yellow);color:var(--ink);border:4px solid var(--ink);border-radius:16px;padding:10px 22px;font:400 clamp(22px,4vw,32px)/1.1 var(--display);box-shadow:0 6px 0 var(--ink);text-align:center;max-width:calc(100% - 32px)}
+.toast small{display:block;font:900 14px/1.3 var(--body)}
+
+/* teacher-only parts: every one sits between a pair of T comment markers, which scripts/student-site.sh cuts out of the student copy */
+.scroll{overflow-x:auto}
+.tstrip{display:flex;flex-wrap:wrap;align-items:center;gap:8px 18px;background:rgba(0,0,0,.35);border:3px dashed var(--yellow);border-radius:14px;padding:10px 14px}
+.tbadge{background:var(--yellow);color:var(--ink);border:3px solid var(--ink);border-radius:8px;padding:2px 12px;font:400 15px/1.3 var(--display);letter-spacing:.06em}
+.tfacts{display:flex;flex-wrap:wrap;gap:4px 18px;margin:0;font-size:14.5px;font-weight:700;color:var(--on-dark-dim)}
+.tfacts div{display:flex;gap:6px}
+.tfacts dt{color:var(--on-dark);font-weight:900}
+.tfacts dd{margin:0}
+.plan table{border-collapse:collapse;width:100%;min-width:480px;margin-top:10px;font-size:15px}
+.plan th,.plan td{text-align:left;vertical-align:top;padding:6px 12px 6px 0;border-top:2px solid rgba(255,255,255,.18)}
+.plan th{border-top:0;font:400 13px/1.2 var(--display);letter-spacing:.08em;color:var(--yellow)}
+.plan td:first-child{white-space:nowrap;font-variant-numeric:tabular-nums;color:var(--on-dark-dim)}
+.plan td:nth-child(2){font-weight:900;white-space:nowrap}
+.tnote{background:var(--t-yellow);color:var(--ink);border:3px dashed var(--ink);border-radius:14px;padding:10px 14px;font-size:15px;font-weight:700;line-height:1.45;display:flex;flex-direction:column;gap:6px}
+.tnote > b:first-child{font:400 14px/1.2 var(--display);letter-spacing:.08em}
+.key{display:inline-block;justify-self:start;align-self:flex-start;margin:0;font-size:14px;font-weight:800;line-height:1.4;background:var(--t-yellow);color:var(--ink);border:2px dashed var(--ink);border-radius:8px;padding:1px 8px}
+.gap .key,.comm .key{grid-column:2}
+.tf-item .key{grid-column:1/3}
+footer.fin{color:var(--on-dark-dim);font-size:14.5px;font-weight:700;border-top:3px dashed var(--on-dark-dim);padding-top:14px}
+/* lesson notes (teacher's page only): a quick strip under every section and a notes block at the bottom */
+.tn{border:3px dashed var(--ink);background:var(--t-yellow);color:var(--ink);border-radius:14px;padding:10px 14px 12px;display:flex;flex-direction:column;gap:8px;font-size:14.5px;font-weight:700}
+.tn-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.tn-lab{font:400 13px/1.2 var(--display);letter-spacing:.08em;min-width:9.5em}
+.tn-chip{border:2px solid var(--ink);background:var(--panel);color:var(--ink);border-radius:999px;padding:3px 12px;font-size:14.5px;font-weight:800;line-height:1.3}
+.tn-chip:hover{background:var(--t-blue)}
+.tn-chip[aria-pressed="true"]{background:var(--purple);color:var(--on-dark)}
+.tn-text{width:100%;border:2px solid var(--ink);border-radius:8px;background:var(--panel);color:var(--ink);padding:5px 10px;font-size:15px;font-weight:700}
+.tn-final{background:var(--panel);color:var(--ink);border:4px dashed var(--ink);border-radius:20px;padding:clamp(14px,3vw,26px);display:flex;flex-direction:column;gap:16px;scroll-margin-top:104px;min-width:0}
+.tn-final h2{font-family:var(--display);font-size:clamp(24px,4.4vw,36px);line-height:1.05}
+.tn-field{display:flex;flex-direction:column;gap:6px}
+.tn-field label{font-weight:900}
+.tn-field textarea,.tn-out{width:100%;min-height:120px;border:3px solid var(--ink);border-radius:12px;background:var(--panel-2);color:var(--ink);padding:10px;font-weight:600;resize:vertical}
+.tn-out{font:14px/1.45 ui-monospace,Menlo,monospace}
+.tn-sum table{border-collapse:collapse;width:100%;min-width:480px;font-size:15px}
+.tn-sum th,.tn-sum td{text-align:left;vertical-align:top;padding:6px 10px 6px 0;border-top:2px solid var(--panel-2)}
+.tn-sum th{border-top:0;font:400 13px/1.2 var(--display);letter-spacing:.08em;color:var(--muted)}
+.tn-status{font-size:14.5px;color:var(--muted);font-weight:700}
+/* lesson timer (teacher's page only) */
+.tmr{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;margin-top:-20px;margin-bottom:-8px;background:var(--night);border:3px solid var(--ink);border-top:0;border-radius:0 0 14px 14px;padding:8px 12px 10px;display:flex;flex-direction:column;gap:8px;box-shadow:0 6px 0 rgba(0,0,0,.35)}
+.tm-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;min-width:0}
+.tm-go{flex:none;border:3px solid var(--ink);border-radius:10px;background:var(--yellow);color:var(--ink);font:400 16px/1.2 var(--display);padding:4px 14px;min-width:5.8em}
+.tm-clock{flex:none;font:400 20px/1 var(--display);font-variant-numeric:tabular-nums;color:var(--on-dark)}
+.tm-clock small{font:800 13px/1 var(--body);color:var(--on-dark-dim)}
+.tm-clock.over{color:var(--red)}
+.tm-now{flex:1;min-width:0;font-size:14.5px;font-weight:800;color:var(--on-dark-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tm-reset{flex:none;border:2px solid var(--on-dark-dim);background:none;color:var(--on-dark);border-radius:10px;padding:3px 10px;font-weight:800;font-size:14px}
+.tm-bar{display:flex;gap:3px;height:24px}
+.tm-seg{position:relative;flex-basis:0;min-width:0;border-radius:6px;overflow:hidden;background:color-mix(in srgb,var(--c) 45%,#fff);color:var(--ink);text-decoration:none;font:900 12px/24px var(--body);text-align:center}
+.tm-seg i{position:absolute;inset:0 auto 0 0;width:0;background:var(--c)}
+.tm-seg b{position:relative}
+.tm-seg.now{outline:2px solid #fff;outline-offset:1px}
+[data-view="student"] .stage{scroll-margin-top:104px}
+main.page:has(#tmr) ~ .toast{top:calc(100px + env(safe-area-inset-top,0px))}
+@media (max-width:520px){ .tm-now{display:none} .tm-row{justify-content:space-between} }
+
+@media (max-width:760px){ .read-grid,.party-wrap{grid-template-columns:minmax(0,1fr)} }
+@media (max-width:520px){ body{font-size:16px} .gap .s,.comm .s{font-size:17px} .qa .line{font-size:17px} .title-card h1{transform:none} }
+@media (prefers-reduced-motion:reduce){ .shake,.pop{animation:none} .chip.sel,.qopt:hover{transform:none} .btn,.bar i{transition:none} .btn:active{transform:none} }
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-say" viewBox="0 0 24 24"><path fill="currentColor" d="M3 9v6h4l5 4V5L7 9H3z"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></symbol>
+</svg>
+
+<main class="wrap page" data-view="student">
+
+
+
+  <header class="lobby">
+    <div class="topbar">
+      <div class="player"><span class="avatar" aria-hidden="true">A</span><div><div class="name outline">ARON</div><div class="lvl-txt">Season: Past Simple</div></div></div>
+      <div class="rank"><span aria-hidden="true">🏆</span><span class="tier outline" id="rank-name">BRONZE</span></div>
+    </div>
+    <div class="title-card">
+      <span class="mode">NEW SEASON</span>
+      <h1 class="outline">Where <span>were</span> you?</h1>
+      <div class="tags">
+        <span class="tag">past simple, part 1</span>
+        <span class="tag">was / were</span>
+        <span class="tag">there was / there were</span>
+        <span class="tag">-ed verbs</span>
+        <span class="tag">match replay</span>
+      </div>
+    </div>
+    <div class="road" aria-label="Trophy road">
+      <div class="road-top"><span>Trophy road</span><span><b id="road-count">0</b> trophies · next: <b id="road-next">SILVER at 10</b></span></div>
+      <div class="bar"><i id="road-bar"></i></div>
+      <div class="tiers" id="tiers"></div>
+    </div>
+    <nav class="levels" aria-label="Lesson events">
+      <a href="#warm"><b>1</b>Warm-up</a><a href="#rule"><b>2</b>was / were</a><a href="#waswere"><b>3</b>Choose</a><a href="#ask"><b>4</b>Ask &amp; answer</a><a href="#there"><b>5</b>The party</a><a href="#spell"><b>6</b>-ed spelling</a><a href="#sounds"><b>7</b>-ed sounds</a><a href="#blog"><b>8</b>Rosie's blog</a><a href="#build"><b>9</b>Questions</a><a href="#replay"><b>10</b>Match replay</a><a href="#game"><b>11</b>Mystery game</a>
+    </nav>
+  </header>
+
+
+  <div class="stages">
+
+    <section class="stage" id="warm" data-title="Warm-up: now or usually?" style="--acc:var(--red-d)">
+      <div class="stage-head"><span class="lvl">1</span><div class="head-txt">
+        <p class="eyebrow">EVENT 1 · WARM-UP DUEL</p>
+        <h2>Now or usually?</h2>
+        <p class="hint">Last lesson: present simple or present continuous? Look for the time words.</p>
+      </div></div>
+      <div class="quiz">
+        <div class="quiz-top"><span class="quiz-count" id="wq-count">Q 1 / 6</span><span class="dots" id="wq-dots" aria-hidden="true"></span></div>
+        <p class="quiz-q" id="wq-q" aria-live="polite"></p>
+        <div class="quiz-opts" id="wq-opts"></div>
+        <p class="quiz-msg" id="wq-msg" aria-live="polite"></p>
+        <div class="row"><button class="btn" type="button" id="wq-next" hidden>Next</button><button class="btn" type="button" id="wq-again" hidden>Play again</button></div>
+      </div>
+    </section>
+
+    <section class="stage" id="rule" data-title="was and were" style="--acc:var(--aqua-d)">
+      <div class="stage-head"><span class="lvl">2</span><div class="head-txt">
+        <p class="eyebrow">EVENT 2 · TRAINING CAVE</p>
+        <h2>Yesterday: was and were</h2>
+        <p class="hint">The past of <b>am / is / are</b>. Listen to the examples.</p>
+      </div></div>
+      <div class="shift">
+        <span class="lbl">Now → yesterday</span>
+        <span class="grp"><span class="k">am</span><span class="k">is</span><span class="arr">→</span><span class="k past">was</span></span>
+        <span class="grp"><span class="k">are</span><span class="arr">→</span><span class="k past">were</span></span>
+      </div>
+      <div class="chart">
+        <div class="gcol" style="--h:var(--aqua-d)">
+          <h3>Positive</h3>
+          <div class="g"><span class="subj">I<br>He / She / It</span><span class="be">was</span><span class="rest">at home.</span></div>
+          <div class="g"><span class="subj">You<br>We / They</span><span class="be">were</span><span class="rest">at home.</span></div>
+          <p class="ex">Example: <b>Rosie was</b> at the pool.</p>
+        </div>
+        <div class="gcol" style="--h:var(--red-d)">
+          <h3>Negative</h3>
+          <div class="g"><span class="subj">I<br>He / She / It</span><span class="be">wasn't</span><span class="rest">at school.</span></div>
+          <div class="g"><span class="subj">You<br>We / They</span><span class="be">weren't</span><span class="rest">at school.</span></div>
+          <p class="ex">wasn't = was not · weren't = were not</p>
+        </div>
+        <div class="gcol" style="--h:var(--blue-d)">
+          <h3>Questions</h3>
+          <div class="g"><span class="be">Was</span><span class="subj">I / he<br>she / it</span><span class="rest">late?</span></div>
+          <div class="g"><span class="be">Were</span><span class="subj">you / we<br>they</span><span class="rest">late?</span></div>
+          <p class="ex"><b>Yes, I was. / No, I wasn't.</b><br><b>Yes, they were. / No, they weren't.</b></p>
+        </div>
+      </div>
+      <ul class="exs" id="rule-ex">
+        <li><button class="say" type="button" aria-label="Listen"><svg><use href="#i-say"/></svg></button><span>Today I'm at home. Yesterday I <b>was</b> at school.</span></li>
+        <li><button class="say" type="button" aria-label="Listen"><svg><use href="#i-say"/></svg></button><span>Dan is happy today. Last night he <b>wasn't</b> happy.</span></li>
+        <li><button class="say" type="button" aria-label="Listen"><svg><use href="#i-say"/></svg></button><span>Sara and Fatima are at the shopping centre now. Two days ago they <b>were</b> at the cinema.</span></li>
+        <li><button class="say" type="button" aria-label="Listen"><svg><use href="#i-say"/></svg></button><span><b>Were</b> you at the park last weekend? Yes, I <b>was</b>.</span></li>
+      </ul>
+      <div class="times" aria-label="Past time words">
+        <span><b>yesterday</b></span><span><b>yesterday</b> morning</span><span><b>last</b> night</span><span><b>last</b> weekend</span><span><b>last</b> Saturday</span><span>two days <b>ago</b></span><span>an hour <b>ago</b></span><span><b>in</b> 2020</span>
+      </div>
+      <div class="mini">
+        <h3>Time words: ago, last, in or yesterday?</h3>
+        <div class="gaps" id="time-gaps"></div>
+        <div class="row"><button class="btn" type="button" id="time-again">Again</button></div>
+      </div>
+    </section>
+
+    <section class="stage" id="waswere" data-title="was or were?" style="--acc:var(--orange-d)">
+      <div class="stage-head"><span class="lvl">3</span><div class="head-txt">
+        <p class="eyebrow">EVENT 3 · GEM GRAB</p>
+        <h2>was or were?</h2>
+        <p class="hint">Click the right word. Read the whole sentence first!</p>
+      </div></div>
+      <div class="gaps" id="ww-gaps"></div>
+      <div class="row"><button class="btn" type="button" id="ww-again">Again</button></div>
+    </section>
+
+    <section class="stage" id="ask" data-title="Ask and answer" style="--acc:var(--blue-d)">
+      <div class="stage-head"><span class="lvl">4</span><div class="head-txt">
+        <p class="eyebrow">EVENT 4 · TEAM CHAT</p>
+        <h2>Ask and answer</h2>
+        <p class="hint">Questions start with <b>Was</b> or <b>Were</b>. Answers use <b>was, were, wasn't</b> or <b>weren't</b>. Press Enter to check (green means right) and go to the next box.</p>
+      </div></div>
+      <div class="qa-list" id="qa-list"></div>
+      <div class="row"><button class="btn go" type="button" id="qa-check">Check all</button><button class="btn" type="button" id="qa-show">Show answers</button><button class="btn" type="button" id="qa-clear">Clear</button><span class="status" id="qa-score" aria-live="polite"></span></div>
+    </section>
+
+    <section class="stage" id="there" data-title="Nora's party: there was / there were" style="--acc:var(--purple-d)">
+      <div class="stage-head"><span class="lvl">5</span><div class="head-txt">
+        <p class="eyebrow">EVENT 5 · PARTY MAP</p>
+        <h2>Nora's party</h2>
+        <p class="hint">Look at the picture. <b>There was</b> + one thing, <b>there were</b> + more things. Use <b>any</b> in negatives and questions with more things.</p>
+      </div></div>
+      <div class="party-wrap">
+        <div class="party" role="img" aria-label="Nora's birthday party: six balloons, a big birthday cake, three pizzas and four presents on the table, and a dog under the table.">
+          <p class="party-title">Nora's birthday party<small>last Sunday</small></p>
+          <div class="balloons" aria-hidden="true"><span>🎈</span><span>🎈</span><span>🎈</span><span>🎈</span><span>🎈</span><span>🎈</span></div>
+          <div class="table" aria-hidden="true">
+            <div class="table-top"><span>🍕</span><span>🎁</span><span class="big">🎂</span><span>🍕</span><span>🎁</span><span>🍕</span><span>🎁</span><span>🎁</span></div>
+            <div class="board"></div>
+            <div class="under"><span class="leg"></span><span class="dog">🐕</span><span class="leg"></span></div>
+          </div>
+          <div class="floor" aria-hidden="true"></div>
+        </div>
+        <div class="gaps" id="there-gaps"></div>
+      </div>
+      <div class="row"><button class="btn" type="button" id="there-again">Again</button></div>
+    </section>
+
+    <section class="stage" id="spell" data-title="-ed spelling" style="--acc:var(--green-d)">
+      <div class="stage-head"><span class="lvl">6</span><div class="head-txt">
+        <p class="eyebrow">EVENT 6 · POWER CUBES</p>
+        <h2>-ed spelling</h2>
+        <p class="hint">Regular verbs in the past: add <b>-ed</b>. But watch these four rules!</p>
+      </div></div>
+      <div class="rules">
+        <div class="rcard" style="--c:var(--t-yellow)"><h3>Most verbs: + ed</h3><p>play → play<b>ed</b><br>watch → watch<b>ed</b></p></div>
+        <div class="rcard" style="--c:var(--t-blue)"><h3>Ends in -e: + d</h3><p>live → live<b>d</b><br>dance → dance<b>d</b></p></div>
+        <div class="rcard" style="--c:var(--t-red)"><h3>Consonant + y: -ied</h3><p>study → stud<b>ied</b><br>try → tr<b>ied</b></p><p class="note">But vowel + y: stay → stay<b>ed</b></p></div>
+        <div class="rcard" style="--c:var(--t-purple)"><h3>One syllable, one vowel + one consonant: double it</h3><p>stop → sto<b>pped</b><br>chat → cha<b>tted</b></p><p class="note">But two vowels: clean → clean<b>ed</b>. Never double w or y: show → show<b>ed</b></p></div>
+      </div>
+      <div class="typer" id="ed-list"></div>
+      <div class="row"><button class="btn go" type="button" id="ed-check">Check all</button><button class="btn" type="button" id="ed-show">Show answers</button><button class="btn" type="button" id="ed-clear">Clear</button><span class="status" id="ed-score" aria-live="polite"></span></div>
+    </section>
+
+    <section class="stage" id="sounds" data-title="-ed sounds" style="--acc:var(--yellow-d)">
+      <div class="stage-head"><span class="lvl">7</span><div class="head-txt">
+        <p class="eyebrow">EVENT 7 · SOUND CHECK</p>
+        <h2>-ed sounds: <span class="ipa-h">/t/, /d/ or /ɪd/</span>?</h2>
+        <p class="hint">Click a word (you'll hear it), say it, then click the right box.</p>
+      </div></div>
+      <p class="sound-tip">Only after a <b>t</b> or <b>d</b> sound do we say an extra syllable: want<b>ed</b> /ɪd/, need<b>ed</b> /ɪd/. Everything else stays short: watch<b>ed</b> /t/, play<b>ed</b> /d/. After p, k, s, sh, ch and f sounds we say /t/: stop<b>ped</b>, walk<b>ed</b>, danc<b>ed</b>, wash<b>ed</b>. After other sounds we say /d/: liv<b>ed</b>, play<b>ed</b>, stud<b>ied</b>. Put your hand on your throat: /d/ buzzes, /t/ doesn't.</p>
+      <div class="pool" id="snd-pool"></div>
+      <div class="bins">
+        <div class="bin" style="--c:var(--t-yellow)"><button class="bin-drop" type="button" data-k="t"><span class="ipa">/t/</span><span class="eg">watched</span></button><div class="bin-words" id="bin-t"></div></div>
+        <div class="bin" style="--c:var(--t-blue)"><button class="bin-drop" type="button" data-k="d"><span class="ipa">/d/</span><span class="eg">played</span></button><div class="bin-words" id="bin-d"></div></div>
+        <div class="bin" style="--c:var(--t-red)"><button class="bin-drop" type="button" data-k="id"><span class="ipa">/ɪd/</span><span class="eg">wanted</span></button><div class="bin-words" id="bin-id"></div></div>
+      </div>
+      <div class="row"><button class="btn" type="button" id="snd-again">Again</button><span class="status" id="snd-status" aria-live="polite"></span></div>
+    </section>
+
+    <section class="stage" id="blog" data-title="Rosie's crazy Saturday" style="--acc:var(--aqua-d)">
+      <div class="stage-head"><span class="lvl">8</span><div class="head-txt">
+        <p class="eyebrow">EVENT 8 · READING</p>
+        <h2>Rosie's crazy Saturday</h2>
+        <p class="hint">A new post on Rosie's blog. Read it, answer true or false, then put her day in order.</p>
+      </div></div>
+      <div class="read-grid">
+        <article class="blog">
+          <div class="blog-top"><h3>Thoughts for today</h3><span>Sunday, 9.15 am</span></div>
+          <div class="blog-body">
+            <p class="post-title">My crazy Saturday</p>
+            <p class="by">by Rosie Wilson</p>
+            <p class="bp">Hi everyone! Yesterday was Saturday, and it was a crazy day. Remember last week? The pool was closed. Well, yesterday it was open again, so I was there at six o'clock. I trained for an hour. Then it started to rain, and I walked home in the rain. I was so wet!</p>
+            <p class="bp">Dan was at home all morning. His computer was OK again, so he played computer games for four hours. Mum wasn't very happy about that!</p>
+            <p class="bp">In the afternoon we visited our grandparents. Grandma baked a chocolate cake, and Grandpa showed us some funny old photos of Dad. Nora danced in the living room, and we all laughed a lot.</p>
+            <p class="bp">Sara and Fatima weren't with me. They were at the cinema in town. They watched a scary film and posted about twenty selfies. Typical!</p>
+            <p class="bp">In the evening I was really tired, so I stayed at home and watched TV with Dad. I was asleep at nine o'clock!</p>
+            <p class="bp">Where were you last Saturday? Tell me in the comments!</p>
+            <div class="row"><button class="say" type="button" id="blog-say" aria-label="Listen to the blog post"><svg><use href="#i-say"/></svg></button><span class="hint">Listen</span></div>
+          </div>
+        </article>
+        <div class="tf" id="tf"></div>
+      </div>
+      <div class="timeline">
+        <h3>Put Rosie's day in order</h3>
+        <p class="hint">Click what happened first, then second, and so on.</p>
+        <div class="tl-slots" id="tl-slots"></div>
+        <div class="tl-pool" id="tl-pool"></div>
+        <div class="row"><button class="btn" type="button" id="tl-again">Again</button><span class="status" id="tl-status" aria-live="polite"></span></div>
+      </div>
+      <div class="comment">
+        <label for="comment-box">Write a comment for Rosie: where were you last Saturday? Use was / were and two -ed verbs.</label>
+        <textarea id="comment-box" placeholder="Hi Rosie! Last Saturday I was … In the afternoon I played …"></textarea>
+      </div>
+    </section>
+
+    <section class="stage" id="build" data-title="Build the sentence" style="--acc:var(--purple-d)">
+      <div class="stage-head"><span class="lvl">9</span><div class="head-txt">
+        <p class="eyebrow">EVENT 9 · BUILD</p>
+        <h2>Build the sentence</h2>
+        <p class="hint">Put the words in order. Click a word in the line to send it back.</p>
+      </div></div>
+      <div class="builder">
+        <div class="row"><span class="status" id="build-count"></span><button class="say" type="button" id="build-say" aria-label="Listen to the sentence"><svg><use href="#i-say"/></svg></button></div>
+        <div class="answer-line" id="build-line"><div class="answer" id="build-answer" aria-live="polite"></div><span class="end-p" id="build-end" aria-hidden="true">?</span></div>
+        <div class="words-pool" id="build-pool"></div>
+        <div class="row"><button class="btn go" id="build-next" type="button" hidden>Next sentence</button><button class="btn" id="build-reset" type="button">Start again</button></div>
+      </div>
+    </section>
+
+    <section class="stage" id="replay" data-title="Yesterday's match" style="--acc:var(--red-d)">
+      <div class="stage-head"><span class="lvl">10</span><div class="head-txt">
+        <p class="eyebrow">EVENT 10 · MATCH REPLAY</p>
+        <h2>Yesterday's match</h2>
+        <p class="hint">The match is over, so we talk about it in the <b>past</b>. Choose the right words, then read the whole replay out loud.</p>
+      </div></div>
+      <div class="replay">
+        <div class="score">
+          <div class="team blue">BLUE TEAM<small>10 gems</small></div>
+          <span class="final">FINAL</span>
+          <div class="team red">RED TEAM<small>7 gems</small></div>
+        </div>
+        <div class="comms" id="replay-list"></div>
+      </div>
+      <p class="hint">Your turn: tell Alena about the last match you played. “Yesterday I played … My team was … I collected … We won / We were …”</p>
+    </section>
+
+    <section class="stage" id="game" data-title="Mystery and talk cards" style="--acc:var(--red-d)">
+      <div class="stage-head"><span class="lvl">11</span><div class="head-txt">
+        <p class="eyebrow">EVENT 11 · MYSTERY</p>
+        <h2>Mystery: where were they?</h2>
+        <p class="hint">Ask the question out loud, then click a place to check. Find the place in three questions for two trophies!</p>
+      </div></div>
+      <div class="game">
+        <p class="mystery" id="gm-q"></p>
+        <p class="hint" id="gm-hint"></p>
+        <div class="places" id="gm-places"></div>
+        <ul class="log" id="gm-log" aria-live="polite"></ul>
+        <div class="row"><button class="btn" type="button" id="gm-new">New mystery</button><span class="status" id="gm-status"></span></div>
+      </div>
+      <h3>Your turn: talk cards</h3>
+      <p class="hint">Click a card to see the question. Answer in full sentences: "I was …", "I wasn't …".</p>
+      <div class="talk" id="talk"></div>
+    </section>
+
+    <section class="stage hw" id="homework" data-title="Homework" style="--acc:var(--ink2)">
+      <div class="stage-head"><span class="lvl">+</span><div class="head-txt">
+        <p class="eyebrow">BONUS</p>
+        <h2>Homework</h2>
+      </div></div>
+      <ul>
+        <li>Write 6 sentences about last weekend. Use <b>was, were, wasn't</b> and <b>weren't</b>.</li>
+        <li>Write a short blog post like Rosie's: "Last Saturday" (50 to 60 words). Use <b>there was / there were</b> once and five <b>-ed</b> verbs.</li>
+        <li>Say these verbs aloud and write /t/, /d/ or /ɪd/: cooked, opened, painted, jumped, smiled, ended.</li>
+        <li>Video: <a href="https://www.youtube.com/results?search_query=was+were+for+kids" target="_blank" rel="noopener">was / were for kids (YouTube search)</a> and <a href="https://www.youtube.com/results?search_query=ed+pronunciation+t+d+id+for+kids" target="_blank" rel="noopener">-ed pronunciation (YouTube search)</a></li>
+      </ul>
+    </section>
+  </div>
+
+</main>
+
+<div class="trophies" id="trophybox" aria-live="polite"><span aria-hidden="true">🏆</span><span id="trophies">0</span><span class="vh">trophies</span></div>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script>
+(function(){
+  const $ = (s, r = document) => r.querySelector(s);
+  // the teacher's page shows the answers; scripts/student-site.sh turns data-view into "student"
+  const TEACHER = (($('main.page') || document.body).getAttribute('data-view')) === 'teacher';
+  const COLORS = ['var(--pop-yellow)', 'var(--pop-blue)', 'var(--pop-purple)', 'var(--pop-orange)', 'var(--pop-aqua)', 'var(--pop-green)'];
+
+  function shuffle(a){ a = [...a]; for (let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+  function el(tag, props = {}, ...kids){
+    const e = document.createElement(tag);
+    for (const [k, v] of Object.entries(props)){
+      if (k === 'class') e.className = v;
+      else if (k === 'text') e.textContent = v;
+      else e.setAttribute(k, v);
+    }
+    for (const k of kids) if (k != null) e.append(k);
+    return e;
+  }
+  function nope(e){ e.classList.remove('shake'); void e.offsetWidth; e.classList.add('shake'); clearTimeout(e._nt); e._nt = setTimeout(() => e.classList.remove('shake'), 450); }
+  function norm(v){ return String(v).trim().toLowerCase().replace(/[‘’`]/g, "'").replace(/\s+/g, ' '); }
+  function plain(t){ return t.replace(/[“”]/g, '').replace(/\s+/g, ' ').trim(); }
+  function sayBtn(label){ const b = el('button', {class: 'say', type: 'button', 'aria-label': label}); b.innerHTML = '<svg><use href="#i-say"/></svg>'; return b; }
+
+  // lesson timer: one coloured segment per section, as long as that section's minutes
+  if (TEACHER && $('#tmr')) (function(){
+    const box = $('#tmr'), go = $('#tm-go'), clock = $('#tm-clock'), now = $('#tm-now'), bar = $('#tm-bar');
+    const COLORS = ['#ff3b4e', '#1fd1b8', '#ff8a1f', '#38c6ff', '#8a3ffc', '#4fd93a', '#ffd23f', '#ff4fa3'];
+    const KEY = 'lesson-timer:' + document.title;
+    const fmt = s => Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0');
+    let from = 0;
+    const segs = box.dataset.segs.split(',').map((part, i) => {
+      const bits = part.split(':'), sec = document.getElementById(bits[0]), len = (+bits[1] || 1) * 60;
+      const a = document.createElement('a'), fill = document.createElement('i'), num = document.createElement('b');
+      const title = (sec && sec.dataset.title) || bits[0];
+      a.className = 'tm-seg'; a.href = '#' + bits[0];
+      a.style.flexGrow = len; a.style.setProperty('--c', COLORS[i % COLORS.length]);
+      a.title = (i + 1) + '. ' + title + ' · ' + (len / 60) + ' min';
+      a.setAttribute('aria-label', a.title);
+      num.textContent = i + 1;
+      a.append(fill, num); bar.append(a);
+      const seg = {a, fill, title, n: i + 1, from, len};
+      from += len;
+      return seg;
+    });
+    const total = from;
+    let base = 0, t0 = null, tick = null;
+    try {
+      const saved = JSON.parse(localStorage.getItem(KEY) || 'null');
+      if (saved && (!saved.t0 || (Date.now() - saved.t0) / 1000 + saved.base < total + 1800)) { base = +saved.base || 0; t0 = saved.t0 || null; }
+    } catch (e) {}
+    const save = () => { try { localStorage.setItem(KEY, JSON.stringify({base, t0})); } catch (e) {} };
+    const elapsed = () => base + (t0 ? (Date.now() - t0) / 1000 : 0);
+    function render(){
+      const s = elapsed();
+      clock.innerHTML = '';
+      const small = document.createElement('small');
+      small.textContent = ' / ' + fmt(total);
+      clock.append(fmt(s), small);
+      clock.classList.toggle('over', s >= total);
+      let cur = null;
+      segs.forEach(g => {
+        const done = Math.max(0, Math.min(1, (s - g.from) / g.len));
+        g.fill.style.width = (done * 100) + '%';
+        const on = s >= g.from && s < g.from + g.len && (t0 || s > 0);
+        g.a.classList.toggle('now', !!on);
+        if (on) cur = g;
+      });
+      now.textContent = cur ? cur.n + '. ' + cur.title + ' · ' + fmt(cur.from + cur.len - s + 0.999) + ' left'
+        : s >= total ? 'Time is up · ' + fmt(s - total) + ' over' : segs.length + ' sections';
+      go.textContent = t0 ? 'Pause' : s > 0 ? 'Continue' : 'Start';
+    }
+    function run(){ clearInterval(tick); if (t0) tick = setInterval(render, 500); render(); }
+    go.addEventListener('click', () => {
+      if (t0) { base = elapsed(); t0 = null; } else { t0 = Date.now(); }
+      save(); run();
+    });
+    $('#tm-reset').addEventListener('click', () => { base = 0; t0 = null; save(); run(); });
+    run();
+  })();
+  
+  // lesson notes: a quick strip under every section, a notes block at the bottom, saved as one file
+  if (TEACHER && $('#tmr') && $('#tmr').dataset.notes) (function(){
+    const where = $('#tmr').dataset.notes.split('/');           // student / lesson folder
+    const FILE = where.join('-') + '-notes.md';
+    const KEY = 'lesson-notes:' + where.join('/');
+    const MARKS = ['Easy', 'OK', 'Hard', 'Skipped'];
+    const TAGS = ['Grammar', 'Words', 'Pronunciation', 'Speaking', 'Understanding', 'Too slow'];
+    const HW = ['Done', 'Partly', 'Not done'];
+    let st = {sec: {}, hw: '', went: '', next: ''};
+    try {
+      const saved = JSON.parse(localStorage.getItem(KEY) || 'null');
+      if (saved && typeof saved === 'object') st = Object.assign(st, saved, {sec: saved.sec || {}});
+    } catch (e) {}
+    const secs = Array.from(document.querySelectorAll('main.page section[data-title]')).map((sec, i) => ({id: sec.id, n: i + 1, title: sec.dataset.title || sec.id, sec}));
+    const of = id => st.sec[id] || (st.sec[id] = {mark: '', tags: [], text: ''});
+    const status = el('p', {class: 'tn-status', id: 'tn-status', role: 'status'});
+    const sumBody = el('tbody');
+    function changed(){
+      try { localStorage.setItem(KEY, JSON.stringify(st)); } catch (e) {}
+      summary();
+      status.textContent = 'Kept in this browser. Press “Save notes” at the end of the lesson to make the file.';
+    }
+    function chip(label, id, isOn, toggle){
+      const b = el('button', {type: 'button', class: 'tn-chip', id, 'aria-pressed': String(isOn()), text: label});
+      b.addEventListener('click', () => { toggle(); changed(); b.closest('.tn-row').querySelectorAll('.tn-chip').forEach(x => x.setAttribute('aria-pressed', String(x._on()))); });
+      b._on = isOn;
+      return b;
+    }
+    function row(label, chips){ return el('div', {class: 'tn-row'}, el('span', {class: 'tn-lab', text: label}), ...chips); }
+  
+    secs.forEach(s => {
+      const d = of(s.id);
+      const text = el('input', {type: 'text', class: 'tn-text', id: 'tn-' + s.id + '-text', placeholder: 'A quick note: what was hard, what to repeat', 'aria-label': 'Note for section ' + s.n, autocomplete: 'off'});
+      text.value = d.text || '';
+      text.addEventListener('input', () => { d.text = text.value; changed(); });
+      s.sec.append(el('div', {class: 'tn', role: 'group', 'aria-label': 'Notes for section ' + s.n},
+        row('How it went', MARKS.map(m => chip(m, 'tn-' + s.id + '-m-' + m.toLowerCase(), () => d.mark === m, () => { d.mark = d.mark === m ? '' : m; }))),
+        row('What was hard', TAGS.map(g => chip(g, 'tn-' + s.id + '-t-' + g.toLowerCase().replace(/\s+/g, '-'), () => d.tags.includes(g), () => { d.tags = d.tags.includes(g) ? d.tags.filter(x => x !== g) : d.tags.concat(g); }))),
+        text));
+    });
+  
+    function summary(){
+      sumBody.replaceChildren(...secs.map(s => {
+        const d = of(s.id);
+        return el('tr', {}, el('td', {text: String(s.n)}), el('td', {text: s.title}), el('td', {text: d.mark || '–'}), el('td', {text: d.tags.join(', ') || '–'}), el('td', {text: d.text || '–'}));
+      }));
+    }
+    function area(id, label, key, hint){
+      const ta = el('textarea', {id, placeholder: hint});
+      ta.value = st[key] || '';
+      ta.addEventListener('input', () => { st[key] = ta.value; changed(); });
+      return el('div', {class: 'tn-field'}, el('label', {for: id, text: label}), ta);
+    }
+    const cell = v => String(v || '–').replace(/\|/g, '/').replace(/\s*\n\s*/g, ' ');
+    function markdown(){
+      const now = new Date(), two = n => String(n).padStart(2, '0');
+      const stamp = now.getFullYear() + '-' + two(now.getMonth() + 1) + '-' + two(now.getDate()) + ' ' + two(now.getHours()) + ':' + two(now.getMinutes());
+      const lines = ['# Lesson notes: ' + document.title, '',
+        'Lesson folder: ' + where.join('/') + '. Notes saved ' + stamp + '.', '',
+        '## Section by section', '',
+        '| # | Section | How it went | What was hard | Note |', '|---|---|---|---|---|'];
+      secs.forEach(s => { const d = of(s.id); lines.push('| ' + [s.n, cell(s.title), cell(d.mark), cell(d.tags.join(', ')), cell(d.text)].join(' | ') + ' |'); });
+      lines.push('', '## Homework brought to this lesson', '', st.hw || 'Not marked.', '',
+        '## How the lesson went', '', (st.went || '').trim() || 'No notes.', '',
+        '## Practise next time', '', (st.next || '').trim() || 'No notes.', '');
+      return lines.join('\n');
+    }
+    const out = el('textarea', {class: 'tn-out', id: 'tn-out', readonly: '', 'aria-label': 'Your notes as text'});
+    out.hidden = true;
+    const save = el('button', {type: 'button', class: 'btn go', id: 'tn-save', text: 'Save notes'});
+    save.addEventListener('click', () => {
+      try {
+        const a = el('a', {href: URL.createObjectURL(new Blob([markdown()], {type: 'text/markdown;charset=utf-8'})), download: FILE});
+        document.body.append(a); a.click(); a.remove();
+        setTimeout(() => { try { URL.revokeObjectURL(a.href); } catch (e) {} }, 4000);
+        status.textContent = 'Saved as “' + FILE + '” in your Downloads folder. Tell Claude the lesson is done and it goes into the lesson folder.';
+      } catch (e) {
+        out.hidden = false; out.value = markdown(); out.focus(); out.select();
+        status.textContent = 'The file could not be saved here. Copy this text and send it to Claude.';
+      }
+    });
+    const copy = el('button', {type: 'button', class: 'btn', id: 'tn-copy', text: 'Copy notes'});
+    copy.addEventListener('click', () => {
+      const text = markdown();
+      const show = () => { out.hidden = false; out.value = text; out.focus(); out.select(); status.textContent = 'Press ⌘C to copy the notes.'; };
+      try { navigator.clipboard.writeText(text).then(() => { status.textContent = 'Notes copied.'; }, show); } catch (e) { show(); }
+    });
+    let armed = null;
+    const clear = el('button', {type: 'button', class: 'btn', id: 'tn-clear', text: 'Clear notes'});
+    clear.addEventListener('click', () => {
+      if (!armed) { clear.textContent = 'Press again to clear everything'; armed = setTimeout(() => { armed = null; clear.textContent = 'Clear notes'; }, 4000); return; }
+      clearTimeout(armed);
+      try { localStorage.removeItem(KEY); } catch (e) {}
+      location.reload();
+    });
+  
+    const fin = el('section', {class: 'tn-final', id: 'lesson-notes', 'aria-label': 'Lesson notes'},
+      el('h2', {text: 'Lesson notes'}),
+      el('div', {class: 'tn'}, row('His homework', HW.map(h => chip(h, 'tn-hw-' + h.toLowerCase().replace(/\s+/g, '-'), () => st.hw === h, () => { st.hw = st.hw === h ? '' : h; })))),
+      area('tn-went', 'How the lesson went', 'went', 'Your thoughts about the lesson'),
+      area('tn-next', 'Practise next time', 'next', 'What to come back to in the next lessons'),
+      el('div', {class: 'tn-sum scroll'}, el('table', {}, el('thead', {}, el('tr', {}, ...['#', 'Section', 'How it went', 'What was hard', 'Note'].map(h => el('th', {text: h})))), sumBody)),
+      el('div', {class: 'row'}, save, copy, clear),
+      status, out);
+    const last = secs[secs.length - 1];
+    if (last) last.sec.after(fin); else $('main.page').append(fin);
+    summary();
+    status.textContent = 'Notes are kept in this browser while you work. Press “Save notes” at the end of the lesson.';
+  })();
+
+  // speech: en-GB voice, only from clicks
+  const synth = window.speechSynthesis;
+  let voice = null;
+  function pickVoice(){
+    try {
+      const vs = synth ? synth.getVoices() : [];
+      voice = vs.find(v => v.lang === 'en-GB') || vs.find(v => /^en[-_]/i.test(v.lang)) || null;
+    } catch (e) { voice = null; }
+  }
+  if (synth){ pickVoice(); try { synth.addEventListener('voiceschanged', pickVoice); } catch (e) {} }
+  function speak(text){
+    try {
+      if (!synth) return;
+      synth.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = 'en-GB'; if (voice) u.voice = voice; u.rate = 0.92;
+      synth.speak(u);
+    } catch (e) {}
+  }
+
+  // trophies, trophy road, rank-up toast
+  const TIERS = [['BRONZE', 0], ['SILVER', 10], ['GOLD', 20], ['DIAMOND', 30], ['MYTHIC', 42], ['LEGENDARY', 54], ['MASTERS', 66]];
+  let trophies = 0, tierIdx = 0, toastT = null;
+  const tiersBox = $('#tiers');
+  TIERS.forEach(([n]) => tiersBox.append(el('span', {text: n})));
+  function toast(big, small){
+    const t = $('#toast');
+    t.replaceChildren(...[big, small ? el('small', {text: small}) : null].filter(Boolean));
+    t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => { t.hidden = true; }, 2200);
+  }
+  function renderRoad(){
+    $('#trophies').textContent = trophies; $('#road-count').textContent = trophies;
+    let i = 0; TIERS.forEach(([, at], k) => { if (trophies >= at) i = k; });
+    const nx = TIERS[i + 1];
+    $('#road-next').textContent = nx ? nx[0] + ' at ' + nx[1] : 'MAX RANK';
+    const from = TIERS[i][1];
+    $('#road-bar').style.width = (nx ? Math.round(100 * (trophies - from) / (nx[1] - from)) : 100) + '%';
+    $('#rank-name').textContent = TIERS[i][0];
+    [...tiersBox.children].forEach((s, k) => s.classList.toggle('on', k <= i));
+    if (i > tierIdx){ tierIdx = i; toast('RANK UP: ' + TIERS[i][0] + '!', trophies + ' trophies'); }
+  }
+  function award(n = 1){ trophies += n; renderRoad(); const b = $('#trophybox'); b.classList.remove('pop'); void b.offsetWidth; b.classList.add('pop'); }
+
+  // Generic click-the-answer gaps. Each item: [before, after, answer, options]. Stars only on the first correct answer per item, even after "Again".
+  function choiceGaps(box, items, againBtn, fixedOrder){
+    const won = new Set();
+    function render(){
+      box.replaceChildren();
+      items.forEach(([a, z, ans, opts], i) => {
+        const slot = el('span', {class: 'slot', text: ' '});
+        const row = el('div', {class: 'gap'}, el('span', {class: 'n', text: String(i + 1)}), el('span', {class: 's'}, a, slot, z));
+        const o = el('div', {class: 'opts'});
+        (fixedOrder ? opts : shuffle(opts)).forEach(t => {
+          const b = el('button', {class: 'opt', type: 'button', text: t});
+          b.addEventListener('click', () => {
+            if (row.classList.contains('done')) return;
+            if (t !== ans) return nope(b);
+            slot.textContent = t; row.classList.add('done');
+            speak(plain(a + t + z));
+            if (!won.has(i)){ won.add(i); award(1); }
+          });
+          o.append(b);
+        });
+        row.append(o); if (TEACHER) row.append(el('span', {class: 'key', text: 'Answer: ' + ans})); box.append(row);
+      });
+    }
+    if (againBtn) againBtn.addEventListener('click', render);
+    render();
+  }
+
+  // Generic typing check. live: instant green when right while typing (only where no answer is the start of another option).
+  // Not live: typing just clears the mark; the check runs on Enter, blur and Check all. Red on Enter / Check when wrong.
+  function makeTypeRow(input, mark, answer, live = true){
+    const r = {input, mark, answer, got: false};
+    const ok = [answer];
+    if (answer.includes("n't")) ok.push(answer.replace("n't", ' not'));
+    r.test = (strict) => {
+      const v = norm(input.value);
+      mark.classList.remove('right', 'wrong');
+      if (!v) return false;
+      if (ok.includes(v)){
+        mark.classList.add('right');
+        if (!r.got){ r.got = true; award(1); }
+        return true;
+      }
+      if (strict){ mark.classList.add('wrong'); nope(mark); }
+      return false;
+    };
+    input.addEventListener('input', () => { if (live) r.test(false); else mark.classList.remove('right', 'wrong'); });
+    input.addEventListener('blur', () => { if (norm(input.value)) r.test(true); });
+    return r;
+  }
+
+  // 1 warm-up quiz
+  (function(){
+    const Q = [
+      ['Shh! The baby ', '.', 'is sleeping', ['is sleeping', 'sleeps']],
+      ['I usually ', ' to school by bus.', 'go', ['go', 'am going']],
+      ['Look! Dan ', ' his bike in the rain.', 'is riding', ['is riding', 'rides']],
+      ['Nora ', ' in the school choir every Friday.', 'sings', ['sings', 'is singing']],
+      ['What ', ' right now? Are you busy?', 'are you doing', ['are you doing', 'do you do']],
+      ['Rosie ', ' swimming three mornings a week.', 'goes', ['goes', 'is going']],
+    ];
+    const qEl = $('#wq-q'), opts = $('#wq-opts'), msg = $('#wq-msg'), count = $('#wq-count'), dots = $('#wq-dots'), next = $('#wq-next'), again = $('#wq-again');
+    const won = new Set();
+    let i = 0, locked = false;
+    Q.forEach(() => dots.append(el('i')));
+    const key = TEACHER ? el('p', {class: 'key'}) : null;
+    if (key) opts.after(key);
+    function show(){
+      locked = false; msg.textContent = ''; next.hidden = true; again.hidden = true;
+      const [a, z, ans, o] = Q[i];
+      if (key) key.textContent = 'Answer: ' + ans;
+      const slot = el('span', {class: 'slot', text: ' '});
+      qEl.replaceChildren(a, slot, z);
+      count.textContent = 'Q ' + (i + 1) + ' / ' + Q.length;
+      [...dots.children].forEach((d, k) => d.classList.toggle('on', won.has(k)));
+      opts.replaceChildren();
+      shuffle(o).forEach((t, k) => {
+        const b = el('button', {class: 'qopt', type: 'button', text: t});
+        b.style.setProperty('--c', k ? 'var(--pop-purple)' : 'var(--pop-blue)');
+        b.addEventListener('click', () => {
+          if (locked) return;
+          if (t !== ans){ nope(b); msg.textContent = 'Not this one. Look for the time words!'; return; }
+          locked = true; slot.textContent = t; b.classList.add('ok');
+          opts.querySelectorAll('.qopt').forEach(x => { x.disabled = true; });
+          speak(a + t + z);
+          if (!won.has(i)){ won.add(i); award(1); }
+          dots.children[i].classList.add('on');
+          if (i < Q.length - 1){ msg.textContent = 'Correct!'; next.hidden = false; next.focus(); }
+          else { msg.textContent = 'All done! Now let\'s go back in time…'; again.hidden = false; }
+        });
+        opts.append(b);
+      });
+    }
+    next.addEventListener('click', () => { i++; show(); });
+    again.addEventListener('click', () => { i = 0; show(); });
+    show();
+  })();
+
+  // 2 rule examples + time words
+  (function(){
+    document.querySelectorAll('#rule-ex li').forEach(li => {
+      const t = li.querySelector('span').textContent;
+      li.querySelector('.say').addEventListener('click', () => speak(t));
+    });
+    const O = ['ago', 'last', 'in', 'yesterday'];
+    choiceGaps($('#time-gaps'), [
+      ['I was at the dentist\'s two days ', '.', 'ago', O],
+      ['Where were you ', ' night?', 'last', O],
+      ['We were in Spain ', ' 2020.', 'in', O],
+      ['Dan was tired ', ' morning.', 'yesterday', O],
+      ['Rosie was at the pool an hour ', '.', 'ago', O],
+      ['The pool was closed ', ' weekend.', 'last', O],
+    ], $('#time-again'), true);
+  })();
+
+  // 3 was or were
+  choiceGaps($('#ww-gaps'), [
+    ['I ', ' tired yesterday.', 'was', ['was', 'were']],
+    ['Rosie and Nora ', ' at Grandma\'s house on Saturday.', 'were', ['were', 'was']],
+    ['The pool ', ' closed last week.', 'was', ['was', 'were']],
+    ['We ', ' at school last Sunday. It was the weekend!', 'weren\'t', ['weren\'t', 'wasn\'t']],
+    ['Dan ', ' happy last week. His computer was broken.', 'wasn\'t', ['wasn\'t', 'weren\'t']],
+    ['You ', ' late for school this morning!', 'were', ['were', 'was']],
+    ['My phone ', ' in my bag. It was on the table.', 'wasn\'t', ['wasn\'t', 'weren\'t']],
+    ['Sara and Fatima ', ' at the cinema two days ago.', 'were', ['were', 'was']],
+    ['It ', ' very cold last night.', 'was', ['was', 'were']],
+    ['My parents ', ' at home yesterday afternoon. They were at work.', 'weren\'t', ['weren\'t', 'wasn\'t']],
+  ], $('#ww-again'));
+
+  // 4 ask and answer (typing)
+  (function(){
+    const QA = [
+      ['{} you at home last night?', 'Yes, I {}.', ['were', 'was']],
+      ['{} Dan at school yesterday?', 'No, he {}. He was ill.', ['was', 'wasn\'t']],
+      ['{} Sara and Fatima at the cinema on Saturday?', 'Yes, they {}.', ['were', 'were']],
+      ['Where {} Rosie at six o\'clock?', 'She {} at the swimming pool.', ['was', 'was']],
+      ['{} the film good?', 'No, it {}. It was boring.', ['was', 'wasn\'t']],
+      ['{} your friends at the party?', 'No, they {}.', ['were', 'weren\'t']],
+    ];
+    const box = $('#qa-list'), score = $('#qa-score');
+    const rows = [];
+    function cap(w, atStart){ return atStart ? w[0].toUpperCase() + w.slice(1) : w; }
+    QA.forEach(([qa, qb], i) => {
+      const card = el('div', {class: 'qa'});
+      const full = [];
+      [qa, qb].forEach((tpl, side) => {
+        const [before, after] = tpl.split('{}');
+        const ans = QA[i][2][side];
+        const input = el('input', {class: 'tin', id: 'qa-' + (i + 1) + (side ? 'b' : 'a'), type: 'text', autocomplete: 'off', autocapitalize: 'off', spellcheck: 'false', 'aria-label': 'Dialogue ' + (i + 1) + (side ? ', answer' : ', question') + ': missing word'});
+        const line = el('div', {class: 'line'}, el('span', {class: 'who ' + (side ? 'b' : 'a'), text: side ? 'B' : 'A', 'aria-hidden': 'true'}));
+        if (before) line.append(el('span', {text: before.trim()}));
+        line.append(input, el('span', {class: /^[.,?!]/.test(after) ? 'tight' : '', text: after.trim()}));
+        card.append(line);
+        rows.push(makeTypeRow(input, input, ans, false));
+        full.push(before + cap(ans, !before) + after);
+      });
+      if (TEACHER) card.append(el('span', {class: 'key', text: 'Answer: ' + full.join(' ')}));
+      const sb = sayBtn('Listen to dialogue ' + (i + 1));
+      sb.addEventListener('click', () => speak(full.join(' ')));
+      card.append(el('div', {class: 'foot'}, sb));
+      box.append(card);
+    });
+    rows.forEach((r, k) => r.input.addEventListener('keydown', e => {
+      if (e.key !== 'Enter') return;
+      e.preventDefault(); r.test(true);
+      const nx = rows[k + 1]; if (nx) nx.input.focus();
+    }));
+    $('#qa-check').addEventListener('click', () => { const n = rows.filter(r => r.test(true)).length; score.textContent = n + ' / ' + rows.length; });
+    $('#qa-show').addEventListener('click', () => rows.forEach(r => { if (!r.input.classList.contains('right')){ r.input.value = ''; r.input.classList.remove('wrong'); r.input.placeholder = r.answer; } }));
+    $('#qa-clear').addEventListener('click', () => { rows.forEach(r => { r.input.value = ''; r.input.placeholder = ''; r.input.classList.remove('right', 'wrong'); }); score.textContent = ''; });
+  })();
+
+  // 5 there was / there were
+  (function(){
+    const F = ['There was', 'There were', 'There wasn\'t', 'There weren\'t'];
+    const Q2 = ['Was there', 'Were there'];
+    choiceGaps($('#there-gaps'), [
+      ['', ' a big birthday cake.', 'There was', F],
+      ['', ' six balloons.', 'There were', F],
+      ['', ' a clown.', 'There wasn\'t', F],
+      ['', ' any sandwiches.', 'There weren\'t', F],
+      ['', ' three pizzas.', 'There were', F],
+      ['', ' a dog under the table.', 'There was', F],
+      ['“', ' any presents?” “Yes, there were. There were four.”', 'Were there', Q2],
+      ['“', ' a cat at the party?” “No, there wasn\'t.”', 'Was there', Q2],
+    ], $('#there-again'), true);
+  })();
+
+  // 6 -ed spelling
+  (function(){
+    const W = [['walk', 'walked'], ['like', 'liked'], ['plan', 'planned'], ['carry', 'carried'], ['stay', 'stayed'], ['drop', 'dropped'],
+               ['cry', 'cried'], ['move', 'moved'], ['clean', 'cleaned'], ['enjoy', 'enjoyed'], ['shop', 'shopped'], ['hope', 'hoped']];
+    const list = $('#ed-list'), score = $('#ed-score');
+    if (TEACHER) list.after(el('p', {class: 'key', text: 'Answers: ' + W.map(w => w[1]).join(', ')}));
+    const rows = W.map(([base, past]) => {
+      const input = el('input', {id: 'ed-' + base, type: 'text', autocomplete: 'off', autocapitalize: 'off', spellcheck: 'false', 'aria-label': base + ' in the past'});
+      const fix = el('span', {class: 'fix'});
+      const lab = el('label', {for: 'ed-' + base}, el('span', {text: base}), input, fix);
+      list.append(lab);
+      const r = makeTypeRow(input, lab, past);
+      r.fix = fix;
+      input.addEventListener('input', () => { if (lab.classList.contains('right')) fix.textContent = ''; });
+      return r;
+    });
+    rows.forEach((r, k) => r.input.addEventListener('keydown', e => {
+      if (e.key !== 'Enter') return;
+      e.preventDefault(); if (r.test(true)) speak(r.answer);
+      const nx = rows[k + 1]; if (nx) nx.input.focus();
+    }));
+    $('#ed-check').addEventListener('click', () => { const n = rows.filter(r => r.test(true)).length; score.textContent = n + ' / ' + rows.length; });
+    $('#ed-show').addEventListener('click', () => rows.forEach(r => { if (!r.mark.classList.contains('right')) r.fix.textContent = r.answer; }));
+    $('#ed-clear').addEventListener('click', () => { rows.forEach(r => { r.input.value = ''; r.mark.classList.remove('right', 'wrong'); r.fix.textContent = ''; }); score.textContent = ''; });
+  })();
+
+  // 7 -ed sound sort
+  (function(){
+    const ITEMS = [['walked', 't'], ['liked', 't'], ['stopped', 't'], ['washed', 't'], ['danced', 't'],
+                   ['lived', 'd'], ['cleaned', 'd'], ['stayed', 'd'], ['listened', 'd'], ['studied', 'd'],
+                   ['started', 'id'], ['waited', 'id'], ['visited', 'id'], ['needed', 'id'], ['decided', 'id']];
+    const pool = $('#snd-pool'), status = $('#snd-status');
+    const bins = {t: $('#bin-t'), d: $('#bin-d'), id: $('#bin-id')};
+    let sel = null, left = 0, awarded = false;
+    if (TEACHER) pool.after(el('p', {class: 'key', text: [['t', '/t/'], ['d', '/d/'], ['id', '/ɪd/']].map(([k, lab]) => lab + ': ' + ITEMS.filter(x => x[1] === k).map(x => x[0]).join(', ')).join(' · ')}));
+    function render(){
+      sel = null; left = ITEMS.length; status.textContent = '';
+      pool.replaceChildren(); Object.values(bins).forEach(b => b.replaceChildren());
+      shuffle(ITEMS).forEach(([w, k], i) => {
+        const b = el('button', {class: 'chip', type: 'button', 'aria-pressed': 'false', text: w});
+        b.dataset.k = k; b.style.setProperty('--c', COLORS[i % COLORS.length]);
+        b.addEventListener('click', () => {
+          if (b.parentElement !== pool) { speak(w); return; }
+          pool.querySelectorAll('.sel').forEach(x => { x.classList.remove('sel'); x.setAttribute('aria-pressed', 'false'); });
+          sel = b; b.classList.add('sel'); b.setAttribute('aria-pressed', 'true'); speak(w);
+        });
+        pool.append(b);
+      });
+    }
+    document.querySelectorAll('#sounds .bin-drop').forEach(bin => {
+      bin.addEventListener('click', () => {
+        if (!sel) { speak(bin.querySelector('.eg').textContent); return nope(bin); }
+        if (sel.dataset.k !== bin.dataset.k) return nope(sel);
+        sel.classList.remove('sel'); sel.removeAttribute('aria-pressed'); sel.classList.add('placed');
+        bins[bin.dataset.k].append(sel); sel = null; left--;
+        if (left === 0){
+          status.textContent = 'All 15 sorted!';
+          if (!awarded){ awarded = true; award(3); }
+        }
+      });
+    });
+    $('#snd-again').addEventListener('click', render);
+    render();
+  })();
+
+  // 8 blog: true / false, timeline, comment
+  (function(){
+    const T = [
+      ['The swimming pool was closed yesterday.', false, 'Yesterday it was open again.'],
+      ['Rosie was at the pool at six o\'clock.', true, 'She was there at six o\'clock.'],
+      ['Rosie walked home in the sun.', false, 'She walked home in the rain.'],
+      ['Dan played computer games for four hours.', true, 'He played for four hours.'],
+      ['Mum was happy about Dan\'s games.', false, 'Mum wasn\'t very happy about that.'],
+      ['Grandma baked a chocolate cake.', true, 'Grandma baked a chocolate cake.'],
+      ['Sara and Fatima were with Rosie.', false, 'They were at the cinema in town.'],
+      ['Rosie was asleep at nine o\'clock.', true, 'She was asleep at nine o\'clock.'],
+    ];
+    const box = $('#tf');
+    T.forEach(([s, ans, why]) => {
+      const w = el('span', {class: 'why'}); w.hidden = true;
+      const item = el('div', {class: 'tf-item'}, el('span', {text: s}));
+      const o = el('div', {class: 'opts'});
+      [['T', true], ['F', false]].forEach(([lab, val]) => {
+        const b = el('button', {type: 'button', text: lab, 'aria-label': (val ? 'True: ' : 'False: ') + s});
+        b.addEventListener('click', () => {
+          if (item.classList.contains('done')) return;
+          if (val !== ans) return nope(b);
+          item.classList.add('done'); w.textContent = (ans ? 'True. ' : 'False. ') + why; w.hidden = false; award(1);
+        });
+        o.append(b);
+      });
+      item.append(o, w);
+      if (TEACHER) item.append(el('span', {class: 'key', text: 'Answer: ' + (ans ? 'True' : 'False')}));
+      box.append(item);
+    });
+    $('#blog-say').addEventListener('click', () => speak([...document.querySelectorAll('#blog .bp')].map(p => p.textContent).join(' ')));
+
+    const EV = [
+      ['🏊', 'Rosie was at the pool.'],
+      ['🌧️', 'It started to rain and Rosie walked home.'],
+      ['👵', 'The family visited Grandma and Grandpa.'],
+      ['📺', 'Rosie watched TV with Dad.'],
+      ['😴', 'Rosie was asleep.'],
+    ];
+    const slots = $('#tl-slots'), tlPool = $('#tl-pool'), tlStatus = $('#tl-status');
+    let nextIdx = 0, tlAwarded = false;
+    function renderTl(){
+      nextIdx = 0; tlStatus.textContent = '';
+      slots.replaceChildren(); tlPool.replaceChildren();
+      EV.forEach(() => slots.append(el('div', {class: 'tl-slot'})));
+      shuffle(EV.map((e, i) => [e, i])).forEach(([[em, txt], i], k) => {
+        const c = el('button', {class: 'tl-card', type: 'button'}, el('span', {class: 'em', 'aria-hidden': 'true', text: em}), el('span', {text: txt}));
+        c.style.setProperty('--c', COLORS[k % COLORS.length]);
+        if (TEACHER) c.append(el('span', {class: 'key', text: 'key: ' + (i + 1)}));
+        c.addEventListener('click', () => {
+          if (i !== nextIdx) return nope(c);
+          const s = slots.children[nextIdx];
+          s.classList.add('filled'); s.replaceChildren(el('span', {class: 'em', 'aria-hidden': 'true', text: em}), el('span', {text: txt}));
+          c.hidden = true; speak(txt); nextIdx++;
+          const nx = tlPool.querySelector('.tl-card:not([hidden])'); if (nx) nx.focus();
+          if (nextIdx === EV.length){
+            tlStatus.textContent = 'Perfect order!';
+            if (!tlAwarded){ tlAwarded = true; award(2); }
+          }
+        });
+        tlPool.append(c);
+      });
+    }
+    $('#tl-again').addEventListener('click', renderTl);
+    renderTl();
+
+    const ta = $('#comment-box');
+    try { const d = localStorage.getItem('aron-past-comment'); if (d) ta.value = d; } catch (e) {}
+    ta.addEventListener('input', () => { try { localStorage.setItem('aron-past-comment', ta.value); } catch (e) {} });
+  })();
+
+  // 9 sentence builder. Final punctuation is fixed; any listed word order is accepted.
+  (function(){
+    const SENT = [
+      ['Where were you at six o\'clock yesterday?', 'Where were you yesterday at six o\'clock?'],
+      ['Was Dan at home on Saturday morning?'],
+      ['Were Sara and Fatima at the cinema?', 'Were Fatima and Sara at the cinema?'],
+      ['Why was Rosie wet?'],
+      ['Nora wasn\'t at school yesterday.'],
+      ['We weren\'t at home last night.'],
+    ];
+    const ans = $('#build-answer'), line = $('#build-line'), endP = $('#build-end'), pool = $('#build-pool'), count = $('#build-count'), nextBtn = $('#build-next');
+    const won = new Set();
+    const key = TEACHER ? el('p', {class: 'key'}) : null;
+    if (key) pool.after(key);
+    let idx = 0, words, solved;
+    const body = s => s.slice(0, -1);
+    function check(){
+      const built = [...ans.children].map(c => c.textContent);
+      if (built.length !== words.length) return;
+      const hit = SENT[idx].find(s => body(s) === built.join(' '));
+      if (hit){
+        solved = true; line.classList.add('right'); speak(hit);
+        if (!won.has(idx)){ won.add(idx); award(2); }
+        nextBtn.hidden = idx >= SENT.length - 1;
+        if (idx >= SENT.length - 1) count.textContent = 'All done!';
+      } else nope(line);
+    }
+    function load(){
+      solved = false; line.classList.remove('right'); nextBtn.hidden = true;
+      const target = SENT[idx][0];
+      if (key) key.textContent = 'Answer: ' + SENT[idx].join(' / ');
+      words = body(target).split(' ');
+      endP.textContent = target.slice(-1);
+      count.textContent = 'Sentence ' + (idx + 1) + ' of ' + SENT.length;
+      ans.replaceChildren(); pool.replaceChildren();
+      let order = shuffle(words.map((w, i) => i));
+      if (order.every((v, i) => v === i)) order = order.reverse();
+      order.forEach((wi, k) => {
+        const c = el('button', {class: 'wchip', type: 'button', text: words[wi]});
+        c.style.setProperty('--c', COLORS[(k + idx) % COLORS.length]);
+        c.addEventListener('click', () => { if (solved) return; (c.parentElement === pool ? ans : pool).append(c); check(); });
+        pool.append(c);
+      });
+    }
+    nextBtn.addEventListener('click', () => { idx++; load(); });
+    $('#build-reset').addEventListener('click', () => { idx = 0; load(); });
+    $('#build-say').addEventListener('click', () => speak(SENT[idx][0]));
+    load();
+  })();
+
+  // 10 match replay (was / were + regular -ed verbs only)
+  (function(){
+    const R = [
+      ['💥', 'Yesterday El Primo ', ' over the wall three times!', 'jumped', ['jumped', 'jumps', 'is jumping']],
+      ['💎', 'Shelly ', ' six gems in the first minute.', 'collected', ['collected', 'collects', 'collectted']],
+      ['🎵', 'Poco ', ' his team with music.', 'healed', ['healed', 'heals', 'is healing']],
+      ['🐂', 'Bull ', ' at the red team.', 'charged', ['charged', 'chargeed', 'charges']],
+      ['🐻', 'Nita\'s bear ', ' very angry!', 'was', ['was', 'were', 'is']],
+      ['🛠️', 'Jessie and Colt ', ' near the gem mine.', 'were', ['were', 'was', 'are']],
+      ['🌵', 'Spike ', ' the red team\'s turret.', 'destroyed', ['destroyed', 'destroied', 'destroys']],
+      ['😤', 'The red players ', ' happy at the end.', 'weren\'t', ['weren\'t', 'wasn\'t', 'aren\'t']],
+      ['🏆', '“', ' the match exciting?” “Yes, it was!”', 'Was', ['Was', 'Were', 'Is']],
+    ];
+    const box = $('#replay-list');
+    const won = new Set();
+    R.forEach(([em, a, z, ans, opts], i) => {
+      const slot = el('span', {class: 'slot', text: '\u00a0'});
+      const row = el('div', {class: 'comm'}, el('span', {class: 'em', 'aria-hidden': 'true', text: em}), el('span', {class: 's'}, a, slot, z));
+      const o = el('div', {class: 'opts'});
+      shuffle(opts).forEach((t, k) => {
+        const b = el('button', {type: 'button', id: 'replay-' + (i + 1) + '-' + k, text: t});
+        b.addEventListener('click', () => {
+          if (row.classList.contains('done')) return;
+          if (t !== ans) return nope(b);
+          slot.textContent = t; row.classList.add('done'); speak(plain(a + t + z));
+          if (!won.has(i)){ won.add(i); award(1); }
+          if ([...box.children].every(r => r.classList.contains('done'))) toast('VICTORY!', 'Match replay complete');
+        });
+        o.append(b);
+      });
+      row.append(o); if (TEACHER) row.append(el('span', {class: 'key', text: 'Answer: ' + ans})); box.append(row);
+    });
+  })();
+
+  // 11 mystery game + talk cards
+  (function(){
+    const PEOPLE = [
+      {name: 'Dan', pr: 'he', be: 'was'},
+      {name: 'Nora', pr: 'she', be: 'was'},
+      {name: 'Rosie', pr: 'she', be: 'was'},
+      {name: 'Sara and Fatima', pr: 'they', be: 'were'},
+      {name: 'Rosie\'s dad', pr: 'he', be: 'was'},
+    ];
+    const PLACES = [
+      ['🏠', 'at home'], ['🏫', 'at school'], ['🎬', 'at the cinema'], ['🏊', 'at the swimming pool'], ['🌳', 'at the park'],
+      ['📚', 'at the library'], ['🛍️', 'at the shopping centre'], ['🏟️', 'at the football stadium'], ['🛋️', 'at a friend\'s house'], ['🛒', 'at the supermarket'],
+    ];
+    const qEl = $('#gm-q'), hint = $('#gm-hint'), grid = $('#gm-places'), log = $('#gm-log'), status = $('#gm-status');
+    const cap = s => s[0].toUpperCase() + s.slice(1);
+    const key = TEACHER ? el('p', {class: 'key'}) : null;
+    if (key) grid.after(key);
+    let who, secret, tries, done, last = -1, gmStars = 0; // the game gives at most 6 stars in total
+    function round(){
+      let p;
+      do { p = Math.floor(Math.random() * PEOPLE.length); } while (p === last && PEOPLE.length > 1);
+      last = p; who = PEOPLE[p];
+      secret = Math.floor(Math.random() * PLACES.length); tries = 0; done = false;
+      if (key) key.textContent = 'Answer: ' + PLACES[secret][1];
+      qEl.textContent = 'Where ' + who.be + ' ' + who.name + ' at 6 pm yesterday?';
+      hint.textContent = 'Ask: "' + cap(who.be) + ' ' + who.name + ' at …?" Then click the place.';
+      status.textContent = ''; log.replaceChildren(); grid.replaceChildren();
+      PLACES.forEach(([em, place], i) => {
+        const b = el('button', {class: 'place', type: 'button'}, el('span', {class: 'em', 'aria-hidden': 'true', text: em}), el('span', {text: place}));
+        b.addEventListener('click', () => {
+          if (done || b.classList.contains('no')) return;
+          tries++;
+          const q = cap(who.be) + ' ' + who.name + ' ' + place + '?';
+          let a;
+          if (i === secret){
+            done = true; b.classList.add('yes');
+            a = 'Yes, ' + who.pr + ' ' + who.be + '! ' + cap(who.pr) + ' ' + who.be + ' ' + place + '.';
+            let n = 0;
+            if (gmStars < 6){ n = Math.min(tries <= 3 ? 2 : 1, 6 - gmStars); gmStars += n; award(n); }
+            status.textContent = 'Found in ' + tries + (tries === 1 ? ' question' : ' questions') + '!' + (n ? ' +' + n + (n === 1 ? ' trophy' : ' trophies') : '');
+          } else {
+            b.classList.add('no'); b.setAttribute('aria-disabled', 'true');
+            a = 'No, ' + who.pr + ' ' + who.be + 'n\'t.';
+          }
+          log.append(el('li', {class: 'q', text: 'Q: ' + q}), el('li', {class: 'a' + (done ? ' win' : ''), text: 'A: ' + a}));
+          speak(q + ' ' + a);
+        });
+        grid.append(b);
+      });
+    }
+    $('#gm-new').addEventListener('click', round);
+    round();
+
+    const TALK = [
+      'Where were you yesterday at 6 pm?',
+      'Were you at school yesterday? Was it a good day?',
+      'Where were you last Saturday morning?',
+      'Were you tired last night? Why?',
+      'Where were you on your last birthday? Who was with you?',
+      'What was your favourite game when you were seven?',
+      'Who was your first teacher? Was he or she nice?',
+      'Where were you at this time last week?',
+    ];
+    const box = $('#talk');
+    TALK.forEach((q, i) => {
+      const c = el('button', {class: 'tcard', type: 'button', 'aria-label': 'Talk card ' + (i + 1)}, el('span', {class: 'num', 'aria-hidden': 'true', text: String(i + 1)}));
+      c.style.setProperty('--c', COLORS[(i + 2) % COLORS.length]);
+      c.addEventListener('click', () => {
+        if (c.dataset.open){ speak(q); return; }
+        c.dataset.open = '1'; c.replaceChildren(q); c.removeAttribute('aria-label'); speak(q);
+      });
+      box.append(c);
+    });
+  })();
+  renderRoad();
+})();
+</script>
+
+</html>
