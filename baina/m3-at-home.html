@@ -1,0 +1,1012 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta charset="utf-8">
+<title>Home, Room by Room</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Rubik:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+/* Layout: a nature journal in Everforest. One calm column of numbered pages on warm paper.
+   Nothing moves or disappears. The recurring device is the ant: every solved item adds one ant to the colony. */
+:root{
+  --bg:#fdf6e3; --surface:#fffbef; --sunk:#f4f0d9; --line:#e6e2cc; --line2:#bdc3af;
+  --text:#3c474d; --soft:#5c6a72;
+  --accent:#1f7a58; --on-accent:#fffbef; --leaf:#8da101;
+  --good:#55700a; --bad:#c2413f; --ant:#c8600f;
+  --good-bg:color-mix(in srgb, #8da101 22%, var(--surface));
+  --bad-bg:color-mix(in srgb, #f85552 13%, var(--surface));
+  --mark:color-mix(in srgb, #dfa000 26%, var(--surface));
+  --tint:color-mix(in srgb, #3a94c5 15%, var(--surface));
+  --display:"Fredoka","Rubik","Avenir Next",system-ui,sans-serif;
+  --body:"Rubik","Segoe UI",system-ui,-apple-system,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#2d353b; --surface:#343f44; --sunk:#3d484d; --line:#475258; --line2:#6f7d78;
+    --text:#d3c6aa; --soft:#a9b3a2;
+    --accent:#83c092; --on-accent:#2d353b; --leaf:#a7c080;
+    --good:#a7c080; --bad:#e67e80; --ant:#e69875;
+    --good-bg:color-mix(in srgb, #a7c080 18%, var(--surface));
+    --bad-bg:color-mix(in srgb, #e67e80 18%, var(--surface));
+    --mark:color-mix(in srgb, #dbbc7f 22%, var(--surface));
+    --tint:color-mix(in srgb, #7fbbb3 16%, var(--surface));
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#2d353b; --surface:#343f44; --sunk:#3d484d; --line:#475258; --line2:#6f7d78;
+  --text:#d3c6aa; --soft:#a9b3a2;
+  --accent:#83c092; --on-accent:#2d353b; --leaf:#a7c080;
+  --good:#a7c080; --bad:#e67e80; --ant:#e69875;
+  --good-bg:color-mix(in srgb, #a7c080 18%, var(--surface));
+  --bad-bg:color-mix(in srgb, #e67e80 18%, var(--surface));
+  --mark:color-mix(in srgb, #dbbc7f 22%, var(--surface));
+  --tint:color-mix(in srgb, #7fbbb3 16%, var(--surface));
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--text);font:400 18px/1.6 var(--body);-webkit-font-smoothing:antialiased}
+.page{max-width:820px;margin-inline:auto;padding-inline:16px;padding-block:40px 110px;display:flex;flex-direction:column;gap:56px}
+@media (min-width:700px){ .page{padding-inline:28px} }
+h1,h2,h3{font-family:var(--display);font-weight:600;margin:0;text-wrap:balance}
+p{margin:0}
+ol,ul{margin:0;padding:0}
+a{color:var(--accent);text-underline-offset:3px}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer;-webkit-tap-highlight-color:transparent}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:8px}
+.ru{font-size:15px;color:var(--soft);font-style:italic}
+
+/* masthead */
+.mast{display:flex;flex-direction:column;gap:18px}
+.eyebrow{font:600 13px/1.3 var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--soft)}
+.mast h1{font-size:clamp(42px,9vw,72px);line-height:1;font-weight:700}
+.mast h1 span{color:var(--accent)}
+.dek{font-size:clamp(18px,2.4vw,21px);line-height:1.5;max-width:36em}
+.meta{display:flex;flex-wrap:wrap;gap:6px 22px;margin:0;font-size:15px;color:var(--soft)}
+.meta div{display:flex;gap:6px}
+.meta dt{font-weight:600;color:var(--text)}
+.meta dd{margin:0}
+.colony{background:var(--surface);border:2px dashed var(--line2);border-radius:18px;padding:14px 18px;display:flex;flex-direction:column;gap:6px}
+.colony b{font:600 17px/1.3 var(--display)}
+.ants{font-size:22px;line-height:1.5;letter-spacing:2px;min-height:1.5em;overflow-wrap:anywhere}
+.ants:empty::before{content:"No ants yet. Every answer brings one home.";font-size:15px;letter-spacing:0;color:var(--soft)}
+.toc{display:flex;flex-wrap:wrap;gap:8px;list-style:none;counter-reset:toc}
+.toc li{counter-increment:toc}
+.toc a{display:inline-flex;gap:8px;align-items:baseline;text-decoration:none;color:var(--text);background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:15.5px}
+.toc a::before{content:counter(toc);font:600 14px/1 var(--display);color:var(--accent)}
+.toc a:hover{border-color:var(--accent)}
+
+details.plan{border:1px solid var(--line2);border-radius:14px;background:var(--surface);padding:0 20px}
+details.plan summary{cursor:pointer;padding-block:14px;font-weight:600;display:flex;justify-content:space-between;gap:12px;list-style:none}
+details.plan summary::-webkit-details-marker{display:none}
+details.plan summary::after{content:"Show";font-weight:500;font-size:14px;color:var(--accent)}
+details.plan[open] summary::after{content:"Hide"}
+.plan-body{padding-bottom:18px;display:flex;flex-direction:column;gap:12px;font-size:15.5px}
+.plan-body .aim{color:var(--soft)}
+.scroll{overflow-x:auto}
+.plan-body table{border-collapse:collapse;width:100%;min-width:520px}
+.plan-body th,.plan-body td{text-align:left;vertical-align:top;padding:8px 10px 8px 0;border-top:1px solid var(--line)}
+.plan-body th{font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);font-weight:600;border-top:0}
+.plan-body td:first-child{font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--soft);width:4.5em}
+.plan-body td:nth-child(2){font-weight:600}
+
+/* sections */
+.sec{display:flex;flex-direction:column;gap:20px;scroll-margin-top:16px}
+.sec-head{display:flex;flex-wrap:wrap;align-items:flex-start;gap:8px 16px;padding-top:22px;border-top:3px dotted var(--line2)}
+.sec-no{font:700 19px/1 var(--display);color:var(--on-accent);background:var(--accent);border-radius:62% 38% 58% 42% / 48% 60% 40% 52%;padding:11px 15px;margin-top:2px}
+.sec-title{flex:1 1 300px;min-width:0;display:flex;flex-direction:column;gap:6px}
+.sec-title h2{font-size:clamp(26px,4.4vw,33px);line-height:1.15}
+.lede{max-width:60ch}
+.score{font:600 15px/1 var(--body);font-variant-numeric:tabular-nums;color:var(--soft);border:1px solid var(--line2);border-radius:999px;padding:8px 13px;white-space:nowrap;background:var(--surface)}
+.score.full{color:var(--good);border-color:var(--good);background:var(--good-bg)}
+.sub{font:600 20px/1.3 var(--display);margin-top:6px}
+.note{font-size:15.5px;color:var(--soft);max-width:62ch}
+.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.btn{border:1px solid var(--line2);background:var(--surface);border-radius:12px;padding:9px 18px;font-weight:600;font-size:16px;line-height:1.2}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.btn.quiet{border-color:transparent;background:transparent;color:var(--soft)}
+.btn.quiet:hover{color:var(--text);border-color:var(--line2)}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px 20px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.panel h3{font-size:20px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr));gap:14px}
+.hl{background:var(--mark);border-radius:5px;padding:0 5px;font-weight:600}
+.big{font:500 clamp(20px,3vw,24px)/1.5 var(--display)}
+.line{display:flex;gap:10px;align-items:flex-start;min-width:0}
+.line > span{flex:1;min-width:0}
+.plain{list-style:none;display:flex;flex-direction:column;gap:10px}
+.say{flex:none;width:36px;height:36px;border-radius:50%;border:1px solid var(--line2);background:var(--surface);display:inline-grid;place-items:center;color:var(--accent);padding:0}
+.say:hover{border-color:var(--accent)}
+.say svg{width:17px;height:17px}
+
+/* word cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr));gap:10px;list-style:none}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:12px 10px 10px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;width:100%}
+button.card:hover{border-color:var(--accent)}
+.card .pic{font-size:38px;line-height:1.2}
+.card .w{font:600 19px/1.2 var(--display)}
+.nums{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,128px),1fr));gap:8px;list-style:none}
+.num{width:100%;display:flex;gap:8px;align-items:baseline;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:7px 12px;text-align:left;font-size:16.5px}
+.num:hover{border-color:var(--accent)}
+.num b{font:600 16px/1 var(--display);color:var(--accent);min-width:2.3em}
+.num.odd{background:var(--mark)}
+.tower{list-style:none;display:flex;flex-direction:column;gap:4px;max-width:340px}
+.tower li{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line2);border-radius:10px;padding:5px 14px;font-size:17px}
+.tower li b{font:600 15px/1 var(--display);color:var(--soft);min-width:4.2em}
+.tower li span{font-size:27px;line-height:1.2}
+.tower .roof{border:0;background:none;justify-content:center;font-size:26px;padding:0}
+
+/* items */
+.items{list-style:none;counter-reset:it;display:flex;flex-direction:column}
+.item{counter-increment:it;display:grid;grid-template-columns:2rem minmax(0,1fr);gap:6px 10px;padding-block:16px;border-bottom:1px solid var(--line)}
+.item::before{content:counter(it);font:600 15px/2 var(--display);color:var(--soft);grid-row:1/span 4}
+.item > *{grid-column:2;min-width:0}
+.q{font-size:19px;line-height:1.8;display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px}
+.q > span.t{flex:1 1 200px;min-width:0}
+.blank{display:inline-block;min-width:5ch;border-bottom:3px solid var(--line2);text-align:center;line-height:1.3;padding-inline:3px}
+.blank.filled{border-color:var(--good);color:var(--good);font-weight:600}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opt{border:1px solid var(--line2);background:var(--surface);border-radius:12px;padding:8px 18px;font-size:18px;text-align:left}
+.opt:hover:not([aria-disabled="true"]){border-color:var(--accent)}
+.opt.no{border-style:dashed;border-color:var(--bad);background:var(--bad-bg);color:var(--soft)}
+.opt.yes{border-color:var(--good);background:var(--good-bg);font-weight:600}
+.opt[aria-disabled="true"]{cursor:default}
+.why{font-size:15.5px;color:var(--soft)}
+.why:empty{display:none}
+.ok{color:var(--good);font-weight:600}
+.fact{background:var(--tint);border:2px dashed var(--line2);border-radius:18px;padding:14px 18px;display:flex;gap:14px;align-items:center}
+.fact .pic{font-size:36px;line-height:1}
+.fact b{font:600 16px/1.2 var(--display);display:block;color:var(--accent)}
+
+/* sort into bins */
+.pool{display:flex;flex-wrap:wrap;gap:8px;min-height:48px}
+.chip{border:1px solid var(--line2);background:var(--surface);border-radius:12px;padding:8px 16px;font:500 19px/1.2 var(--display)}
+.chip:hover{border-color:var(--accent)}
+.chip[aria-pressed="true"]{background:var(--tint);border-color:var(--accent);box-shadow:0 0 0 2px var(--accent)}
+.bins{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:12px}
+.bin{background:var(--surface);border:2px dashed var(--line2);border-radius:18px;padding:12px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.bin-btn{border:1px solid var(--line2);background:var(--sunk);border-radius:12px;padding:10px 12px;font:600 18px/1.3 var(--display);text-align:left}
+.bin-btn:hover{border-color:var(--accent)}
+.bin-btn small{display:block;font:400 14.5px/1.3 var(--body);color:var(--soft)}
+.bin-list{display:flex;flex-wrap:wrap;gap:6px;min-height:36px}
+.bin-list span{background:var(--good-bg);border:1px solid var(--good);border-radius:10px;padding:4px 12px;font:500 17px/1.3 var(--display)}
+
+/* look and say */
+.looks{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:10px;list-style:none}
+.look{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:12px 14px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.look .pic{font-size:30px;line-height:1.3;letter-spacing:3px}
+.look .ans{font:500 18px/1.4 var(--display);display:flex;gap:8px;align-items:center}
+
+/* reading */
+.read{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:22px clamp(18px,4vw,30px) 24px;display:flex;flex-direction:column;gap:12px}
+.read h3{font-size:clamp(23px,3.6vw,28px)}
+.read p{max-width:60ch;font-size:19px;line-height:1.85}
+
+/* my home builder and talk cards */
+.frames{list-style:none;display:flex;flex-direction:column;gap:14px}
+.frames li{display:flex;flex-direction:column;gap:8px}
+.frames p{font:500 19px/1.4 var(--display)}
+.mine{background:var(--mark);border-radius:18px;padding:16px 20px;font:500 20px/1.7 var(--display)}
+.talks{display:flex;flex-direction:column;gap:10px}
+.talks details{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:0 18px}
+.talks summary{cursor:pointer;padding-block:13px;font:600 18px/1.3 var(--display);list-style:none;display:flex;justify-content:space-between;gap:12px}
+.talks summary::-webkit-details-marker{display:none}
+.talks summary::after{content:"Open";font:500 14.5px/1.6 var(--body);color:var(--accent)}
+.talks details[open] summary::after{content:""}
+.talks .tq{font-size:20px;padding-bottom:6px}
+.talks .start{color:var(--soft);padding-bottom:14px}
+.talks .start b{color:var(--text);font-weight:600}
+
+/* homework slot, writing, drawing */
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr));gap:12px}
+.field{display:flex;flex-direction:column;gap:4px;min-width:0}
+.field label{font-weight:600;font-size:16px}
+.field input,.field textarea,.wline input{width:100%;border:1px solid var(--line2);border-radius:12px;background:var(--surface);padding:9px 12px;font-size:18px;line-height:1.4}
+.field textarea{min-height:92px;resize:vertical}
+.steps{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,170px),1fr));gap:10px}
+.step{width:100%;height:100%;display:flex;flex-direction:column;gap:2px;text-align:left;border:1px solid var(--line2);background:var(--surface);border-radius:16px;padding:12px 14px;font:600 17px/1.3 var(--display)}
+.step .pic{font-size:26px}
+.step small{font:italic 400 14.5px/1.3 var(--body);color:var(--soft)}
+.step[aria-pressed="true"]{background:var(--good-bg);border-color:var(--good)}
+.step[aria-pressed="true"] .pic::after{content:" ✓";color:var(--good)}
+.wlines{list-style:none;display:flex;flex-direction:column;gap:12px}
+.wline{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font:500 19px/1.4 var(--display)}
+.wline input{flex:1 1 200px;min-width:0;width:auto}
+.hw{list-style:none;display:flex;flex-direction:column;gap:12px}
+.hw li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px}
+.hw .tag{font:600 13px/1 var(--body);letter-spacing:.06em;text-transform:uppercase;background:var(--sunk);border-radius:8px;padding:8px 10px;align-self:flex-start;white-space:nowrap}
+.pad{display:flex;flex-direction:column;gap:10px}
+.pad canvas{width:100%;height:340px;border:2px dashed var(--line2);border-radius:18px;background:#fffbef;touch-action:none;display:block}
+.sw{width:34px;height:34px;border-radius:50%;border:2px solid var(--line2);padding:0;background:var(--c)}
+.sw[aria-pressed="true"]{box-shadow:0 0 0 3px var(--surface),0 0 0 5px var(--accent)}
+.btn[aria-pressed="true"]{background:var(--tint);border-color:var(--accent)}
+footer.fin{color:var(--soft);font-size:14.5px;border-top:1px solid var(--line2);padding-top:18px}
+
+/* teacher-only parts: each one sits between a pair of T comment markers, which the student-site script cuts out */
+.tbadge{align-self:flex-start;font:600 12.5px/1 var(--body);letter-spacing:.1em;text-transform:uppercase;background:var(--mark);border-radius:8px;padding:7px 10px}
+.tnote{border:1px dashed var(--line2);background:var(--mark);border-radius:12px;padding:12px 16px;font-size:15px;line-height:1.5;display:flex;flex-direction:column;gap:6px}
+.tnote b:first-child{font:600 12px/1.2 var(--body);letter-spacing:.1em;text-transform:uppercase}
+.tnote p{max-width:72ch}
+.key{font-size:14.5px;background:var(--mark);border-radius:6px;padding:2px 8px;justify-self:start;align-self:flex-start}
+[data-view="student"] .tnote,[data-view="student"] .key,[data-view="student"] .tbadge{display:none}
+/* lesson notes (teacher's page only) */
+.tn{border:1px dashed var(--line2);background:var(--mark);border-radius:12px;padding:10px 14px 12px;display:flex;flex-direction:column;gap:8px;font-size:14.5px}
+.tn-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.tn-lab{font:600 12px/1.2 var(--body);letter-spacing:.1em;text-transform:uppercase;min-width:9.5em}
+.tn-chip{border:1px solid var(--line2);background:var(--surface);border-radius:999px;padding:4px 12px;font-size:14.5px;line-height:1.3}
+.tn-chip:hover{border-color:var(--accent)}
+.tn-chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-weight:600}
+.tn-text{width:100%;border:1px solid var(--line2);border-radius:8px;background:var(--surface);padding:6px 10px;font-size:15px}
+.tn-final{display:flex;flex-direction:column;gap:16px;border-top:3px dotted var(--line2);padding-top:20px;scroll-margin-top:104px}
+.tn-final h2{font-size:clamp(25px,4vw,31px);line-height:1.15}
+.tn-field{display:flex;flex-direction:column;gap:6px}
+.tn-field label{font-weight:600}
+.tn-field textarea{width:100%;min-height:130px;border:1px solid var(--line2);border-radius:8px;background:var(--surface);padding:10px 12px;font-size:16.5px;line-height:1.5;resize:vertical}
+.tn-sum table{border-collapse:collapse;width:100%;min-width:480px;font-size:15px}
+.tn-sum th,.tn-sum td{text-align:left;vertical-align:top;padding:7px 10px 7px 0;border-top:1px solid var(--line)}
+.tn-sum th{font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);font-weight:600;border-top:0}
+.tn-sum td:first-child{color:var(--soft);font-variant-numeric:tabular-nums;width:2em}
+.tn-status{font-size:14.5px;color:var(--soft)}
+.tn-out{width:100%;min-height:160px;border:1px solid var(--line2);border-radius:8px;background:var(--surface);padding:10px 12px;font:14px/1.45 ui-monospace,Menlo,monospace}
+/* lesson timer (teacher's page only) */
+.tmr{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;margin-top:-40px;margin-bottom:-32px;background:var(--surface);border:1px solid var(--line2);border-top:0;border-radius:0 0 14px 14px;padding:8px 12px 10px;display:flex;flex-direction:column;gap:8px;box-shadow:0 6px 18px rgb(0 0 0 / .14)}
+.tm-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;min-width:0}
+.tm-go{flex:none;border:0;border-radius:10px;background:var(--accent);color:var(--on-accent);font-weight:600;padding:6px 14px;min-width:5.6em}
+.tm-clock{flex:none;font:600 19px/1 var(--display);font-variant-numeric:tabular-nums}
+.tm-clock small{font-size:13px;font-weight:500;color:var(--soft)}
+.tm-clock.over{color:var(--bad)}
+.tm-now{flex:1;min-width:0;font-size:14.5px;color:var(--soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tm-reset{flex:none;border:1px solid var(--line2);background:none;border-radius:10px;padding:5px 10px;font-size:14px}
+.tm-bar{display:flex;gap:3px;height:24px}
+.tm-seg{position:relative;flex-basis:0;min-width:0;border-radius:6px;overflow:hidden;background:color-mix(in srgb,var(--c) 32%,#fdf6e3);color:#3c474d;text-decoration:none;font:600 12px/24px var(--body);text-align:center}
+.tm-seg i{position:absolute;inset:0 auto 0 0;width:0;background:color-mix(in srgb,var(--c) 80%,#fff)}
+.tm-seg b{position:relative}
+.tm-seg.now{box-shadow:inset 0 0 0 2px #3c474d}
+[data-view="student"] .sec{scroll-margin-top:104px}
+@media (max-width:520px){ .tm-now{display:none} .tm-row{justify-content:space-between} }
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.shake{animation:shake .28s ease}
+@media (prefers-reduced-motion: reduce){ *{transition:none!important;animation:none!important;scroll-behavior:auto!important} }
+</style>
+
+<main class="page" data-view="student">
+
+
+  <header class="mast">
+    <h1>Home, <span>room by room</span></h1>
+    <p class="dek">First we do your school homework together. Then: rooms, numbers like <i>first</i> and <i>second</i>, the sound <i>th</i>, <i>There is</i> and <i>There are</i>, and a house for ants. Take your time. Nothing here is on a clock.</p>
+    <p class="ru" lang="ru">Сначала школьная домашка, потом комнаты, числа и домик для муравьёв. Не спеши.</p>
+    <div class="colony" role="status" aria-label="Your ant colony">
+      <b>Your ant colony <span id="colony-count"></span></b>
+      <div class="ants" id="ants"></div>
+    </div>
+  </header>
+
+  <nav aria-label="Contents"><ol class="toc" id="toc"></ol></nav>
+
+
+  <!-- 1 -->
+  <section class="sec" id="hw" data-title="School homework first">
+    <header class="sec-head">
+      <span class="sec-no">1</span>
+      <div class="sec-title"><h2>School homework first</h2><p class="lede">Open your book and your diary. What is your homework? Write it here, then we do it step by step.</p><p class="ru" lang="ru">Открой учебник и дневник. Запиши, что задали, и сделаем по шагам.</p></div>
+    </header>
+    <div class="panel">
+      <div class="fields">
+        <div class="field"><label for="hw-page">Page</label><input type="text" id="hw-page" autocomplete="off" inputmode="numeric" placeholder="46"></div>
+        <div class="field"><label for="hw-ex">Exercise</label><input type="text" id="hw-ex" autocomplete="off" placeholder="2"></div>
+        <div class="field"><label for="hw-wb">Workbook?</label><input type="text" id="hw-wb" autocomplete="off" placeholder="page, exercise"></div>
+      </div>
+      <ol class="steps" id="hw-steps"></ol>
+      <div class="field"><label for="hw-words">New words from my homework</label><textarea id="hw-words" placeholder="Write the new words here"></textarea></div>
+    </div>
+    <h3 class="sub">Ask for help in English</h3>
+    <p class="ru" lang="ru">Нажми 🔊, послушай и повтори. Эти фразы пригодятся и в школе.</p>
+    <ul class="plain big">
+      <li class="line"><span data-say>Can you help me, please?</span></li>
+      <li class="line"><span data-say>I don&rsquo;t understand this word.</span></li>
+      <li class="line"><span data-say>Can you say it again, please?</span></li>
+      <li class="line"><span data-say>Is this right?</span></li>
+      <li class="line"><span data-say>I&rsquo;m ready.</span></li>
+    </ul>
+  </section>
+
+  <!-- 2 -->
+  <section class="sec" id="rooms" data-title="Rooms">
+    <header class="sec-head">
+      <span class="sec-no">2</span>
+      <div class="sec-title"><h2>Rooms</h2><p class="lede">Tap a room and listen. Say the word. Then choose the right room.</p><p class="ru" lang="ru">Нажми на комнату, послушай и скажи слово. Потом выбери комнату.</p></div>
+      <span class="score" data-score="rooms"></span>
+    </header>
+    <ul class="cards" id="room-cards"></ul>
+    <ol class="items" id="rooms-list"></ol>
+    <div class="fact" data-fact="rooms" hidden><span class="pic">🐜</span><p><b>Did you know?</b>Ants live in very big families. An ant home under the ground can have hundreds of rooms.</p></div>
+    <div class="tools"><button type="button" class="btn" id="rooms-reset">Again</button></div>
+  </section>
+
+  <!-- 3 -->
+  <section class="sec" id="ord" data-title="First, second, third">
+    <header class="sec-head">
+      <span class="sec-no">3</span>
+      <div class="sec-title"><h2>First, second, third</h2><p class="lede">These numbers show the order: floor 1 is the <i>first</i> floor. Tap a number and listen. The yellow ones are special: look at the spelling.</p><p class="ru" lang="ru">Порядковые числа: первый, второй, третий… Жёлтые пишутся по-особому.</p></div>
+      <span class="score" data-score="ord"></span>
+    </header>
+    <ul class="nums" id="nums"></ul>
+    <h3 class="sub">The animal tower</h3>
+    <p class="ru" lang="ru">Посмотри, кто на каком этаже живёт, и выбери слово.</p>
+    <ol class="tower" aria-label="A tower with six floors">
+      <li class="roof" aria-hidden="true">🏠</li>
+      <li><b>floor 6</b><span>🦉</span> the owl</li>
+      <li><b>floor 5</b><span>🐈</span> the cat</li>
+      <li><b>floor 4</b><span>🐜</span> the ant</li>
+      <li><b>floor 3</b><span>🦊</span> the fox</li>
+      <li><b>floor 2</b><span>🐕</span> the dog</li>
+      <li><b>floor 1</b><span>🐢</span> the turtle</li>
+    </ol>
+    <ol class="items" id="ord-list"></ol>
+    <div class="fact" data-fact="ord" hidden><span class="pic">🐈</span><p><b>Did you know?</b>A cat sleeps for twelve to sixteen hours a day.</p></div>
+    <div class="tools"><button type="button" class="btn" id="ord-reset">Again</button></div>
+  </section>
+
+  <!-- 4 -->
+  <section class="sec" id="sounds" data-title="The sound th">
+    <header class="sec-head">
+      <span class="sec-no">4</span>
+      <div class="sec-title"><h2>The sound <i>th</i></h2><p class="lede">Put your tongue between your teeth. There are two <i>th</i> sounds: a quiet one, like in <b>three</b>, and a buzzing one, like in <b>this</b>.</p><p class="ru" lang="ru">Кончик языка между зубами. Есть тихий звук (three) и звонкий, с голосом (this).</p></div>
+      <span class="score" data-score="sounds"></span>
+    </header>
+    <div class="pool" id="th-pool" role="group" aria-label="Words to sort"></div>
+    <p class="why" id="th-msg" aria-live="polite"></p>
+    <div class="bins" id="th-bins"></div>
+    <h3 class="sub">Listen and say</h3>
+    <ul class="plain big">
+      <li class="line"><span data-say>This is the third floor.</span></li>
+      <li class="line"><span data-say>There are three bathrooms.</span></li>
+      <li class="line"><span data-say>My brother is in the bathroom.</span></li>
+      <li class="line"><span data-say>Thank you for this!</span></li>
+    </ul>
+    <div class="fact" data-fact="sounds" hidden><span class="pic">🐙</span><p><b>Did you know?</b>An octopus has got three hearts.</p></div>
+    <div class="tools"><button type="button" class="btn" id="th-reset">Again</button></div>
+  </section>
+
+  <!-- 5 -->
+  <section class="sec" id="grammar" data-title="There is / There are">
+    <header class="sec-head">
+      <span class="sec-no">5</span>
+      <div class="sec-title"><h2>There is / There are</h2><p class="lede">We use these words to say what is in a place.</p><p class="ru" lang="ru">Так мы говорим, что где находится: «В комнате есть…»</p></div>
+      <span class="score" data-score="grammar"></span>
+    </header>
+    <div class="grid2">
+      <div class="panel"><h3>One thing</h3><p class="big"><span class="hl">There is</span> <span class="hl">a</span> bed.</p><p class="big"><span class="hl">There is</span> <span class="hl">an</span> ant farm.</p><p class="ru" lang="ru">Один предмет: There is a…</p></div>
+      <div class="panel"><h3>Two, three, four&hellip;</h3><p class="big"><span class="hl">There are</span> two bed<span class="hl">s</span>.</p><p class="big"><span class="hl">There are</span> five room<span class="hl">s</span>.</p><p class="ru" lang="ru">Несколько: There are… и -s в конце слова.</p></div>
+    </div>
+    <ol class="items" id="grammar-list"></ol>
+    <h3 class="sub">Look and say</h3>
+    <p class="ru" lang="ru">Посмотри на картинку и скажи предложение. Потом нажми Check.</p>
+    <ul class="looks" id="looks"></ul>
+    <div class="fact" data-fact="grammar" hidden><span class="pic">🌍</span><p><b>Did you know?</b>There are ants in every part of the world, but there are no ants in Antarctica.</p></div>
+    <div class="tools"><button type="button" class="btn" id="grammar-reset">Again</button></div>
+  </section>
+
+  <!-- 6 -->
+  <section class="sec" id="listen" data-title="Listen">
+    <header class="sec-head">
+      <span class="sec-no">6</span>
+      <div class="sec-title"><h2>Listen</h2><p class="lede">Press 🔊 and listen to the sentence. You can listen again and again. Then choose.</p><p class="ru" lang="ru">Нажми 🔊 и послушай. Можно слушать сколько хочешь раз.</p></div>
+      <span class="score" data-score="listen"></span>
+    </header>
+    <ol class="items" id="listen-list"></ol>
+    <div class="fact" data-fact="listen" hidden><span class="pic">🐘</span><p><b>Did you know?</b>An elephant can&rsquo;t jump.</p></div>
+    <div class="tools"><button type="button" class="btn" id="listen-reset">Again</button></div>
+  </section>
+
+  <!-- 7 -->
+  <section class="sec" id="read" data-title="Antville">
+    <header class="sec-head">
+      <span class="sec-no">7</span>
+      <div class="sec-title"><h2>Antville</h2><p class="lede">Read about Mila&rsquo;s ant farm. Then say: true or false?</p><p class="ru" lang="ru">Прочитай про муравьиную ферму Милы. Потом реши: правда или нет?</p></div>
+      <span class="score" data-score="read"></span>
+    </header>
+    <article class="read">
+      <h3>Antville</h3>
+      <p>Hi! I&rsquo;m Mila. I&rsquo;m eleven. This is my ant farm. Its name is Antville. It is a house for ants, and it is in my bedroom.</p>
+      <p>There are five rooms in Antville. The first room is the kitchen. There is food and water in it. The second room is the dining room. The ants eat there. The third room is very big. The queen lives in this room. There are many small white eggs in the fourth room. The fifth room is the garden. The ants walk there in the morning.</p>
+    </article>
+    <ol class="items" id="read-list"></ol>
+    <div class="fact" data-fact="read" hidden><span class="pic">👂</span><p><b>Did you know?</b>Ants haven&rsquo;t got ears. They feel sounds with their legs.</p></div>
+    <div class="tools"><button type="button" class="btn" id="read-reset">Again</button></div>
+  </section>
+
+  <!-- 8 -->
+  <section class="sec" id="speak" data-title="My home">
+    <header class="sec-head">
+      <span class="sec-no">8</span>
+      <div class="sec-title"><h2>My home</h2><p class="lede">Step 1: choose the words that are true for you. Step 2: read your text aloud. Step 3: answer the cards.</p><p class="ru" lang="ru">Выбери слова про себя, прочитай свой текст вслух, потом открой карточки.</p></div>
+    </header>
+    <ol class="frames" id="frames"></ol>
+    <div class="mine" id="mine" aria-live="polite"></div>
+    <div class="tools"><button type="button" class="btn" id="mine-say">🔊 Listen to my text</button></div>
+    <h3 class="sub">Cards</h3>
+    <div class="talks" id="talks"></div>
+  </section>
+
+  <!-- 9 -->
+  <section class="sec" id="write" data-title="Write">
+    <header class="sec-head">
+      <span class="sec-no">9</span>
+      <div class="sec-title"><h2>Write</h2><p class="lede">Finish three sentences about your room.</p><p class="ru" lang="ru">Допиши три предложения про свою комнату.</p></div>
+    </header>
+    <ol class="wlines">
+      <li class="wline"><label for="w1">In my room there is</label><input type="text" id="w1" autocomplete="off" placeholder="a …"></li>
+      <li class="wline"><label for="w2">In my room there are</label><input type="text" id="w2" autocomplete="off" placeholder="two …"></li>
+      <li class="wline"><label for="w3">My favourite room is</label><input type="text" id="w3" autocomplete="off" placeholder="the …"></li>
+    </ol>
+  </section>
+
+  <!-- 10 -->
+  <section class="sec" id="home" data-title="For next time">
+    <header class="sec-head">
+      <span class="sec-no">10</span>
+      <div class="sec-title"><h2>For next time</h2><p class="lede">One small thing to draw and one thing to say.</p></div>
+    </header>
+    <ul class="hw">
+      <li><span class="tag">Draw</span><div><b>My dream room.</b> Draw it here or on paper. It can be a room in a Minecraft house! Write the names of five things in it.<p class="ru" lang="ru">Нарисуй комнату мечты и подпиши пять предметов.</p></div></li>
+      <li><span class="tag">Say</span><div>Get ready to tell me three things about your picture: <i>There is a&hellip;</i> / <i>There are&hellip;</i></div></li>
+      <li><span class="tag">School</span><div>Write your new school homework in your diary and bring your book next time.</div></li>
+    </ul>
+    <div class="pad">
+      <div class="tools" id="pad-tools" role="group" aria-label="Drawing tools"></div>
+      <canvas id="pad" aria-label="Drawing pad"></canvas>
+    </div>
+  </section>
+
+</main>
+
+<script>
+(function(){
+  'use strict';
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+  // the teacher's page shows the answers; scripts/student-site.sh turns data-view into "student"
+  const TEACHER = (($('main.page') || document.body).getAttribute('data-view')) === 'teacher';
+
+  // lesson timer: one coloured segment per section, as long as that section's minutes
+  if (TEACHER && $('#tmr')) (function(){
+    const box = $('#tmr'), go = $('#tm-go'), clock = $('#tm-clock'), now = $('#tm-now'), bar = $('#tm-bar');
+    const COLORS = ['#3a94c5', '#8da101', '#dfa000', '#f57d26', '#df69ba', '#35a77c', '#f85552', '#a7c080', '#7fbbb3', '#d699b6'];
+    const KEY = 'lesson-timer:' + document.title;
+    const fmt = s => Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0');
+    let from = 0;
+    const segs = box.dataset.segs.split(',').map((part, i) => {
+      const bits = part.split(':'), sec = document.getElementById(bits[0]), len = (+bits[1] || 1) * 60;
+      const a = document.createElement('a'), fill = document.createElement('i'), num = document.createElement('b');
+      const title = (sec && sec.dataset.title) || bits[0];
+      a.className = 'tm-seg'; a.href = '#' + bits[0];
+      a.style.flexGrow = len; a.style.setProperty('--c', COLORS[i % COLORS.length]);
+      a.title = (i + 1) + '. ' + title + ' · ' + (len / 60) + ' min';
+      a.setAttribute('aria-label', a.title);
+      num.textContent = i + 1;
+      a.append(fill, num); bar.append(a);
+      const seg = {a, fill, title, n: i + 1, from, len};
+      from += len;
+      return seg;
+    });
+    const total = from;
+    let base = 0, t0 = null, tick = null;
+    try {
+      const saved = JSON.parse(localStorage.getItem(KEY) || 'null');
+      if (saved && (!saved.t0 || (Date.now() - saved.t0) / 1000 + saved.base < total + 1800)) { base = +saved.base || 0; t0 = saved.t0 || null; }
+    } catch (e) {}
+    const save = () => { try { localStorage.setItem(KEY, JSON.stringify({base, t0})); } catch (e) {} };
+    const elapsed = () => base + (t0 ? (Date.now() - t0) / 1000 : 0);
+    function render(){
+      const s = elapsed();
+      clock.innerHTML = '';
+      const small = document.createElement('small');
+      small.textContent = ' / ' + fmt(total);
+      clock.append(fmt(s), small);
+      clock.classList.toggle('over', s >= total);
+      let cur = null;
+      segs.forEach(g => {
+        const done = Math.max(0, Math.min(1, (s - g.from) / g.len));
+        g.fill.style.width = (done * 100) + '%';
+        const on = s >= g.from && s < g.from + g.len && (t0 || s > 0);
+        g.a.classList.toggle('now', !!on);
+        if (on) cur = g;
+      });
+      now.textContent = cur ? cur.n + '. ' + cur.title + ' · ' + fmt(cur.from + cur.len - s + 0.999) + ' left'
+        : s >= total ? 'Time is up · ' + fmt(s - total) + ' over' : segs.length + ' sections';
+      go.textContent = t0 ? 'Pause' : s > 0 ? 'Continue' : 'Start';
+    }
+    function run(){ clearInterval(tick); if (t0) tick = setInterval(render, 500); render(); }
+    go.addEventListener('click', () => {
+      if (t0) { base = elapsed(); t0 = null; } else { t0 = Date.now(); }
+      save(); run();
+    });
+    $('#tm-reset').addEventListener('click', () => { base = 0; t0 = null; save(); run(); });
+    run();
+  })();
+
+  // lesson notes: a quick strip under every section, a notes block at the bottom, saved as one file
+  if (TEACHER && $('#tmr') && $('#tmr').dataset.notes) (function(){
+    const where = $('#tmr').dataset.notes.split('/');           // student / lesson folder
+    const FILE = where.join('-') + '-notes.md';
+    const KEY = 'lesson-notes:' + where.join('/');
+    const MARKS = ['Easy', 'OK', 'Hard', 'Skipped'];
+    const TAGS = ['Grammar', 'Words', 'Pronunciation', 'Speaking', 'Understanding', 'Too slow'];
+    const HW = ['Done', 'Partly', 'Not done'];
+    let st = {sec: {}, hw: '', went: '', next: ''};
+    try {
+      const saved = JSON.parse(localStorage.getItem(KEY) || 'null');
+      if (saved && typeof saved === 'object') st = Object.assign(st, saved, {sec: saved.sec || {}});
+    } catch (e) {}
+    const secs = $$('main.page > section.sec').map((sec, i) => ({id: sec.id, n: i + 1, title: sec.dataset.title || sec.id, sec}));
+    const of = id => st.sec[id] || (st.sec[id] = {mark: '', tags: [], text: ''});
+    const status = el('p', {class: 'tn-status', id: 'tn-status', role: 'status'});
+    const sumBody = el('tbody');
+    let dirty = false;
+    function changed(){
+      dirty = true;
+      try { localStorage.setItem(KEY, JSON.stringify(st)); } catch (e) {}
+      summary();
+      status.textContent = 'Kept in this browser. Press “Save notes” at the end of the lesson to make the file.';
+    }
+    function chip(label, id, isOn, toggle){
+      const b = el('button', {type: 'button', class: 'tn-chip', id, 'aria-pressed': String(isOn()), text: label});
+      b.addEventListener('click', () => { toggle(); changed(); b.closest('.tn-row').querySelectorAll('.tn-chip').forEach(x => x.setAttribute('aria-pressed', String(x._on()))); });
+      b._on = isOn;
+      return b;
+    }
+    function row(label, chips){ return el('div', {class: 'tn-row'}, el('span', {class: 'tn-lab', text: label}), ...chips); }
+
+    secs.forEach(s => {
+      const d = of(s.id);
+      const text = el('input', {type: 'text', class: 'tn-text', id: 'tn-' + s.id + '-text', placeholder: 'A quick note: what was hard, what to repeat', 'aria-label': 'Note for section ' + s.n, autocomplete: 'off'});
+      text.value = d.text || '';
+      text.addEventListener('input', () => { d.text = text.value; changed(); });
+      s.sec.append(el('div', {class: 'tn', role: 'group', 'aria-label': 'Notes for section ' + s.n},
+        row('How it went', MARKS.map(m => chip(m, 'tn-' + s.id + '-m-' + m.toLowerCase(), () => d.mark === m, () => { d.mark = d.mark === m ? '' : m; }))),
+        row('What was hard', TAGS.map(g => chip(g, 'tn-' + s.id + '-t-' + g.toLowerCase().replace(/\s+/g, '-'), () => d.tags.includes(g), () => { d.tags = d.tags.includes(g) ? d.tags.filter(x => x !== g) : d.tags.concat(g); }))),
+        text));
+    });
+
+    function summary(){
+      sumBody.replaceChildren(...secs.map(s => {
+        const d = of(s.id);
+        return el('tr', null, el('td', {text: String(s.n)}), el('td', {text: s.title}), el('td', {text: d.mark || '–'}), el('td', {text: d.tags.join(', ') || '–'}), el('td', {text: d.text || '–'}));
+      }));
+    }
+    function area(id, label, key, hint){
+      const ta = el('textarea', {id, placeholder: hint});
+      ta.value = st[key] || '';
+      ta.addEventListener('input', () => { st[key] = ta.value; changed(); });
+      return el('div', {class: 'tn-field'}, el('label', {for: id, text: label}), ta);
+    }
+    const cell = v => String(v || '–').replace(/\|/g, '/').replace(/\s*\n\s*/g, ' ');
+    function markdown(){
+      const now = new Date(), two = n => String(n).padStart(2, '0');
+      const stamp = now.getFullYear() + '-' + two(now.getMonth() + 1) + '-' + two(now.getDate()) + ' ' + two(now.getHours()) + ':' + two(now.getMinutes());
+      const lines = ['# Lesson notes: ' + document.title, '',
+        'Lesson folder: ' + where.join('/') + '. Notes saved ' + stamp + '.', '',
+        '## Section by section', '',
+        '| # | Section | How it went | What was hard | Note |', '|---|---|---|---|---|'];
+      secs.forEach(s => { const d = of(s.id); lines.push('| ' + [s.n, cell(s.title), cell(d.mark), cell(d.tags.join(', ')), cell(d.text)].join(' | ') + ' |'); });
+      lines.push('', '## Homework brought to this lesson', '', st.hw || 'Not marked.', '',
+        '## How the lesson went', '', (st.went || '').trim() || 'No notes.', '',
+        '## Practise next time', '', (st.next || '').trim() || 'No notes.', '');
+      return lines.join('\n');
+    }
+    const out = el('textarea', {class: 'tn-out', id: 'tn-out', readonly: '', hidden: '', 'aria-label': 'Your notes as text'});
+    const save = el('button', {type: 'button', class: 'btn primary', id: 'tn-save', text: 'Save notes'});
+    save.addEventListener('click', () => {
+      try {
+        const a = el('a', {href: URL.createObjectURL(new Blob([markdown()], {type: 'text/markdown;charset=utf-8'})), download: FILE});
+        document.body.append(a); a.click(); a.remove();
+        setTimeout(() => { try { URL.revokeObjectURL(a.href); } catch (e) {} }, 4000);
+        dirty = false;
+        status.textContent = 'Saved as “' + FILE + '” in your Downloads folder. Tell Claude the lesson is done and it goes into the lesson folder.';
+      } catch (e) {
+        out.hidden = false; out.value = markdown(); out.focus(); out.select();
+        status.textContent = 'The file could not be saved here. Copy this text and send it to Claude.';
+      }
+    });
+    const copy = el('button', {type: 'button', class: 'btn', id: 'tn-copy', text: 'Copy notes'});
+    copy.addEventListener('click', () => {
+      const text = markdown();
+      const show = () => { out.hidden = false; out.value = text; out.focus(); out.select(); status.textContent = 'Press ⌘C to copy the notes.'; };
+      try { navigator.clipboard.writeText(text).then(() => { status.textContent = 'Notes copied.'; }, show); } catch (e) { show(); }
+    });
+    let armed = null;
+    const clear = el('button', {type: 'button', class: 'btn quiet', id: 'tn-clear', text: 'Clear notes'});
+    clear.addEventListener('click', () => {
+      if (!armed) { clear.textContent = 'Press again to clear everything'; armed = setTimeout(() => { armed = null; clear.textContent = 'Clear notes'; }, 4000); return; }
+      clearTimeout(armed);
+      try { localStorage.removeItem(KEY); } catch (e) {}
+      location.reload();
+    });
+
+    const fin = el('section', {class: 'tn-final', id: 'lesson-notes', 'aria-label': 'Lesson notes'},
+      el('h2', {text: 'Lesson notes'}),
+      el('div', {class: 'tn'}, row('Her homework', HW.map(h => chip(h, 'tn-hw-' + h.toLowerCase().replace(/\s+/g, '-'), () => st.hw === h, () => { st.hw = st.hw === h ? '' : h; })))),
+      area('tn-went', 'How the lesson went', 'went', 'Your thoughts about the lesson'),
+      area('tn-next', 'Practise next time', 'next', 'What to come back to in the next lessons'),
+      el('div', {class: 'tn-sum scroll'}, el('table', null, el('thead', null, el('tr', null, ...['#', 'Section', 'How it went', 'What was hard', 'Note'].map(h => el('th', {text: h})))), sumBody)),
+      el('div', {class: 'tools'}, save, copy, clear),
+      status, out);
+    const last = secs[secs.length - 1];
+    if (last) last.sec.after(fin); else $('main.page').append(fin);
+    summary();
+    status.textContent = 'Notes are kept in this browser while you work. Press “Save notes” at the end of the lesson.';
+  })();
+
+  function el(tag, props, ...kids){
+    const e = document.createElement(tag);
+    if (props) for (const k of Object.keys(props)){
+      const v = props[k];
+      if (v == null) continue;
+      if (k === 'class') e.className = v;
+      else if (k === 'text') e.textContent = v;
+      else e.setAttribute(k, v);
+    }
+    for (const k of kids) if (k != null) e.append(k);
+    return e;
+  }
+  // wrong-answer shake clears itself
+  function nudge(e){ e.classList.remove('shake'); void e.offsetWidth; e.classList.add('shake'); setTimeout(() => e.classList.remove('shake'), 400); }
+
+  // ---------- speech ----------
+  const synth = window.speechSynthesis;
+  let voice = null;
+  function pickVoice(){
+    try {
+      const vs = synth ? synth.getVoices() : [];
+      voice = vs.find(v => v.lang === 'en-GB') || vs.find(v => /^en[-_]GB/i.test(v.lang)) || vs.find(v => /^en[-_]/i.test(v.lang)) || null;
+    } catch (e) { voice = null; }
+  }
+  if (synth){ pickVoice(); try { synth.addEventListener('voiceschanged', pickVoice); } catch (e) {} }
+  function speak(text){
+    try {
+      if (!synth) return;
+      synth.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = 'en-GB'; if (voice) u.voice = voice; u.rate = 0.8;
+      synth.speak(u);
+    } catch (e) {}
+  }
+  const SPEAKER = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>';
+  function sayButton(text, id, label){
+    const b = el('button', {type: 'button', class: 'say', id: id, 'aria-label': label || ('Listen: ' + text)});
+    b.innerHTML = SPEAKER;
+    b.addEventListener('click', () => speak(text));
+    return b;
+  }
+  $$('[data-say]').forEach((node, i) => {
+    const text = node.textContent.replace(/\s+/g, ' ').trim();
+    node.parentNode.insertBefore(sayButton(text, 'say-' + (i + 1)), node);
+  });
+
+  // ---------- ants: one for every solved item; the colony keeps the best result, so "Again" never takes ants away ----------
+  const SCORE = {}, BEST = {};
+  function setScore(key, got, total){
+    SCORE[key] = {got, total};
+    BEST[key] = Math.max(BEST[key] || 0, got);
+    const s = $('.score[data-score="' + key + '"]');
+    if (s){ s.textContent = '🐜 ' + got + ' / ' + total; s.classList.toggle('full', got === total); }
+    const f = $('.fact[data-fact="' + key + '"]');
+    if (f) f.hidden = BEST[key] < total;
+    let G = 0, T = 0;
+    Object.keys(SCORE).forEach(k => { G += BEST[k]; T += SCORE[k].total; });
+    $('#ants').textContent = '🐜'.repeat(G);
+    $('#colony-count').textContent = '· ' + G + ' / ' + T;
+  }
+  $$('.sec').forEach(sec => { $('#toc').append(el('li', null, el('a', {href: '#' + sec.id, text: sec.dataset.title}))); });
+
+  // sentence with one ___ ; returns {frag, blank}
+  function withBlank(str, make){
+    const f = document.createDocumentFragment();
+    let blank = null;
+    str.split('___').forEach((part, i) => {
+      if (i > 0){ blank = make(); f.append(blank); }
+      if (part) f.append(document.createTextNode(part));
+    });
+    return {frag: f, blank};
+  }
+
+  // ---------- choose: {q (may have ___), o:[...], a:index, why?, say?} ; with "say" the sentence is only heard ----------
+  function buildMC(listId, items, key){
+    const list = $('#' + listId);
+    let state = [];
+    function score(){ setScore(key, state.filter(s => s.done).length, items.length); }
+    function render(){
+      list.replaceChildren();
+      state = items.map((it, i) => {
+        const st = {done: false};
+        const r = withBlank(it.q, () => el('span', {class: 'blank', 'aria-label': 'gap'}, ' '));
+        const li = el('li', {class: 'item'});
+        const t = el('span', {class: 't'}); t.append(r.frag);
+        const q = el('p', {class: 'q'});
+        if (it.say) q.append(sayButton(it.say, listId + '-' + i + '-say', 'Listen to sentence ' + (i + 1)));
+        q.append(t);
+        const opts = el('div', {class: 'opts', role: 'group', 'aria-label': 'Options for item ' + (i + 1)});
+        const why = el('p', {class: 'why', 'aria-live': 'polite'});
+        it.o.forEach((o, j) => {
+          const b = el('button', {type: 'button', class: 'opt', id: listId + '-' + i + '-' + j, text: o});
+          b.addEventListener('click', () => {
+            if (st.done || b.classList.contains('no')) return;
+            if (j === it.a){
+              st.done = true;
+              b.classList.add('yes');
+              $$('.opt', opts).forEach(x => x.setAttribute('aria-disabled', 'true'));
+              if (r.blank){ r.blank.textContent = o; r.blank.classList.add('filled'); }
+              why.replaceChildren(el('span', {class: 'ok', text: 'Yes! '}), it.why || it.say || '');
+            } else {
+              b.classList.add('no'); b.setAttribute('aria-label', o + ' (not this one)');
+              nudge(b);
+              why.textContent = it.say ? 'Not this one. Listen again.' : 'Not this one. Look again.';
+            }
+            score();
+          });
+          opts.append(b);
+        });
+        li.append(q, opts, why);
+        if (TEACHER) li.append(el('p', {class: 'key', text: 'Answer: ' + it.o[it.a] + (it.say ? ' · She hears: “' + it.say + '”' : '')}));
+        list.append(li);
+        return st;
+      });
+      score();
+    }
+    render();
+    return render;
+  }
+
+  // ---------- sort words into two boxes: tap a word (you hear it), then tap a box ----------
+  function buildSort(poolId, binsId, msgId, bins, words, key){
+    const pool = $('#' + poolId), wrap = $('#' + binsId), msg = $('#' + msgId);
+    function render(){
+      let picked = null, got = 0;
+      pool.replaceChildren(); wrap.replaceChildren(); msg.textContent = '';
+      const lists = {};
+      const chips = words.map((w, i) => {
+        const c = el('button', {type: 'button', class: 'chip', id: poolId + '-' + i, 'aria-pressed': 'false', text: w.w});
+        c.addEventListener('click', () => {
+          chips.forEach(x => x.setAttribute('aria-pressed', 'false'));
+          picked = {w, c}; c.setAttribute('aria-pressed', 'true');
+          speak(w.w); msg.textContent = 'Say “' + w.w + '”. Now tap its box.';
+        });
+        pool.append(c);
+        return c;
+      });
+      bins.forEach(b => {
+        const btn = el('button', {type: 'button', class: 'bin-btn', id: binsId + '-' + b.id}, b.label, el('small', {text: b.hint}));
+        const list = el('div', {class: 'bin-list'});
+        lists[b.id] = list;
+        btn.addEventListener('click', () => {
+          if (!picked){ msg.textContent = 'Tap a word first.'; return; }
+          if (picked.w.b === b.id){
+            list.append(el('span', {text: picked.w.w}));
+            picked.c.remove(); picked = null; got++;
+            msg.replaceChildren(el('span', {class: 'ok', text: got === words.length ? 'All the words are home!' : 'Yes!'}));
+            setScore(key, got, words.length);
+          } else {
+            nudge(picked.c);
+            msg.textContent = 'Listen again and try the other box.';
+            speak(picked.w.w);
+          }
+        });
+        const box = el('div', {class: 'bin'}, btn, list);
+        if (TEACHER) box.append(el('p', {class: 'key', text: 'Answers: ' + words.filter(w => w.b === b.id).map(w => w.w).join(', ')}));
+        wrap.append(box);
+      });
+      setScore(key, 0, words.length);
+    }
+    render();
+    return render;
+  }
+
+  // ================= content =================
+  // rooms
+  [['🛏️', 'bedroom', 'спальня'], ['🛁', 'bathroom', 'ванная'], ['🍳', 'kitchen', 'кухня'], ['🛋️', 'living room', 'гостиная'],
+   ['🍽️', 'dining room', 'столовая'], ['🚪', 'hall', 'прихожая'], ['🌳', 'garden', 'сад']].forEach((r, i) => {
+    const b = el('button', {type: 'button', class: 'card', id: 'room-' + i, 'aria-label': 'Listen: ' + r[1]},
+      el('span', {class: 'pic', text: r[0]}), el('span', {class: 'w', text: r[1]}), el('span', {class: 'ru', lang: 'ru', text: r[2]}));
+    b.addEventListener('click', () => speak(r[1]));
+    $('#room-cards').append(el('li', null, b));
+  });
+  const rooms = buildMC('rooms-list', [
+    {q: 'You sleep in the ___.', o: ['kitchen', 'bedroom', 'hall'], a: 1},
+    {q: 'You cook in the ___.', o: ['kitchen', 'bedroom', 'hall'], a: 0},
+    {q: 'You wash your hands in the ___.', o: ['garden', 'living room', 'bathroom'], a: 2},
+    {q: 'The sofa and the TV are in the ___.', o: ['living room', 'bathroom', 'hall'], a: 0},
+    {q: 'The family eats dinner in the ___.', o: ['bathroom', 'dining room', 'bedroom'], a: 1},
+    {q: 'The trees and flowers are in the ___.', o: ['hall', 'kitchen', 'garden'], a: 2}
+  ], 'rooms');
+  $('#rooms-reset').addEventListener('click', rooms);
+
+  // ordinal numbers
+  const ORD = ['first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eighth', 'ninth', 'tenth', 'eleventh', 'twelfth', 'thirteenth', 'fourteenth', 'fifteenth', 'sixteenth', 'seventeenth', 'eighteenth', 'nineteenth', 'twentieth'];
+  const ODD = [1, 2, 3, 5, 8, 9, 12, 20];
+  ORD.forEach((w, i) => {
+    const n = i + 1, short = n + (n === 1 ? 'st' : n === 2 ? 'nd' : n === 3 ? 'rd' : 'th');
+    const b = el('button', {type: 'button', class: 'num' + (ODD.includes(n) ? ' odd' : ''), id: 'num-' + n, 'aria-label': 'Listen: ' + w}, el('b', {text: short}), w);
+    b.addEventListener('click', () => speak(w));
+    $('#nums').append(el('li', null, b));
+  });
+  const ord = buildMC('ord-list', [
+    {q: 'The turtle lives on the ___ floor.', o: ['first', 'second', 'third'], a: 0},
+    {q: 'The fox lives on the ___ floor.', o: ['second', 'third', 'fourth'], a: 1},
+    {q: 'The dog lives on the ___ floor.', o: ['first', 'second', 'sixth'], a: 1},
+    {q: 'The ant lives on the ___ floor.', o: ['third', 'fifth', 'fourth'], a: 2},
+    {q: 'The owl lives on the ___ floor.', o: ['fifth', 'sixth', 'first'], a: 1}
+  ], 'ord');
+  $('#ord-reset').addEventListener('click', ord);
+
+  // th sounds
+  const th = buildSort('th-pool', 'th-bins', 'th-msg',
+    [{id: 'q', label: 'Quiet th', hint: 'like three'}, {id: 'b', label: 'Buzzing th', hint: 'like this'}],
+    [{w: 'third', b: 'q'}, {w: 'mother', b: 'b'}, {w: 'bathroom', b: 'q'}, {w: 'there', b: 'b'}, {w: 'fifth', b: 'q'}, {w: 'brother', b: 'b'}, {w: 'thank you', b: 'q'}, {w: 'that', b: 'b'}],
+    'sounds');
+  $('#th-reset').addEventListener('click', th);
+
+  // there is / there are
+  const grammar = buildMC('grammar-list', [
+    {q: 'There ___ a sofa in the living room.', o: ['is', 'are'], a: 0, why: 'One sofa.'},
+    {q: 'There ___ two beds in the bedroom.', o: ['is', 'are'], a: 1, why: 'Two beds.'},
+    {q: 'There ___ a big table in the kitchen.', o: ['is', 'are'], a: 0, why: 'One table.'},
+    {q: 'There ___ four chairs in the dining room.', o: ['is', 'are'], a: 1, why: 'Four chairs.'},
+    {q: 'There ___ an ant farm on my desk.', o: ['is', 'are'], a: 0, why: 'One ant farm.'},
+    {q: 'There ___ three cats in the garden.', o: ['is', 'are'], a: 1, why: 'Three cats.'}
+  ], 'grammar');
+  const LOOKS = [['🛏️', 1, 'There is a bed.'], ['🪑', 2, 'There are two chairs.'], ['🐈', 1, 'There is a cat.'], ['📚', 4, 'There are four books.'], ['💡', 1, 'There is a lamp.'], ['🖼️', 3, 'There are three pictures.']];
+  function looks(){
+    const box = $('#looks');
+    box.replaceChildren();
+    LOOKS.forEach((k, i) => {
+      const ans = el('p', {class: 'ans', hidden: ''}, sayButton(k[2], 'look-' + i + '-say'), el('span', {text: k[2]}));
+      const check = el('button', {type: 'button', class: 'btn', id: 'look-' + i, text: 'Check'});
+      check.addEventListener('click', () => { ans.hidden = false; check.hidden = true; });
+      const li = el('li', {class: 'look'}, el('span', {class: 'pic', role: 'img', 'aria-label': k[1] + ' in the picture', text: Array(k[1]).fill(k[0]).join(' ')}), check, ans);
+      if (TEACHER) li.append(el('p', {class: 'key', text: 'Answer: ' + k[2]}));
+      box.append(li);
+    });
+  }
+  looks();
+  $('#grammar-reset').addEventListener('click', () => { grammar(); looks(); });
+
+  // listening
+  const listen = buildMC('listen-list', [
+    {q: 'How many bedrooms are there?', say: 'There are three bedrooms in the house.', o: ['two', 'three', 'thirteen'], a: 1},
+    {q: 'Where is the bathroom?', say: 'The bathroom is on the second floor.', o: ['on the first floor', 'on the second floor', 'on the seventh floor'], a: 1},
+    {q: 'How many trees are there in the garden?', say: 'There is a big garden with five trees.', o: ['four', 'five', 'nine'], a: 1}
+  ], 'listen');
+  $('#listen-reset').addEventListener('click', listen);
+
+  // reading
+  const read = buildMC('read-list', [
+    {q: 'Antville is in the kitchen.', o: ['True', 'False'], a: 1, why: 'It is in Mila’s bedroom.'},
+    {q: 'There are five rooms in Antville.', o: ['True', 'False'], a: 0, why: '“There are five rooms in Antville.”'},
+    {q: 'The queen lives in the second room.', o: ['True', 'False'], a: 1, why: 'The queen lives in the third room.'},
+    {q: 'The eggs are in the fourth room.', o: ['True', 'False'], a: 0, why: '“There are many small white eggs in the fourth room.”'},
+    {q: 'The ants walk in the garden in the evening.', o: ['True', 'False'], a: 1, why: 'They walk there in the morning.'}
+  ], 'read');
+  $('#read-reset').addEventListener('click', read);
+
+  // my home: choose the words, read the text
+  const FRAMES = [
+    {t: 'I live in ___.', o: ['a flat', 'a house']},
+    {t: 'There are ___ rooms in my home.', o: ['two', 'three', 'four', 'five', 'six']},
+    {t: 'My favourite room is ___.', o: ['my bedroom', 'the kitchen', 'the living room']},
+    {t: 'In my bedroom there is ___.', o: ['a bed', 'a desk', 'a computer', 'a wardrobe']},
+    {t: 'My ant farm is in ___.', o: ['my bedroom', 'the living room', 'the hall']},
+    {t: 'My cat sleeps ___.', o: ['on my bed', 'on the sofa', 'in the kitchen']}
+  ];
+  const chosen = FRAMES.map(() => null);
+  function mine(){
+    $('#mine').textContent = FRAMES.map((f, i) => f.t.replace('___', chosen[i] || '…')).join(' ');
+  }
+  FRAMES.forEach((f, i) => {
+    const r = withBlank(f.t, () => el('span', {class: 'blank'}, ' '));
+    const p = el('p'); p.append(r.frag);
+    const opts = el('div', {class: 'opts', role: 'group', 'aria-label': 'Words for sentence ' + (i + 1)});
+    f.o.forEach((o, j) => {
+      const b = el('button', {type: 'button', class: 'chip', id: 'frame-' + i + '-' + j, 'aria-pressed': 'false', text: o});
+      b.addEventListener('click', () => {
+        chosen[i] = chosen[i] === o ? null : o;
+        $$('.chip', opts).forEach(x => x.setAttribute('aria-pressed', String(x.textContent === chosen[i])));
+        r.blank.textContent = chosen[i] || ' '; r.blank.classList.toggle('filled', !!chosen[i]);
+        mine();
+      });
+      opts.append(b);
+    });
+    $('#frames').append(el('li', null, p, opts));
+  });
+  mine();
+  $('#mine-say').addEventListener('click', () => {
+    const text = FRAMES.map((f, i) => chosen[i] ? f.t.replace('___', chosen[i]) : '').filter(Boolean).join(' ');
+    if (text) speak(text);
+  });
+  [['How many rooms are there in your home?', 'There are …'],
+   ['What is there in your bedroom?', 'There is a … / There are …'],
+   ['Where does your dog sleep?', 'My dog sleeps in …'],
+   ['What is your favourite room?', 'My favourite room is …'],
+   ['Tell me about your house in Minecraft or Roblox.', 'In my house there are … rooms. There is a …'],
+   ['Now you ask me: How many rooms are there in your home?', 'How many …?']].forEach((c, i) => {
+    $('#talks').append(el('details', {id: 'talk-' + (i + 1)}, el('summary', {text: 'Card ' + (i + 1)}),
+      el('p', {class: 'tq', text: c[0]}), el('p', {class: 'start'}, 'Start like this: ', el('b', {text: c[1]}))));
+  });
+
+  // ---------- homework slot and writing: kept in this browser only ----------
+  const STORE = 'baina:2026-10-14-m3-at-home';
+  let kept = {};
+  try { kept = JSON.parse(localStorage.getItem(STORE) || '{}') || {}; } catch (e) { kept = {}; }
+  const keep = () => { try { localStorage.setItem(STORE, JSON.stringify(kept)); } catch (e) {} };
+  ['hw-page', 'hw-ex', 'hw-wb', 'hw-words', 'w1', 'w2', 'w3'].forEach(id => {
+    const f = document.getElementById(id);
+    if (!f) return;
+    if (typeof kept[id] === 'string') f.value = kept[id];
+    f.addEventListener('input', () => { kept[id] = f.value; keep(); });
+  });
+  [['📖', 'Read the task', 'Прочитай задание'], ['🗣️', 'Say what you must do', 'Скажи, что нужно сделать'], ['✏️', 'Do it', 'Сделай'], ['👀', 'Check it together', 'Проверим вместе']].forEach((s, i) => {
+    const id = 'hw-step-' + (i + 1);
+    const b = el('button', {type: 'button', class: 'step', id, 'aria-pressed': String(kept[id] === true)},
+      el('span', {class: 'pic', text: s[0]}), (i + 1) + '. ' + s[1], el('small', {lang: 'ru', text: s[2]}));
+    b.addEventListener('click', () => { kept[id] = !(kept[id] === true); b.setAttribute('aria-pressed', String(kept[id])); keep(); });
+    $('#hw-steps').append(el('li', null, b));
+  });
+
+  // ---------- drawing pad ----------
+  (function(){
+    const c = $('#pad'), tools = $('#pad-tools');
+    if (!c || !c.getContext) return;
+    const ctx = c.getContext('2d'), PAPER = '#fffbef';
+    let color = '#3c474d', size = 4, ready = false, last = null, dpr = 1;
+    function init(){
+      if (ready) return;
+      const r = c.getBoundingClientRect();
+      if (!r.width) return;
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      c.width = Math.round(r.width * dpr); c.height = Math.round(r.height * dpr);
+      ctx.fillStyle = PAPER; ctx.fillRect(0, 0, c.width, c.height);
+      ready = true;
+    }
+    function pos(e){ const r = c.getBoundingClientRect(); return {x: (e.clientX - r.left) * c.width / r.width, y: (e.clientY - r.top) * c.height / r.height}; }
+    function stroke(a, b){
+      ctx.strokeStyle = color; ctx.lineWidth = size * dpr; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+      ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x + 0.01, b.y + 0.01); ctx.stroke();
+    }
+    c.addEventListener('pointerdown', e => { init(); if (!ready) return; try { c.setPointerCapture(e.pointerId); } catch (err) {} last = pos(e); stroke(last, last); e.preventDefault(); });
+    c.addEventListener('pointermove', e => { if (!last) return; const p = pos(e); stroke(last, p); last = p; });
+    ['pointerup', 'pointercancel', 'pointerleave'].forEach(t => c.addEventListener(t, () => { last = null; }));
+    const press = (group, b) => { group.forEach(x => x.setAttribute('aria-pressed', String(x === b))); };
+    const COLS = [['#3c474d', 'dark grey'], ['#8da101', 'green'], ['#35a77c', 'sea green'], ['#3a94c5', 'blue'], ['#df69ba', 'pink'], ['#f85552', 'red'], ['#f57d26', 'orange'], ['#dfa000', 'yellow'], ['#8b5a2b', 'brown']];
+    const sw = COLS.map((k, i) => {
+      const b = el('button', {type: 'button', class: 'sw', id: 'pad-col-' + i, 'aria-label': k[1], 'aria-pressed': String(i === 0), style: '--c:' + k[0]});
+      b.addEventListener('click', () => { color = k[0]; press(sw.concat(eraser), b); });
+      return b;
+    });
+    const eraser = el('button', {type: 'button', class: 'btn', id: 'pad-eraser', 'aria-pressed': 'false', text: 'Eraser'});
+    eraser.addEventListener('click', () => { color = PAPER; press(sw.concat(eraser), eraser); });
+    const sizes = [['Thin', 4], ['Thick', 12]].map((k, i) => {
+      const b = el('button', {type: 'button', class: 'btn', id: 'pad-size-' + i, 'aria-pressed': String(i === 0), text: k[0]});
+      b.addEventListener('click', () => { size = k[1]; press(sizes, b); });
+      return b;
+    });
+    let armed = null;
+    const clear = el('button', {type: 'button', class: 'btn quiet', id: 'pad-clear', text: 'New page'});
+    clear.addEventListener('click', () => {
+      if (!armed){ clear.textContent = 'Press again for a new page'; armed = setTimeout(() => { armed = null; clear.textContent = 'New page'; }, 4000); return; }
+      clearTimeout(armed); armed = null; clear.textContent = 'New page';
+      if (ready){ ctx.fillStyle = PAPER; ctx.fillRect(0, 0, c.width, c.height); }
+    });
+    tools.append(...sw, eraser, ...sizes, clear);
+  })();
+})();
+</script>
+
+</html>
