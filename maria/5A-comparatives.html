@@ -1,0 +1,931 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta charset="utf-8">
+<title>Cheaper, Faster, Better</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,500;0,6..96,700;1,6..96,500;1,6..96,700&family=Jost:wght@400;500;600&family=Noto+Sans:wght@400;500&display=swap">
+<style>
+/* Layout: a style-magazine spread in Dracula (Alucard by day, Dracula by night). Bodoni Moda for the big
+   headlines and italic section numbers, Jost for everything you read and tap. Thin double rules between
+   sections, like the pages of a glossy magazine; pink is the accent, purple the second voice. */
+:root{
+  --bg:#fffbeb; --surface:#fffdf6; --sunk:#f3eedb; --line:#e7e0c9; --line2:#cfcfde;
+  --text:#1f1f1f; --soft:#5a5490;
+  --accent:#a3144d; --on-accent:#ffffff; --violet:#644ac9;
+  --good:#14710a; --bad:#cb3a2a;
+  --good-bg:color-mix(in srgb, #50fa7b 18%, var(--surface));
+  --bad-bg:color-mix(in srgb, #ff5555 12%, var(--surface));
+  --mark:color-mix(in srgb, #f1fa8c 55%, var(--surface));
+  --tint:color-mix(in srgb, #ff79c6 12%, var(--surface));
+  --display:"Bodoni Moda","Didot","Bodoni 72",Georgia,serif;
+  --body:"Jost","Avenir Next","Segoe UI",system-ui,sans-serif;
+  --ipa:"Noto Sans","Charis SIL","DejaVu Sans","Lucida Sans Unicode",sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#282a36; --surface:#2f3142; --sunk:#21222c; --line:#44475a; --line2:#6272a4;
+    --text:#f8f8f2; --soft:#c3c6dd;
+    --accent:#ff79c6; --on-accent:#282a36; --violet:#bd93f9;
+    --good:#50fa7b; --bad:#ff6e6e;
+    --good-bg:color-mix(in srgb, #50fa7b 14%, var(--surface));
+    --bad-bg:color-mix(in srgb, #ff5555 18%, var(--surface));
+    --mark:color-mix(in srgb, #f1fa8c 16%, var(--surface));
+    --tint:color-mix(in srgb, #ff79c6 14%, var(--surface));
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#282a36; --surface:#2f3142; --sunk:#21222c; --line:#44475a; --line2:#6272a4;
+  --text:#f8f8f2; --soft:#c3c6dd;
+  --accent:#ff79c6; --on-accent:#282a36; --violet:#bd93f9;
+  --good:#50fa7b; --bad:#ff6e6e;
+  --good-bg:color-mix(in srgb, #50fa7b 14%, var(--surface));
+  --bad-bg:color-mix(in srgb, #ff5555 18%, var(--surface));
+  --mark:color-mix(in srgb, #f1fa8c 16%, var(--surface));
+  --tint:color-mix(in srgb, #ff79c6 14%, var(--surface));
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--text);font:400 17.5px/1.6 var(--body);-webkit-font-smoothing:antialiased}
+.page{max-width:860px;margin-inline:auto;padding-inline:16px;padding-block:40px 110px;display:flex;flex-direction:column;gap:60px}
+@media (min-width:700px){ .page{padding-inline:28px} }
+h1,h2,h3{font-family:var(--display);font-weight:700;margin:0;text-wrap:balance}
+p{margin:0}
+ol,ul{margin:0;padding:0}
+a{color:var(--accent);text-underline-offset:3px}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer;-webkit-tap-highlight-color:transparent}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
+em.acc{font-style:italic;color:var(--accent)}
+
+/* masthead */
+.mast{display:flex;flex-direction:column;gap:20px}
+.kicker{font:600 12.5px/1.3 var(--body);letter-spacing:.22em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:12px}
+.kicker::after{content:"";flex:1;height:0;border-top:1px solid var(--accent)}
+.eyebrow{font:600 12.5px/1.3 var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--soft)}
+.mast h1{font-size:clamp(46px,10vw,88px);line-height:.98;letter-spacing:-.02em}
+.mast h1 em{color:var(--accent);font-weight:500}
+.dek{font-size:clamp(18px,2.3vw,20.5px);line-height:1.5;max-width:40em}
+.meta{display:flex;flex-wrap:wrap;gap:6px 22px;margin:0;font-size:14.5px;color:var(--soft)}
+.meta div{display:flex;gap:6px}
+.meta dt{font-weight:600;color:var(--text)}
+.meta dd{margin:0}
+.duo{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:14px}
+.duo figure{margin:0;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 20px;display:flex;align-items:center;gap:16px;min-width:0}
+.duo .pic{font-size:44px;line-height:1}
+.duo figcaption{display:flex;flex-direction:column;min-width:0}
+.duo .nm{font:500 italic 22px/1.2 var(--display)}
+.duo .pr{font:600 26px/1.2 var(--body);color:var(--accent);font-variant-numeric:tabular-nums}
+.verdict{font:500 clamp(20px,2.8vw,24px)/1.45 var(--display);border-left:3px solid var(--accent);padding-left:16px}
+.verdict b{color:var(--accent);font-weight:700}
+
+.toc{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:2px 28px;counter-reset:toc;list-style:none;font-size:15.5px}
+.toc li{counter-increment:toc;display:flex;align-items:baseline;gap:10px;padding-block:7px;border-bottom:1px solid var(--line);min-width:0}
+.toc li::before{content:counter(toc);font:700 italic 16px/1 var(--display);color:var(--accent);min-width:1.4em}
+.toc a{color:var(--text);text-decoration:none;flex:1;min-width:0}
+.toc a:hover{color:var(--accent);text-decoration:underline}
+.toc .sc{font-size:13.5px;color:var(--soft);font-variant-numeric:tabular-nums;white-space:nowrap}
+
+details.plan{border:1px solid var(--line2);border-radius:12px;background:var(--surface);padding:0 20px}
+details.plan summary{cursor:pointer;padding-block:14px;font-weight:600;display:flex;justify-content:space-between;gap:12px;list-style:none}
+details.plan summary::-webkit-details-marker{display:none}
+details.plan summary::after{content:"Show";font-weight:500;font-size:14px;color:var(--accent)}
+details.plan[open] summary::after{content:"Hide"}
+.plan-body{padding-bottom:18px;display:flex;flex-direction:column;gap:12px;font-size:15.5px}
+.plan-body .aim{color:var(--soft)}
+.scroll{overflow-x:auto}
+.plan-body table{border-collapse:collapse;width:100%;min-width:520px}
+.plan-body th,.plan-body td{text-align:left;vertical-align:top;padding:8px 10px 8px 0;border-top:1px solid var(--line)}
+.plan-body th{font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);font-weight:600;border-top:0}
+.plan-body td:first-child{font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--soft);width:4.5em}
+.plan-body td:nth-child(2){font-weight:600}
+.plan-body td:nth-child(3){white-space:nowrap;color:var(--violet)}
+
+/* sections */
+.sec{display:flex;flex-direction:column;gap:20px;scroll-margin-top:16px}
+.sec-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 16px;padding-top:18px;border-top:3px double var(--text)}
+.sec-no{font:700 italic 34px/1 var(--display);color:var(--accent);min-width:1.1em}
+.sec-title{flex:1 1 300px;min-width:0;display:flex;flex-direction:column;gap:6px}
+.sec-title h2{font-size:clamp(27px,4.4vw,36px);line-height:1.1}
+.lede{color:var(--soft);max-width:62ch}
+.score{font:600 14px/1 var(--body);font-variant-numeric:tabular-nums;color:var(--soft);border:1px solid var(--line2);border-radius:999px;padding:7px 12px;white-space:nowrap}
+.score.full{color:var(--good);border-color:var(--good)}
+.sub{font:700 21px/1.3 var(--display);margin-top:6px}
+.note{font-size:15.5px;color:var(--soft);max-width:64ch}
+.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.btn{border:1px solid var(--line2);background:var(--surface);border-radius:999px;padding:8px 18px;font-weight:600;font-size:15px;line-height:1.2}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.btn.quiet{border-color:transparent;background:transparent;color:var(--soft)}
+.btn.quiet:hover{color:var(--text);border-color:var(--line2)}
+
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 20px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.panel h3{font-size:21px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:14px}
+.line{display:flex;gap:10px;align-items:flex-start;min-width:0}
+.line > span{flex:1;min-width:0}
+.plain{list-style:none;display:flex;flex-direction:column;gap:9px}
+.say{flex:none;width:30px;height:30px;border-radius:50%;border:1px solid var(--line2);background:transparent;display:inline-grid;place-items:center;color:var(--soft);padding:0}
+.say:hover{color:var(--accent);border-color:var(--accent)}
+.say svg{width:15px;height:15px}
+.ipa{font-family:var(--ipa);color:var(--violet)}
+b.hl{font-weight:600;background:var(--tint);border-radius:3px;padding:0 3px}
+.phrases{display:flex;flex-wrap:wrap;gap:8px;list-style:none}
+.phrases li{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px 14px 4px 4px;font-weight:500}
+
+/* word cards */
+.wcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:10px}
+.wcard{display:flex;gap:12px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px;min-width:0}
+.wc-pic{flex:none;width:52px;height:52px;border-radius:12px;background:var(--tint);display:grid;place-items:center;font-size:30px;line-height:1}
+.wc-pic.txt{font:700 16px/1 var(--body);color:var(--accent)}
+.wc-txt{flex:1;min-width:0;display:flex;flex-direction:column}
+.wc-txt b{font:700 19px/1.25 var(--display)}
+.wc-txt span{font-size:14.5px;color:var(--soft);line-height:1.4}
+
+/* numbers */
+.nums{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,330px),1fr));gap:6px 20px}
+.nums li{padding-block:7px;border-bottom:1px solid var(--line)}
+.nums .line > span{display:grid;grid-template-columns:6.2em minmax(0,1fr);gap:0 10px;align-items:baseline}
+.num{font:700 19px/1.3 var(--body);color:var(--accent);font-variant-numeric:tabular-nums}
+.bignum{font:700 26px/1.3 var(--body);font-variant-numeric:tabular-nums;color:var(--accent)}
+
+/* items */
+.items{list-style:none;counter-reset:it;display:flex;flex-direction:column}
+.item{counter-increment:it;display:grid;grid-template-columns:2rem minmax(0,1fr);gap:4px 10px;padding-block:14px;border-bottom:1px solid var(--line)}
+.item::before{content:counter(it);font:700 italic 17px/1.7 var(--display);color:var(--soft);grid-row:1/span 4}
+.item > *{grid-column:2;min-width:0}
+.q{font-size:18px;line-height:1.8}
+.blank{display:inline-block;min-width:5.5ch;border-bottom:2px solid var(--line2);text-align:center;line-height:1.3;padding-inline:2px}
+.blank.filled{border-color:var(--good);color:var(--good);font-weight:600}
+.opts{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.opt{border:1px solid var(--line2);background:var(--surface);border-radius:999px;padding:6px 16px;font-size:16.5px;text-align:left}
+.opt:hover:not([aria-disabled="true"]){border-color:var(--accent)}
+.opt.no{border-style:dashed;border-color:var(--bad);background:var(--bad-bg);text-decoration:line-through;text-decoration-color:var(--bad)}
+.opt.yes{border-color:var(--good);background:var(--good-bg);font-weight:600}
+.opt[aria-disabled="true"]{cursor:default}
+.why{font-size:15px;color:var(--soft)}
+.why:empty{display:none}
+.ok{color:var(--good);font-weight:600}
+
+/* grammar */
+.rules{border-collapse:collapse;width:100%;min-width:520px;font-size:16px}
+.rules th,.rules td{text-align:left;vertical-align:top;padding:9px 12px 9px 0;border-top:1px solid var(--line)}
+.rules thead th{border-top:0;font:600 12.5px/1.3 var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--soft)}
+.rules td:nth-child(2){color:var(--violet);white-space:nowrap}
+.rules td:nth-child(3){font-weight:600}
+.when{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:10px}
+.when li{background:var(--surface);border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.when li:nth-child(2){border-top-color:var(--violet)}
+.when li:nth-child(3){border-top-color:var(--soft)}
+.when .lab{font:600 12px/1.2 var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--soft)}
+.when .pat{font:700 20px/1.25 var(--display)}
+.when i{font-style:italic}
+.schwa{border-bottom:3px solid var(--accent);padding-bottom:1px}
+.weak{color:var(--soft)}
+.big-lines{font:500 21px/1.7 var(--display)}
+
+/* reading */
+.read{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px clamp(18px,4vw,30px) 26px;display:flex;flex-direction:column;gap:14px}
+.read h3{font-size:clamp(25px,3.6vw,30px);font-style:italic;font-weight:500}
+.read p{max-width:66ch;line-height:1.75}
+.read .by{font-size:13px;color:var(--accent);letter-spacing:.16em;text-transform:uppercase;font-weight:600}
+.read b{font-weight:600;background:var(--tint);border-radius:3px;padding:0 3px}
+
+/* talk */
+.talk{list-style:none;counter-reset:t;display:flex;flex-direction:column;gap:10px}
+.talk li{counter-increment:t;display:grid;grid-template-columns:1.8rem minmax(0,1fr);gap:8px;font-size:18px;line-height:1.5}
+.talk li::before{content:counter(t);font:700 italic 18px/1.5 var(--display);color:var(--accent)}
+.script{list-style:none;display:flex;flex-direction:column;gap:2px;font-size:18px}
+.script li{display:flex;gap:10px;align-items:flex-start;padding-block:7px;border-bottom:1px dashed var(--line)}
+.script li > span{flex:1;min-width:0}
+.script .who{font:600 12px/1 var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--violet);margin-right:6px}
+.cmps{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:10px}
+.cmp{display:flex;flex-direction:column;align-items:flex-start;gap:6px;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px;min-width:0}
+.cmp:hover{border-color:var(--accent)}
+.cmp[aria-expanded="true"]{border-color:var(--accent);background:var(--tint)}
+.cmp-e{font-size:30px;line-height:1.1}
+.cmp-t{font:700 19px/1.3 var(--display)}
+.cmp-hint{font-size:13.5px;color:var(--soft)}
+.cmp[aria-expanded="true"] .cmp-hint{display:none}
+.cmp-ideas{font-size:15.5px;color:var(--text)}
+.cmp-ideas b{color:var(--accent)}
+.extra{border:1px solid var(--line2);border-radius:14px;padding:16px 20px;display:flex;gap:14px;align-items:flex-start;background:var(--surface)}
+.extra .tag{flex:none;font:600 12px/1 var(--body);letter-spacing:.1em;text-transform:uppercase;background:var(--tint);color:var(--accent);border-radius:999px;padding:7px 11px}
+.extra p{min-width:0}
+footer.fin{color:var(--soft);font-size:14.5px;border-top:1px solid var(--line2);padding-top:18px}
+
+/* teacher-only parts: every one sits between a pair of T comment markers, which scripts/student-site.sh cuts out of the student copy */
+.tbadge{align-self:flex-start;font:600 12.5px/1 var(--body);letter-spacing:.1em;text-transform:uppercase;background:var(--mark);border-radius:6px;padding:7px 10px}
+.tnote{border:1px dashed var(--line2);background:var(--mark);border-radius:10px;padding:12px 16px;font-size:15px;line-height:1.5;display:flex;flex-direction:column;gap:6px}
+.tnote b:first-child{font:600 12px/1.2 var(--body);letter-spacing:.1em;text-transform:uppercase}
+.tnote p{max-width:72ch}
+.key{font-size:14.5px;background:var(--mark);border-radius:6px;padding:2px 8px;justify-self:start}
+[data-view="student"] .tnote,[data-view="student"] .key,[data-view="student"] .tbadge{display:none}
+/* lesson notes (teacher's page only): a quick strip under every section and a notes block at the bottom */
+.tn{border:1px dashed var(--line2);background:var(--mark);border-radius:10px;padding:10px 14px 12px;display:flex;flex-direction:column;gap:8px;font-size:14.5px}
+.tn-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.tn-lab{font:600 12px/1.2 var(--body);letter-spacing:.1em;text-transform:uppercase;min-width:9.5em}
+.tn-chip{border:1px solid var(--line2);background:var(--surface);border-radius:999px;padding:4px 12px;font-size:14.5px;line-height:1.3}
+.tn-chip:hover{border-color:var(--accent)}
+.tn-chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-weight:600}
+.tn-text{width:100%;border:1px solid var(--line2);border-radius:8px;background:var(--surface);padding:6px 10px;font-size:15px}
+.tn-final{display:flex;flex-direction:column;gap:16px;border-top:3px double var(--text);padding-top:20px;scroll-margin-top:104px}
+.tn-final h2{font-size:clamp(27px,4.4vw,36px);line-height:1.1}
+.tn-field{display:flex;flex-direction:column;gap:6px}
+.tn-field label{font-weight:600}
+.tn-field textarea{width:100%;min-height:130px;border:1px solid var(--line2);border-radius:8px;background:var(--surface);padding:10px 12px;font-size:16.5px;line-height:1.5;resize:vertical}
+.tn-sum table{border-collapse:collapse;width:100%;min-width:480px;font-size:15px}
+.tn-sum th,.tn-sum td{text-align:left;vertical-align:top;padding:7px 10px 7px 0;border-top:1px solid var(--line)}
+.tn-sum th{font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);font-weight:600;border-top:0}
+.tn-sum td:first-child{color:var(--soft);font-variant-numeric:tabular-nums;width:2em}
+.tn-status{font-size:14.5px;color:var(--soft)}
+.tn-out{width:100%;min-height:160px;border:1px solid var(--line2);border-radius:8px;background:var(--surface);padding:10px 12px;font:14px/1.45 ui-monospace,Menlo,monospace}
+/* lesson timer (teacher's page only) */
+.tmr{position:sticky;top:0;z-index:20;margin-top:-40px;margin-bottom:-36px;background:var(--surface);border:1px solid var(--line2);border-top:0;border-radius:0 0 12px 12px;padding:8px 12px 10px;display:flex;flex-direction:column;gap:8px;box-shadow:0 6px 18px rgb(0 0 0 / .16)}
+.tm-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;min-width:0}
+.tm-go{flex:none;border:0;border-radius:999px;background:var(--accent);color:var(--on-accent);font-weight:600;padding:6px 16px;min-width:5.8em}
+.tm-clock{flex:none;font:600 19px/1 var(--body);font-variant-numeric:tabular-nums}
+.tm-clock small{font-size:13px;font-weight:500;color:var(--soft)}
+.tm-clock.over{color:var(--bad)}
+.tm-now{flex:1;min-width:0;font-size:14.5px;color:var(--soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tm-reset{flex:none;border:1px solid var(--line2);background:none;border-radius:999px;padding:5px 12px;font-size:14px}
+.tm-bar{display:flex;gap:3px;height:24px}
+.tm-seg{position:relative;flex-basis:0;min-width:0;border-radius:5px;overflow:hidden;background:color-mix(in srgb,var(--c) 30%,#f8f8f2);color:#282a36;text-decoration:none;font:600 12px/24px var(--body);text-align:center}
+.tm-seg i{position:absolute;inset:0 auto 0 0;width:0;background:color-mix(in srgb,var(--c) 85%,#fff)}
+.tm-seg b{position:relative}
+.tm-seg.now{box-shadow:inset 0 0 0 2px #282a36}
+[data-view="student"] .sec{scroll-margin-top:104px}
+@media (max-width:520px){ .tm-now{display:none} .tm-row{justify-content:space-between} }
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.shake{animation:shake .28s ease}
+@media (prefers-reduced-motion: reduce){ *{transition:none!important;animation:none!important;scroll-behavior:auto!important} }
+</style>
+
+<main class="page" data-view="student">
+
+
+  <header class="mast">
+    <p class="kicker">The comparison issue</p>
+    <h1>Cheaper, faster, <em>better</em></h1>
+    <p class="dek">Shopping, prices and the things you love. Today you learn to compare: which is cheaper, which is faster, which is better. And you learn to say prices and numbers like a local.</p>
+    <div class="duo" role="group" aria-label="Two bags">
+      <figure><span class="pic" aria-hidden="true">👜</span><figcaption><span class="nm">The big bag</span><span class="pr">£45</span></figcaption></figure>
+      <figure><span class="pic" aria-hidden="true">👝</span><figcaption><span class="nm">The small bag</span><span class="pr">£29.99</span></figcaption></figure>
+    </div>
+    <p class="verdict">The small bag is <b>cheaper than</b> the big one. The big bag <b>isn&rsquo;t as cheap as</b> the small one.</p>
+  </header>
+
+  <nav aria-label="Contents"><ol class="toc" id="toc"></ol></nav>
+
+
+  <!-- 2 -->
+  <section class="sec" id="gossip" data-title="Gossip corner">
+    <header class="sec-head">
+      <span class="sec-no">1</span>
+      <div class="sec-title"><h2>Gossip corner</h2><p class="lede">What&rsquo;s new? Tell your news, and ask questions back.</p></div>
+    </header>
+    <ol class="talk">
+      <li>What have you done this week? Tell me one good thing and one bad thing.</li>
+      <li>Have you bought anything nice recently? What is it? Where did you buy it? How much was it?</li>
+      <li>What did you and Lu do last weekend?</li>
+      <li>Have you heard any news from friends this week? What happened?</li>
+      <li>Have you driven anywhere new recently? Where did you go?</li>
+    </ol>
+    <p class="note">Useful words for a good story:</p>
+    <ul class="phrases">
+      <li data-say>Guess what!</li>
+      <li data-say>Really?</li>
+      <li data-say>No way!</li>
+      <li data-say>What happened then?</li>
+      <li data-say>Tell me more!</li>
+    </ul>
+  </section>
+
+  <!-- 3 -->
+  <section class="sec" id="words" data-title="Shopping words">
+    <header class="sec-head">
+      <span class="sec-no">2</span>
+      <div class="sec-title"><h2>Shopping words</h2><p class="lede">Twelve words for every shop. Listen to each one and say it. Then do the quiz.</p></div>
+      <span class="score" data-score="words">0 / 0</span>
+    </header>
+    <div class="wcards" id="wcards"></div>
+    <h3 class="sub">Quiz: which word?</h3>
+    <ol class="items" id="words-list"></ol>
+    <div class="tools"><button type="button" class="btn" id="words-reset">Start again</button></div>
+  </section>
+
+  <!-- 4 -->
+  <section class="sec" id="numbers" data-title="Numbers and prices">
+    <header class="sec-head">
+      <span class="sec-no">3</span>
+      <div class="sec-title"><h2>Numbers and prices</h2><p class="lede">Say the number first. Then tap the speaker and check.</p></div>
+      <span class="score" data-score="numbers">0 / 0</span>
+    </header>
+    <div class="panel">
+      <ul class="nums">
+        <li class="line" data-say="nineteen ninety-nine"><span><span class="num">£19.99</span> nineteen ninety-nine</span></li>
+        <li class="line" data-say="a thousand two hundred and fifty euros"><span><span class="num">€1,250</span> a thousand two hundred and fifty euros</span></li>
+        <li class="line" data-say="thirty per cent off"><span><span class="num">30% off</span> thirty per cent off</span></li>
+        <li class="line" data-say="half price"><span><span class="num">½ price</span> half price</span></li>
+        <li class="line" data-say="a third off"><span><span class="num">⅓ off</span> a third off</span></li>
+        <li class="line" data-say="the twenty-seventh of November"><span><span class="num">27th Nov</span> the twenty-seventh of November</span></li>
+        <li class="line" data-say="two point five kilometres"><span><span class="num">2.5 km</span> two point five kilometres</span></li>
+        <li class="line" data-say="three million"><span><span class="num">3,000,000</span> three million</span></li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h3>Remember</h3>
+      <ul class="plain">
+        <li><b class="hl">and</b> after hundred: a hundred <b class="hl">and</b> eighty-four.</li>
+        <li>No -s after a number: three <b class="hl">million</b>, two <b class="hl">thousand</b>. Not <s>three millions</s>.</li>
+        <li>The dot in a number is <b class="hl">point</b>: 2.5 = two point five.</li>
+        <li>Parts: a half, a third, a quarter, two third<b class="hl">s</b>.</li>
+        <li>Dates: <b class="hl">the</b> twenty-seventh <b class="hl">of</b> November.</li>
+      </ul>
+    </div>
+    <h3 class="sub">Quiz: how do you say it?</h3>
+    <ol class="items" id="numbers-list"></ol>
+    <div class="tools"><button type="button" class="btn" id="numbers-reset">Start again</button></div>
+  </section>
+
+  <!-- 5 -->
+  <section class="sec" id="reading" data-title="Reading: a coat for Bella">
+    <header class="sec-head">
+      <span class="sec-no">4</span>
+      <div class="sec-title"><h2>Reading: a coat for Bella</h2><p class="lede">Read the story. Then decide: true or false?</p></div>
+      <span class="score" data-score="tf">0 / 0</span>
+    </header>
+    <article class="read">
+      <p class="by">Online or in the shop?</p>
+      <h3>A coat for Bella</h3>
+      <p>Kate has a small white dog called Bella. It&rsquo;s October, the days are <b>colder</b>, and Bella needs a warm coat.</p>
+      <p>In the pet shop near Kate&rsquo;s flat, a red coat costs £45. It&rsquo;s beautiful, but it isn&rsquo;t cheap. Online, Kate found a grey coat for £29.99, with free delivery. It was <b>much cheaper than</b> the red one, and it looked <b>warmer</b>, so she bought it.</p>
+      <p>The coat arrived a week later, but it was the wrong size. Bella is <b>bigger than</b> the dog in the photo! Kate sent the coat back and went to the pet shop. She paid more, but she got the red coat on the same day, and the shop assistant helped her find the right size.</p>
+      <p>&ldquo;Online shopping is cheap, but it <b>isn&rsquo;t as easy as</b> it looks,&rdquo; says Kate. &ldquo;Next time I&rsquo;m going to try things on Bella in the shop!&rdquo;</p>
+    </article>
+    <ol class="items" id="tf-list"></ol>
+    <div class="tools"><button type="button" class="btn" id="tf-reset">Start again</button></div>
+  </section>
+
+  <!-- 6 -->
+  <section class="sec" id="rules" data-title="Comparing: the rules">
+    <header class="sec-head">
+      <span class="sec-no">5</span>
+      <div class="sec-title"><h2>Comparing: the rules</h2><p class="lede">Two things are different, or two things are the same. Listen to the examples and repeat them.</p></div>
+    </header>
+    <ul class="when">
+      <li><span class="lab">Different</span><span class="pat">-er / more + than</span><span><i>My car is <b class="hl">bigger than</b> yours.</i></span></li>
+      <li><span class="lab">The same</span><span class="pat">as … as</span><span><i>My bag is <b class="hl">as big as</b> yours.</i></span></li>
+      <li><span class="lab">Less</span><span class="pat">not as … as</span><span><i>Your car <b class="hl">isn’t as big as</b> mine.</i></span></li>
+    </ul>
+    <div class="panel">
+      <h3>Adjectives</h3>
+      <div class="scroll">
+        <table class="rules">
+          <thead><tr><th>Adjective</th><th>Rule</th><th>Comparative</th></tr></thead>
+          <tbody>
+            <tr><td>cheap, warm, fast</td><td>+ er</td><td>cheaper, warmer, faster</td></tr>
+            <tr><td>nice, large</td><td>+ r</td><td>nicer, larger</td></tr>
+            <tr><td>big, hot, thin</td><td>one vowel + one consonant: double it</td><td>bigger, hotter, thinner</td></tr>
+            <tr><td>easy, happy, busy</td><td>y &rarr; ier</td><td>easier, happier, busier</td></tr>
+            <tr><td>expensive, beautiful</td><td>more + adjective</td><td>more expensive, more beautiful</td></tr>
+            <tr><td>good, bad, far</td><td>different word</td><td>better, worse, further</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="grid2">
+      <div class="panel">
+        <h3>Adverbs: how you do it</h3>
+        <ul class="plain">
+          <li>fast &rarr; <b class="hl">faster</b>, hard &rarr; <b class="hl">harder</b></li>
+          <li>well &rarr; <b class="hl">better</b>, badly &rarr; <b class="hl">worse</b></li>
+          <li>slowly &rarr; <b class="hl">more slowly</b>, carefully &rarr; <b class="hl">more carefully</b>. Not <s>slowlier</s>.</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h3>Listen and repeat</h3>
+        <ul class="plain">
+          <li class="line" data-say><span>Lu is smaller than my friend’s dog.</span></li>
+          <li class="line" data-say><span>My new car is much bigger than my old one.</span></li>
+          <li class="line" data-say><span>She drives more carefully than me.</span></li>
+          <li class="line" data-say><span>This coat isn’t as warm as my old one.</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 -->
+  <section class="sec" id="practice" data-title="Practice: choose the right form">
+    <header class="sec-head">
+      <span class="sec-no">6</span>
+      <div class="sec-title"><h2>Practice: choose the right form</h2><p class="lede">Choose, then say the whole sentence aloud.</p></div>
+      <span class="score" data-score="practice">0 / 0</span>
+    </header>
+    <ol class="items" id="practice-list"></ol>
+    <div class="tools"><button type="button" class="btn" id="practice-reset">Start again</button></div>
+  </section>
+
+  <!-- 8 -->
+  <section class="sec" id="schwa" data-title="The sound /ə/">
+    <header class="sec-head">
+      <span class="sec-no">7</span>
+      <div class="sec-title"><h2>The sound <span class="ipa">/ə/</span></h2><p class="lede">The most common sound in English: short, quiet and lazy. You hear it in <i>-er</i>, in <i>than</i> and in <i>as</i>. Listen and repeat.</p></div>
+    </header>
+    <ul class="phrases">
+      <li data-say="cheaper">cheap<span class="schwa">er</span> <span class="ipa">/ˈtʃiːpə/</span></li>
+      <li data-say="better">bett<span class="schwa">er</span> <span class="ipa">/ˈbetə/</span></li>
+      <li data-say="than">th<span class="schwa">a</span>n <span class="ipa">/ðən/</span></li>
+      <li data-say="as">as <span class="ipa">/əz/</span></li>
+    </ul>
+    <ul class="plain panel big-lines">
+      <li class="line" data-say><span>My car is old<span class="schwa">er</span> <span class="schwa weak">than</span> yours.</span></li>
+      <li class="line" data-say><span>Lu is small<span class="schwa">er</span> <span class="schwa weak">than</span> your dog.</span></li>
+      <li class="line" data-say><span>She drives fast<span class="schwa">er</span> <span class="schwa weak">than</span> me.</span></li>
+      <li class="line" data-say><span>This coat isn’t <span class="schwa weak">as</span> warm <span class="schwa weak">as</span> my old one.</span></li>
+    </ul>
+  </section>
+
+  <!-- 9 -->
+  <section class="sec" id="listen" data-title="Listening: what has changed?">
+    <header class="sec-head">
+      <span class="sec-no">8</span>
+      <div class="sec-title"><h2>Listening: what has changed?</h2><p class="lede">Five people talk about their life now and three years ago. Each person talks about one thing.</p></div>
+      <span class="score" data-score="listenA listenB">0 / 0</span>
+    </header>
+    <h3 class="sub">A. What does each person talk about?</h3>
+    <ol class="items" id="listenA-list"></ol>
+    <h3 class="sub">B. Do they spend more time on it now, or less?</h3>
+    <ol class="items" id="listenB-list"></ol>
+    <div class="tools"><button type="button" class="btn" id="listen-reset">Start again</button></div>
+  </section>
+
+  <!-- 10 -->
+  <section class="sec" id="shop" data-title="In a shop">
+    <header class="sec-head">
+      <span class="sec-no">9</span>
+      <div class="sec-title"><h2>In a shop</h2><p class="lede">Listen to each line and say it. Then play the scenes.</p></div>
+    </header>
+    <div class="panel">
+      <ol class="script">
+        <li data-say="Can I help you?"><span><span class="who">Assistant</span>Can I help you?</span></li>
+        <li data-say="Yes, have you got this jacket in a bigger size?"><span><span class="who">You</span>Yes, have you got this jacket in a bigger size?</span></li>
+        <li data-say="Can I try it on? Where’s the fitting room?"><span><span class="who">You</span>Can I try it on? Where’s the fitting room?</span></li>
+        <li data-say="It’s nice, but it isn’t as warm as my old one."><span><span class="who">You</span>It’s nice, but it isn’t as warm as my old one.</span></li>
+        <li data-say="Have you got anything cheaper?"><span><span class="who">You</span>Have you got anything cheaper?</span></li>
+        <li data-say="This one is forty-nine ninety-nine. It’s thirty per cent off today."><span><span class="who">Assistant</span>This one is £49.99. It’s 30% off today.</span></li>
+        <li data-say="Great. Can I pay by card?"><span><span class="who">You</span>Great. Can I pay by card?</span></li>
+        <li data-say="Can I have a receipt, please?"><span><span class="who">You</span>Can I have a receipt, please?</span></li>
+      </ol>
+    </div>
+    <div class="grid2">
+      <div class="panel">
+        <h3>Scene 1: a jacket in London</h3>
+        <p>You are on holiday in London. It&rsquo;s colder than you thought, and you need a jacket. Your teacher is the shop assistant. Ask about the size, the price and the fitting room, and pay.</p>
+      </div>
+      <div class="panel">
+        <h3>Scene 2: a coat for Lu</h3>
+        <p>You are in a pet shop. Lu needs a winter coat. Compare two coats: which is warmer, softer, cheaper, nicer? Then choose one.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11 -->
+  <section class="sec" id="compare" data-title="Compare!">
+    <header class="sec-head">
+      <span class="sec-no">10</span>
+      <div class="sec-title"><h2>Compare!</h2><p class="lede">Open a card. Compare the two things in three or four sentences. Then say which you prefer, and why.</p></div>
+    </header>
+    <div class="cmps" id="cmps">
+      <button type="button" class="cmp" id="cmp-1" aria-expanded="false"><span class="cmp-e" aria-hidden="true">🛍️ 💻</span><span class="cmp-t">Shops or online shopping</span><span class="cmp-hint">Tap for ideas</span><span class="cmp-ideas" hidden>Ideas: <b>cheap, easy, fast, fun, good for your feet</b></span></button>
+      <button type="button" class="cmp" id="cmp-2" aria-expanded="false"><span class="cmp-e" aria-hidden="true">🐶 🐕</span><span class="cmp-t">Lu or a big dog</span><span class="cmp-hint">Tap for ideas</span><span class="cmp-ideas" hidden>Ideas: <b>small, clean, easy, quiet, expensive, good for a flat</b></span></button>
+      <button type="button" class="cmp" id="cmp-3" aria-expanded="false"><span class="cmp-e" aria-hidden="true">🏙️ 🌲</span><span class="cmp-t">Driving in the city or in the country</span><span class="cmp-hint">Tap for ideas</span><span class="cmp-ideas" hidden>Ideas: <b>busy, fast, dangerous, relaxing, beautiful</b>; drive <b>slowly, carefully</b></span></button>
+      <button type="button" class="cmp" id="cmp-4" aria-expanded="false"><span class="cmp-e" aria-hidden="true">👗 👕</span><span class="cmp-t">Famous brands or cheaper clothes</span><span class="cmp-hint">Tap for ideas</span><span class="cmp-ideas" hidden>Ideas: <b>good, beautiful, comfortable, stylish, expensive</b></span></button>
+      <button type="button" class="cmp" id="cmp-5" aria-expanded="false"><span class="cmp-e" aria-hidden="true">☀️ ❄️</span><span class="cmp-t">Walks with Lu in summer or in winter</span><span class="cmp-hint">Tap for ideas</span><span class="cmp-ideas" hidden>Ideas: <b>hot, cold, long, nice, dirty, happy</b></span></button>
+      <button type="button" class="cmp" id="cmp-6" aria-expanded="false"><span class="cmp-e" aria-hidden="true">🏡 🏙️</span><span class="cmp-t">A weekend in nature or in the city</span><span class="cmp-hint">Tap for ideas</span><span class="cmp-ideas" hidden>Ideas: <b>quiet, interesting, relaxing, healthy, expensive</b></span></button>
+      <button type="button" class="cmp" id="cmp-7" aria-expanded="false"><span class="cmp-e" aria-hidden="true">👠 👟</span><span class="cmp-t">Your new shoes or your old shoes</span><span class="cmp-hint">Tap for ideas</span><span class="cmp-ideas" hidden>Ideas: <b>nice, comfortable, stylish, warm, good for driving</b></span></button>
+      <button type="button" class="cmp" id="cmp-8" aria-expanded="false"><span class="cmp-e" aria-hidden="true">💵 💳</span><span class="cmp-t">Cash or a card</span><span class="cmp-hint">Tap for ideas</span><span class="cmp-ideas" hidden>Ideas: <b>fast, easy, safe</b>; you spend <b>more</b> with&hellip;?</span></button>
+    </div>
+    <div class="extra"><span class="tag">Just for fun</span><p>Only if you want, 5 minutes this week: find one thing online that you like (clothes, a bag, something for Lu). How much is it? Is it cheaper than in the shops? Tell Alena next time.</p></div>
+  </section>
+
+</main>
+
+<script>
+(function(){
+  'use strict';
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+  // the teacher's page shows the answers; scripts/student-site.sh turns data-view into "student"
+  const TEACHER = (($('main.page') || document.body).getAttribute('data-view')) === 'teacher';
+
+  // lesson timer: one coloured segment per section, as long as that section's minutes
+  if (TEACHER && $('#tmr')) (function(){
+    const box = $('#tmr'), go = $('#tm-go'), clock = $('#tm-clock'), now = $('#tm-now'), bar = $('#tm-bar');
+    const COLORS = ['#ff79c6', '#bd93f9', '#8be9fd', '#50fa7b', '#ffb86c', '#f1fa8c', '#ff5555', '#6272a4'];
+    const KEY = 'lesson-timer:' + document.title;
+    const fmt = s => Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0');
+    let from = 0;
+    const segs = box.dataset.segs.split(',').map((part, i) => {
+      const bits = part.split(':'), sec = document.getElementById(bits[0]), len = (+bits[1] || 1) * 60;
+      const a = document.createElement('a'), fill = document.createElement('i'), num = document.createElement('b');
+      const title = (sec && sec.dataset.title) || bits[0];
+      a.className = 'tm-seg'; a.href = '#' + bits[0];
+      a.style.flexGrow = len; a.style.setProperty('--c', COLORS[i % COLORS.length]);
+      a.title = (i + 1) + '. ' + title + ' · ' + (len / 60) + ' min';
+      a.setAttribute('aria-label', a.title);
+      num.textContent = i + 1;
+      a.append(fill, num); bar.append(a);
+      const seg = {a, fill, title, n: i + 1, from, len};
+      from += len;
+      return seg;
+    });
+    const total = from;
+    let base = 0, t0 = null, tick = null;
+    try {
+      const saved = JSON.parse(localStorage.getItem(KEY) || 'null');
+      if (saved && (!saved.t0 || (Date.now() - saved.t0) / 1000 + saved.base < total + 1800)) { base = +saved.base || 0; t0 = saved.t0 || null; }
+    } catch (e) {}
+    const save = () => { try { localStorage.setItem(KEY, JSON.stringify({base, t0})); } catch (e) {} };
+    const elapsed = () => base + (t0 ? (Date.now() - t0) / 1000 : 0);
+    function render(){
+      const s = elapsed();
+      clock.innerHTML = '';
+      const small = document.createElement('small');
+      small.textContent = ' / ' + fmt(total);
+      clock.append(fmt(s), small);
+      clock.classList.toggle('over', s >= total);
+      let cur = null;
+      segs.forEach(g => {
+        const done = Math.max(0, Math.min(1, (s - g.from) / g.len));
+        g.fill.style.width = (done * 100) + '%';
+        const on = s >= g.from && s < g.from + g.len && (t0 || s > 0);
+        g.a.classList.toggle('now', !!on);
+        if (on) cur = g;
+      });
+      now.textContent = cur ? cur.n + '. ' + cur.title + ' · ' + fmt(cur.from + cur.len - s + 0.999) + ' left'
+        : s >= total ? 'Time is up · ' + fmt(s - total) + ' over' : segs.length + ' sections';
+      go.textContent = t0 ? 'Pause' : s > 0 ? 'Continue' : 'Start';
+    }
+    function run(){ clearInterval(tick); if (t0) tick = setInterval(render, 500); render(); }
+    go.addEventListener('click', () => {
+      if (t0) { base = elapsed(); t0 = null; } else { t0 = Date.now(); }
+      save(); run();
+    });
+    $('#tm-reset').addEventListener('click', () => { base = 0; t0 = null; save(); run(); });
+    run();
+  })();
+
+  // lesson notes: a quick strip under every section, a notes block at the bottom, saved as one file
+  if (TEACHER && $('#tmr') && $('#tmr').dataset.notes) (function(){
+    const where = $('#tmr').dataset.notes.split('/');           // student / lesson folder
+    const FILE = where.join('-') + '-notes.md';
+    const KEY = 'lesson-notes:' + where.join('/');
+    const MARKS = ['Easy', 'OK', 'Hard', 'Skipped'];
+    const TAGS = ['Grammar', 'Words', 'Pronunciation', 'Speaking', 'Understanding', 'Too slow'];
+    const HW = ['Done', 'Partly', 'Not done'];
+    let st = {sec: {}, hw: '', went: '', next: ''};
+    try {
+      const saved = JSON.parse(localStorage.getItem(KEY) || 'null');
+      if (saved && typeof saved === 'object') st = Object.assign(st, saved, {sec: saved.sec || {}});
+    } catch (e) {}
+    const secs = $$('main.page > section.sec').map((sec, i) => ({id: sec.id, n: i + 1, title: sec.dataset.title || sec.id, sec}));
+    const of = id => st.sec[id] || (st.sec[id] = {mark: '', tags: [], text: ''});
+    const status = el('p', {class: 'tn-status', id: 'tn-status', role: 'status'});
+    const sumBody = el('tbody');
+    function changed(){
+      try { localStorage.setItem(KEY, JSON.stringify(st)); } catch (e) {}
+      summary();
+      status.textContent = 'Kept in this browser. Press “Save notes” at the end of the lesson to make the file.';
+    }
+    function chip(label, id, isOn, toggle){
+      const b = el('button', {type: 'button', class: 'tn-chip', id, 'aria-pressed': String(isOn()), text: label});
+      b.addEventListener('click', () => { toggle(); changed(); b.closest('.tn-row').querySelectorAll('.tn-chip').forEach(x => x.setAttribute('aria-pressed', String(x._on()))); });
+      b._on = isOn;
+      return b;
+    }
+    function row(label, chips){ return el('div', {class: 'tn-row'}, el('span', {class: 'tn-lab', text: label}), ...chips); }
+
+    secs.forEach(s => {
+      const d = of(s.id);
+      const text = el('input', {type: 'text', class: 'tn-text', id: 'tn-' + s.id + '-text', placeholder: 'A quick note: what was hard, what to repeat', 'aria-label': 'Note for section ' + s.n, autocomplete: 'off'});
+      text.value = d.text || '';
+      text.addEventListener('input', () => { d.text = text.value; changed(); });
+      s.sec.append(el('div', {class: 'tn', role: 'group', 'aria-label': 'Notes for section ' + s.n},
+        row('How it went', MARKS.map(m => chip(m, 'tn-' + s.id + '-m-' + m.toLowerCase(), () => d.mark === m, () => { d.mark = d.mark === m ? '' : m; }))),
+        row('What was hard', TAGS.map(g => chip(g, 'tn-' + s.id + '-t-' + g.toLowerCase().replace(/\s+/g, '-'), () => d.tags.includes(g), () => { d.tags = d.tags.includes(g) ? d.tags.filter(x => x !== g) : d.tags.concat(g); }))),
+        text));
+    });
+
+    function summary(){
+      sumBody.replaceChildren(...secs.map(s => {
+        const d = of(s.id);
+        return el('tr', null, el('td', {text: String(s.n)}), el('td', {text: s.title}), el('td', {text: d.mark || '–'}), el('td', {text: d.tags.join(', ') || '–'}), el('td', {text: d.text || '–'}));
+      }));
+    }
+    function area(id, label, key, hint){
+      const ta = el('textarea', {id, placeholder: hint});
+      ta.value = st[key] || '';
+      ta.addEventListener('input', () => { st[key] = ta.value; changed(); });
+      return el('div', {class: 'tn-field'}, el('label', {for: id, text: label}), ta);
+    }
+    const cell = v => String(v || '–').replace(/\|/g, '/').replace(/\s*\n\s*/g, ' ');
+    function markdown(){
+      const now = new Date(), two = n => String(n).padStart(2, '0');
+      const stamp = now.getFullYear() + '-' + two(now.getMonth() + 1) + '-' + two(now.getDate()) + ' ' + two(now.getHours()) + ':' + two(now.getMinutes());
+      const lines = ['# Lesson notes: ' + document.title, '',
+        'Lesson folder: ' + where.join('/') + '. Notes saved ' + stamp + '.', '',
+        '## Section by section', '',
+        '| # | Section | How it went | What was hard | Note |', '|---|---|---|---|---|'];
+      secs.forEach(s => { const d = of(s.id); lines.push('| ' + [s.n, cell(s.title), cell(d.mark), cell(d.tags.join(', ')), cell(d.text)].join(' | ') + ' |'); });
+      lines.push('', '## Homework brought to this lesson', '', st.hw || 'Not marked.', '',
+        '## How the lesson went', '', (st.went || '').trim() || 'No notes.', '',
+        '## Practise next time', '', (st.next || '').trim() || 'No notes.', '');
+      return lines.join('\n');
+    }
+    const out = el('textarea', {class: 'tn-out', id: 'tn-out', readonly: '', hidden: '', 'aria-label': 'Your notes as text'});
+    const save = el('button', {type: 'button', class: 'btn primary', id: 'tn-save', text: 'Save notes'});
+    save.addEventListener('click', () => {
+      try {
+        const a = el('a', {href: URL.createObjectURL(new Blob([markdown()], {type: 'text/markdown;charset=utf-8'})), download: FILE});
+        document.body.append(a); a.click(); a.remove();
+        setTimeout(() => { try { URL.revokeObjectURL(a.href); } catch (e) {} }, 4000);
+        status.textContent = 'Saved as “' + FILE + '” in your Downloads folder. Tell Claude the lesson is done and it goes into the lesson folder.';
+      } catch (e) {
+        out.hidden = false; out.value = markdown(); out.focus(); out.select();
+        status.textContent = 'The file could not be saved here. Copy this text and send it to Claude.';
+      }
+    });
+    const copy = el('button', {type: 'button', class: 'btn', id: 'tn-copy', text: 'Copy notes'});
+    copy.addEventListener('click', () => {
+      const text = markdown();
+      const show = () => { out.hidden = false; out.value = text; out.focus(); out.select(); status.textContent = 'Press ⌘C to copy the notes.'; };
+      try { navigator.clipboard.writeText(text).then(() => { status.textContent = 'Notes copied.'; }, show); } catch (e) { show(); }
+    });
+    let armed = null;
+    const clear = el('button', {type: 'button', class: 'btn quiet', id: 'tn-clear', text: 'Clear notes'});
+    clear.addEventListener('click', () => {
+      if (!armed) { clear.textContent = 'Press again to clear everything'; armed = setTimeout(() => { armed = null; clear.textContent = 'Clear notes'; }, 4000); return; }
+      clearTimeout(armed);
+      try { localStorage.removeItem(KEY); } catch (e) {}
+      location.reload();
+    });
+
+    const fin = el('section', {class: 'tn-final', id: 'lesson-notes', 'aria-label': 'Lesson notes'},
+      el('h2', {text: 'Lesson notes'}),
+      el('div', {class: 'tn'}, row('Her homework', HW.map(h => chip(h, 'tn-hw-' + h.toLowerCase().replace(/\s+/g, '-'), () => st.hw === h, () => { st.hw = st.hw === h ? '' : h; })))),
+      area('tn-went', 'How the lesson went', 'went', 'Your thoughts about the lesson'),
+      area('tn-next', 'Practise next time', 'next', 'What to come back to in the next lessons'),
+      el('div', {class: 'tn-sum scroll'}, el('table', null, el('thead', null, el('tr', null, ...['#', 'Section', 'How it went', 'What was hard', 'Note'].map(h => el('th', {text: h})))), sumBody)),
+      el('div', {class: 'tools'}, save, copy, clear),
+      status, out);
+    const last = secs[secs.length - 1];
+    if (last) last.sec.after(fin); else $('main.page').append(fin);
+    summary();
+    status.textContent = 'Notes are kept in this browser while you work. Press “Save notes” at the end of the lesson.';
+  })();
+
+  function el(tag, props, ...kids){
+    const e = document.createElement(tag);
+    if (props) for (const k of Object.keys(props)){
+      const v = props[k];
+      if (v == null) continue;
+      if (k === 'class') e.className = v;
+      else if (k === 'text') e.textContent = v;
+      else e.setAttribute(k, v);
+    }
+    for (const k of kids) if (k != null) e.append(k);
+    return e;
+  }
+  // wrong-answer shake clears itself
+  function nudge(e){ e.classList.remove('shake'); void e.offsetWidth; e.classList.add('shake'); setTimeout(() => e.classList.remove('shake'), 400); }
+
+  // ---------- speech ----------
+  const synth = window.speechSynthesis;
+  let voice = null;
+  function pickVoice(){
+    try {
+      const vs = synth ? synth.getVoices() : [];
+      voice = vs.find(v => v.lang === 'en-GB') || vs.find(v => /^en[-_]GB/i.test(v.lang)) || vs.find(v => /^en[-_]/i.test(v.lang)) || null;
+    } catch (e) { voice = null; }
+  }
+  if (synth){ pickVoice(); try { synth.addEventListener('voiceschanged', pickVoice); } catch (e) {} }
+  function speak(text){
+    try {
+      if (!synth) return;
+      synth.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = 'en-GB'; if (voice) u.voice = voice; u.rate = 0.85;
+      synth.speak(u);
+    } catch (e) {}
+  }
+  const SPEAKER = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>';
+  function sayButton(text, id){
+    const b = el('button', {type: 'button', class: 'say', id: id, 'aria-label': 'Listen: ' + text});
+    b.innerHTML = SPEAKER;
+    b.addEventListener('click', () => speak(text));
+    return b;
+  }
+
+  // ---------- scores ----------
+  const SCORE = {};
+  const SECTIONS = [];
+  $$('.sec').forEach((sec, i) => {
+    const sc = $('.score', sec);
+    SECTIONS.push({id: sec.id, no: i + 1, title: sec.dataset.title, parts: sc ? sc.dataset.score.split(' ') : []});
+  });
+  function partsTotal(parts){
+    let got = 0, total = 0;
+    parts.forEach(p => { if (SCORE[p]){ got += SCORE[p].got; total += SCORE[p].total; } });
+    return {got, total};
+  }
+  function setScore(key, got, total){ SCORE[key] = {got, total}; renderScores(); }
+  let tocBuilt = false;
+  function renderScores(){
+    $$('.score[data-score]').forEach(s => {
+      const t = partsTotal(s.dataset.score.split(' '));
+      s.textContent = t.got + ' / ' + t.total + ' correct';
+      s.classList.toggle('full', t.total > 0 && t.got === t.total);
+    });
+    const toc = $('#toc');
+    if (!tocBuilt){
+      SECTIONS.forEach(s => {
+        const li = el('li', null, el('a', {href: '#' + s.id, text: s.title}));
+        if (s.parts.length) li.append(el('span', {class: 'sc', 'data-toc': s.id}));
+        toc.append(li);
+      });
+      tocBuilt = true;
+    }
+    $$('[data-toc]').forEach(x => { const s = SECTIONS.find(q => q.id === x.dataset.toc); const t = partsTotal(s.parts); x.textContent = t.got + ' / ' + t.total; });
+  }
+
+  // sentence with one ___ ; returns {frag, blank}
+  function withBlank(str, make){
+    const f = document.createDocumentFragment();
+    let blank = null;
+    str.split('___').forEach((part, i) => {
+      if (i > 0){ blank = make(); f.append(blank); }
+      if (part) f.append(document.createTextNode(part));
+    });
+    return {frag: f, blank};
+  }
+
+  // ---------- multiple choice: {q, o:[...], a:index, why, big?} ----------
+  function buildMC(listId, items, key){
+    const list = $('#' + listId);
+    let state = [];
+    function score(){ setScore(key, state.filter(s => s.done && !s.missed).length, items.length); }
+    function render(){
+      list.replaceChildren();
+      state = items.map((it, i) => {
+        const st = {done: false, missed: false};
+        const r = withBlank(it.q, () => el('span', {class: 'blank', 'aria-label': 'gap'}, ' '));
+        const li = el('li', {class: 'item'});
+        const q = el('p', {class: it.big ? 'q bignum' : 'q'}); q.append(r.frag);
+        const opts = el('div', {class: 'opts', role: 'group', 'aria-label': 'Options for item ' + (i + 1)});
+        const why = el('p', {class: 'why', 'aria-live': 'polite'});
+        it.o.forEach((o, j) => {
+          const b = el('button', {type: 'button', class: 'opt', id: listId + '-' + i + '-' + j, text: o});
+          b.addEventListener('click', () => {
+            if (st.done || b.classList.contains('no')) return;
+            if (j === it.a){
+              st.done = true;
+              b.classList.add('yes');
+              $$('.opt', opts).forEach(x => x.setAttribute('aria-disabled', 'true'));
+              if (r.blank){ r.blank.textContent = o; r.blank.classList.add('filled'); }
+              why.replaceChildren(el('span', {class: 'ok', text: st.missed ? 'Got it. ' : 'Correct. '}), it.why || '');
+            } else {
+              st.missed = true;
+              b.classList.add('no'); b.setAttribute('aria-label', o + ' (wrong)');
+              nudge(b);
+              why.textContent = 'Not this one. Try again.';
+            }
+            score();
+          });
+          opts.append(b);
+        });
+        li.append(q, opts, why);
+        if (TEACHER) li.append(el('p', {class: 'key', text: 'Answer: ' + it.o[it.a]}));
+        list.append(li);
+        return st;
+      });
+      score();
+    }
+    render();
+    return render;
+  }
+
+  // ================= content =================
+  // 3: word cards
+  const WORDS = [
+    {w: 'a price', p: '🏷️', ex: 'The price is on the label.'},
+    {w: 'a sale', p: '🛍️', ex: 'There’s a big sale this week.'},
+    {w: 'a discount', p: '−20%', ex: 'I got a twenty per cent discount.'},
+    {w: 'a bargain', p: '🤑', ex: 'Only ten pounds? What a bargain!'},
+    {w: 'a receipt', p: '🧾', ex: 'Keep the receipt.'},
+    {w: 'a size', p: '📏', ex: 'What size are you? Medium.'},
+    {w: 'a fitting room', p: '🪞', ex: 'Can I try it on in the fitting room?'},
+    {w: 'a brand', p: '👜', ex: 'What’s your favourite brand?'},
+    {w: 'cash', p: '💵', ex: 'Can I pay in cash?'},
+    {w: 'a card', p: '💳', ex: 'Can I pay by card?'},
+    {w: 'a queue', p: '🧍', ex: 'There’s a long queue today.'},
+    {w: 'delivery', p: '🚚', ex: 'Delivery is free.'}
+  ];
+  const wc = $('#wcards');
+  WORDS.forEach((x, i) => {
+    const txt = /^[\p{L}\p{N}−%]+$/u.test(x.p);
+    wc.append(el('div', {class: 'wcard'},
+      el('span', {class: txt ? 'wc-pic txt' : 'wc-pic', 'aria-hidden': 'true', text: x.p}),
+      el('div', {class: 'wc-txt'}, el('b', {text: x.w}), el('span', {text: x.ex})),
+      sayButton(x.w + '. ' + x.ex, 'wc-say-' + (i + 1))));
+  });
+
+  // any element with data-say gets a speaker button; data-say="…" says that text instead of the visible one
+  $$('[data-say]').forEach((node, i) => {
+    const text = (node.getAttribute('data-say') || node.textContent).replace(/\s+/g, ' ').trim();
+    node.prepend(sayButton(text, 'say-' + (i + 1)));
+  });
+
+  $('#words-reset').addEventListener('click', buildMC('words-list', [
+    {q: 'You pay, and they give you this piece of paper: a ___', o: ['price', 'receipt', 'brand'], a: 1, why: 'The p is silent: /rɪˈsiːt/.'},
+    {q: 'The room in a shop where you try on clothes: a ___', o: ['queue', 'sale', 'fitting room'], a: 2, why: 'Can I try it on in the fitting room?'},
+    {q: 'A line of people who are waiting: a ___', o: ['queue', 'delivery', 'size'], a: 0, why: 'It sounds like the letter Q.'},
+    {q: 'Something good that you buy for a low price: a ___', o: ['brand', 'bargain', 'card'], a: 1, why: 'What a bargain!'},
+    {q: 'S, M, L and XL are ___.', o: ['prices', 'sizes', 'brands'], a: 1, why: 'What size are you?'},
+    {q: 'Money in paper and coins: ___', o: ['cash', 'a card', 'a discount'], a: 0, why: 'pay in cash.'},
+    {q: 'You buy online, and a van brings it to your home: ___', o: ['a receipt', 'a queue', 'delivery'], a: 2, why: 'Delivery is free.'},
+    {q: '“Everything 30% off!” The shop has a ___.', o: ['sale', 'size', 'brand'], a: 0, why: 'In the sale, things are cheaper.'},
+    {q: 'Gucci, Zara and Nike are ___.', o: ['brands', 'prices', 'bargains'], a: 0, why: 'Famous names of companies.'}
+  ], 'words'));
+
+  $('#numbers-reset').addEventListener('click', buildMC('numbers-list', [
+    {q: '184', big: true, o: ['a hundred eighty-four', 'a hundred and eighty-four', 'one hundreds and eighty-four'], a: 1, why: 'and after hundred.'},
+    {q: '3,025', big: true, o: ['three thousands twenty-five', 'thirty hundred twenty-five', 'three thousand and twenty-five'], a: 2, why: 'No -s on thousand.'},
+    {q: '2,500', big: true, o: ['two thousand five hundred', 'two thousand and five hundred', 'two thousands five hundreds'], a: 0, why: 'No and here: nothing comes after hundred.'},
+    {q: '25th May', big: true, o: ['the twenty-five of May', 'the twenty-fifth of May'], a: 1, why: 'Dates: the + twenty-fifth + of.'},
+    {q: '$6,000,000', big: true, o: ['six millions dollars', 'six million dollar', 'six million dollars'], a: 2, why: 'No -s on million, but dollars has -s.'},
+    {q: '75%', big: true, o: ['seventy-five per cent', 'seventy-five percents', 'seventy-five of cent'], a: 0, why: 'per cent, no -s.'},
+    {q: '⅔', big: true, o: ['two third', 'two thirds', 'two three'], a: 1, why: 'two thirds, with -s.'},
+    {q: '9.2', big: true, o: ['nine dot two', 'nine point two', 'nine and two'], a: 1, why: 'The dot in a number is point.'},
+    {q: '£49.99', big: true, o: ['forty-nine ninety-nine', 'forty-nine point ninety-nine', 'forty-nine and ninety-nine'], a: 0, why: 'Prices: forty-nine ninety-nine, or forty-nine pounds ninety-nine.'},
+    {q: '½ price', big: true, o: ['a second price', 'half price', 'one two price'], a: 1, why: 'Everything is half price in the sale!'}
+  ], 'numbers'));
+
+  $('#tf-reset').addEventListener('click', buildMC('tf-list', [
+    {q: 'The red coat in the pet shop costs forty-five pounds.', o: ['True', 'False'], a: 0, why: 'It costs £45.'},
+    {q: 'The grey coat was more expensive than the red coat.', o: ['True', 'False'], a: 1, why: 'It was much cheaper: £29.99.'},
+    {q: 'Kate paid for delivery.', o: ['True', 'False'], a: 1, why: 'Delivery was free.'},
+    {q: 'The grey coat was the right size for Bella.', o: ['True', 'False'], a: 1, why: 'It was the wrong size. Bella is bigger than the dog in the photo.'},
+    {q: 'Kate got the red coat faster than the grey one.', o: ['True', 'False'], a: 0, why: 'The red coat on the same day, the grey one a week later.'}
+  ], 'tf'));
+
+  $('#practice-reset').addEventListener('click', buildMC('practice-list', [
+    {q: 'My new car is ___ than my old one.', o: ['more big', 'bigger', 'biger'], a: 1, why: 'big: double the g, + er.'},
+    {q: 'Online shopping is ___ than going to the shops.', o: ['easier', 'more easy', 'easyer'], a: 0, why: 'easy: y → ier.'},
+    {q: 'This dress is ___ than the black one.', o: ['expensiver', 'more expensive', 'more expensiver'], a: 1, why: 'A long adjective: more + adjective.'},
+    {q: 'The weather is ___ today than yesterday.', o: ['badder', 'more bad', 'worse'], a: 2, why: 'bad → worse.'},
+    {q: 'Lu runs ___ than me!', o: ['faster', 'more fast', 'more faster'], a: 0, why: 'fast → faster.'},
+    {q: 'Please drive ___. The road is wet.', o: ['slowlier', 'more slowly', 'more slow'], a: 1, why: 'An adverb with -ly: more + adverb.'},
+    {q: 'My sister cooks ___ than me.', o: ['gooder', 'more well', 'better'], a: 2, why: 'well → better.'},
+    {q: 'My bag isn’t as big ___ yours.', o: ['than', 'as', 'like'], a: 1, why: 'as … as.'},
+    {q: 'These boots are ___ my old ones.', o: ['as comfortable as', 'as comfortable than', 'comfortable as'], a: 0, why: 'The same: as + adjective + as.'},
+    {q: 'I’m not as ___ as my friend. She goes to the gym every day.', o: ['fit', 'fitter', 'more fit'], a: 0, why: 'After as, use the normal adjective: as fit as.'}
+  ], 'practice'));
+
+  const ACTS = ['shopping', 'getting to work', 'cooking', 'working', 'seeing friends'];
+  const listenA = buildMC('listenA-list', [
+    {q: 'Speaker 1 talks about…', o: ACTS, a: 0, why: 'This person buys most things online now.'},
+    {q: 'Speaker 2 talks about…', o: ACTS, a: 1, why: 'This person cycles now. Before, it was the car.'},
+    {q: 'Speaker 3 talks about…', o: ACTS, a: 2, why: 'This person lives with a boyfriend now.'},
+    {q: 'Speaker 4 talks about…', o: ACTS, a: 3, why: 'This person is a freelance writer now.'},
+    {q: 'Speaker 5 talks about…', o: ACTS, a: 4, why: 'This person moved from the city to the country.'}
+  ], 'listenA');
+  const MORE = ['more time', 'less time', 'the same'];
+  const listenB = buildMC('listenB-list', [
+    {q: 'Speaker 1, shopping:', o: MORE, a: 1, why: 'Online is much quicker.'},
+    {q: 'Speaker 2, getting to work:', o: MORE, a: 0, why: 'Cycling takes much longer than driving.'},
+    {q: 'Speaker 3, cooking:', o: MORE, a: 0, why: 'About an hour a day now, not twenty minutes.'},
+    {q: 'Speaker 4, working:', o: MORE, a: 2, why: 'Some weeks more, some weeks less: about the same.'},
+    {q: 'Speaker 5, seeing friends:', o: MORE, a: 1, why: 'The friends are in the city, a long way away.'}
+  ], 'listenB');
+  $('#listen-reset').addEventListener('click', () => { listenA(); listenB(); });
+
+  // 11: compare cards open and close
+  $$('.cmp').forEach(b => b.addEventListener('click', () => {
+    const open = b.getAttribute('aria-expanded') === 'true';
+    b.setAttribute('aria-expanded', String(!open));
+    $('.cmp-ideas', b).hidden = open;
+  }));
+
+  renderScores();
+})();
+</script>
+
+</html>
