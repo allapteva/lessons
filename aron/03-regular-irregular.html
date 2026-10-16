@@ -1,0 +1,1162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta charset="utf-8">
+<title>Rule Breakers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@600;700;800;900&display=swap">
+<style>
+/* Layout: a game lobby, the same arena as Aron's earlier lessons. Dark striped arena, chunky white "event" cards
+   with thick black outlines and coloured header bands, yellow 3D buttons, a trophy road and ranks.
+   Fan-made look inspired by arena brawler games; no official logos or art. Single dark-arena theme on purpose. */
+:root{
+  --night:#0a1a4f; --arena:#1238a8; --arena-2:#1b4fd6; --stripe:rgba(255,255,255,.045);
+  --panel:#ffffff; --panel-2:#eef3ff; --ink:#0d0f1a; --muted:#4a5272; --on-dark:#ffffff; --on-dark-dim:#c9d6ff;
+  --yellow:#ffd23f; --orange:#ff8a1f; --pink:#ff4fa3; --purple:#8a3ffc; --sky:#38c6ff; --green:#4fd93a; --red:#ff3b4e;
+  /* header-band colours used by the markup */
+  --red-d:#ff3b4e; --aqua-d:#1fd1b8; --orange-d:#ff8a1f; --blue-d:#38c6ff; --purple-d:#8a3ffc; --green-d:#4fd93a; --yellow-d:#ffd23f; --ink2:#c9d6ff;
+  /* chip / card fills used by the script */
+  --pop-yellow:#ffd23f; --pop-blue:#7fd9ff; --pop-purple:#c9a2ff; --pop-orange:#ffa04d; --pop-aqua:#5ff0d0; --pop-green:#8af06e;
+  --t-yellow:#fff1b3; --t-blue:#c9efff; --t-red:#ffd3dc; --t-purple:#e4d4ff;
+  --screen:#0a1a4f; --screen-2:#16307e; --screen-line:#2c4bb0;
+  --ok:#22a311; --ok-ink:#126b06; --ok-bg:#dcf9d4; --bad:#ff3b4e; --bad-ink:#c3142a; --irr-ink:#5d1fc4;
+  --display:"Lilita One","Arial Black",Impact,sans-serif;
+  --body:"Nunito","Segoe UI",system-ui,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background-color:var(--night);background-image:repeating-linear-gradient(135deg,var(--stripe) 0 22px,transparent 22px 44px),radial-gradient(ellipse at 50% -10%,var(--arena-2),var(--arena) 38%,var(--night) 85%);background-attachment:fixed;color:var(--on-dark);font-family:var(--body);font-size:17px;line-height:1.5}
+.wrap{max-width:1000px;margin:0 auto;padding-inline:16px;padding-block:20px 110px;display:flex;flex-direction:column;gap:26px}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer;-webkit-tap-highlight-color:transparent}
+:focus-visible{outline:4px solid var(--sky);outline-offset:3px}
+h1,h2,h3{margin:0;text-wrap:balance;font-weight:400}
+p{margin:0}
+[hidden]{display:none!important}
+.stages{display:flex;flex-direction:column;gap:28px;min-width:0}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.outline{font-family:var(--display);color:var(--on-dark);-webkit-text-stroke:2px var(--ink);paint-order:stroke fill;text-shadow:0 4px 0 var(--ink)}
+
+/* ---------- lobby ---------- */
+.lobby{display:flex;flex-direction:column;gap:16px}
+.topbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.player{display:flex;align-items:center;gap:12px;background:rgba(0,0,0,.35);border:3px solid var(--ink);border-radius:14px;padding:6px 14px 6px 6px}
+.avatar{width:52px;height:52px;border-radius:10px;border:3px solid var(--ink);background:linear-gradient(var(--yellow),var(--orange));display:grid;place-items:center;font:400 26px/1 var(--display);color:var(--ink)}
+.player .name{font-size:24px;line-height:1;letter-spacing:.02em}
+.player .lvl-txt{font-weight:800;font-size:13px;color:var(--on-dark-dim)}
+.rank{display:flex;align-items:center;gap:10px;background:rgba(0,0,0,.35);border:3px solid var(--ink);border-radius:14px;padding:6px 14px}
+.rank .tier{font-size:18px;line-height:1;letter-spacing:.03em}
+.title-card{position:relative;background:linear-gradient(160deg,#8a3ffc,#4a17b0);border:4px solid var(--ink);border-radius:20px;box-shadow:0 8px 0 var(--ink);padding:clamp(18px,4vw,36px);overflow:hidden}
+.title-card::after{content:"";position:absolute;inset:auto -40px -60px auto;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(255,210,63,.5),transparent 65%)}
+.mode{display:inline-block;background:var(--yellow);color:var(--ink);border:3px solid var(--ink);border-radius:8px;padding:2px 12px;font:400 15px/1.3 var(--display);letter-spacing:.06em;transform:rotate(-3deg)}
+.title-card h1{font-size:clamp(40px,9vw,88px);line-height:.95;margin-top:12px;position:relative;z-index:1;transform:rotate(-2deg);transform-origin:left}
+.title-card h1 span{color:var(--yellow)}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;position:relative;z-index:1}
+.tag{background:rgba(0,0,0,.3);border:2px solid var(--ink);border-radius:999px;padding:3px 12px;font-weight:800;font-size:15px}
+.levels{display:flex;flex-wrap:wrap;gap:8px}
+.levels a{display:inline-flex;align-items:center;gap:6px;color:var(--ink);text-decoration:none;background:var(--panel);border:3px solid var(--ink);border-radius:10px;padding:4px 12px;font-weight:900;font-size:14px;box-shadow:0 3px 0 var(--ink)}
+.levels a b{font:400 14px/1 var(--display);color:var(--purple)}
+.levels a:hover{background:var(--yellow)}
+.road{background:rgba(0,0,0,.35);border:3px solid var(--ink);border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.road-top{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-weight:800}
+.road-top b{font:400 18px/1 var(--display);color:var(--yellow)}
+.bar{height:18px;border:3px solid var(--ink);border-radius:999px;background:var(--night);overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(var(--yellow),var(--orange));transition:width .4s}
+.tiers{display:flex;justify-content:space-between;font:400 12px/1 var(--display);letter-spacing:.04em;color:var(--on-dark-dim);gap:4px;flex-wrap:wrap}
+.tiers span.on{color:var(--yellow)}
+
+/* teacher plan */
+details.plan{background:rgba(0,0,0,.35);border:3px dashed var(--on-dark-dim);border-radius:14px;padding:14px 20px}
+details.plan summary{font-weight:900;cursor:pointer}
+.plan p{color:var(--on-dark-dim);font-size:15px;margin-top:8px}
+.plan p b{color:var(--on-dark)}
+
+/* ---------- event cards (stages) ---------- */
+.stage{--pad:clamp(14px,3vw,26px);background:var(--panel);color:var(--ink);border:4px solid var(--ink);border-radius:20px;box-shadow:0 8px 0 var(--ink);padding:0 var(--pad) var(--pad);display:flex;flex-direction:column;gap:16px;scroll-margin-top:14px;min-width:0;overflow:hidden}
+.stage-head{display:flex;gap:14px;align-items:center;margin-inline:calc(-1 * var(--pad));padding:14px var(--pad);background:var(--acc,var(--sky));border-bottom:4px solid var(--ink)}
+.lvl{flex:none;width:54px;height:54px;display:grid;place-items:center;background:var(--panel);color:var(--ink);border:3px solid var(--ink);border-radius:12px;font:400 26px/1 var(--display);box-shadow:0 3px 0 var(--ink)}
+.head-txt{display:flex;flex-direction:column;gap:2px;min-width:0}
+.eyebrow{font:400 13px/1.2 var(--display);letter-spacing:.08em;color:var(--ink);opacity:.85}
+.stage-head h2{font-family:var(--display);font-size:clamp(24px,4.4vw,36px);line-height:1.05;color:var(--on-dark);-webkit-text-stroke:2px var(--ink);paint-order:stroke fill;text-shadow:0 4px 0 var(--ink)}
+.stage-head .hint{color:var(--ink);font-weight:800}
+.stage-head .hint b{background:rgba(255,255,255,.55);border-radius:4px;padding:0 3px}
+h3{font-family:var(--display);font-size:20px;letter-spacing:.02em}
+.hint{color:var(--muted);font-size:15px;font-weight:700}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.btn{border:3px solid var(--ink);background:var(--yellow);color:var(--ink);border-radius:12px;padding:6px 18px;font:400 17px/1.2 var(--display);letter-spacing:.03em;box-shadow:0 4px 0 var(--ink);transition:transform .08s,box-shadow .08s}
+.btn:hover{background:var(--orange)}
+.btn:active{transform:translateY(4px);box-shadow:0 0 0 var(--ink)}
+.btn.go{background:var(--green)}
+.btn.go:hover{background:var(--ok);color:var(--on-dark)}
+.btn.big{font-size:22px;padding:10px 26px}
+.status{font-weight:900;font-variant-numeric:tabular-nums}
+.say{display:inline-grid;place-items:center;width:38px;height:38px;flex:none;border-radius:10px;border:3px solid var(--ink);background:var(--sky);color:var(--ink);padding:0;box-shadow:0 3px 0 var(--ink)}
+.say svg{width:18px;height:18px}
+.say:hover{background:var(--yellow)}
+
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-7px)}40%{transform:translateX(7px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+.shake{animation:shake .35s;border-color:var(--bad)!important;background-color:var(--t-red)!important}
+@keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.25) rotate(-4deg)}100%{transform:scale(1)}}
+.pop{animation:pop .45s}
+
+/* 2 why -ed */
+.steps{display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:var(--panel-2);border:3px solid var(--ink);border-radius:14px;padding:10px 14px}
+.steps .lbl{font:400 14px/1 var(--display);letter-spacing:.08em;color:var(--muted);flex-basis:100%}
+.step{border:3px solid var(--ink);border-radius:10px;padding:3px 12px;font-weight:900;background:var(--panel)}
+.step.done{background:var(--ok-bg);color:var(--ok-ink)}
+.step.now{background:var(--yellow);box-shadow:0 3px 0 var(--ink)}
+.step.later{border-style:dashed;color:var(--muted)}
+.steps .arr{font:400 22px/1 var(--display);color:var(--orange)}
+.chart{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(270px,100%),1fr));gap:14px}
+.gcol{border:3px solid var(--ink);border-radius:14px;overflow:hidden;background:var(--panel-2);display:flex;flex-direction:column;min-width:0;box-shadow:0 4px 0 var(--ink)}
+.gcol h3{font-family:var(--display);font-size:20px;letter-spacing:.06em;color:var(--on-dark);background:var(--h);padding:8px 14px;text-align:center;border-bottom:3px solid var(--ink);-webkit-text-stroke:1.5px var(--ink);paint-order:stroke fill}
+.gcol .big{padding:12px 14px 0;font-size:21px;font-weight:900;line-height:1.35}
+.gcol .big b{color:var(--bad-ink)}
+.gcol .ex{padding:10px 14px 14px;font-size:15px;color:var(--muted);margin-top:auto;font-weight:700}
+.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(230px,100%),1fr));gap:12px}
+.rcard{border:3px solid var(--ink);border-radius:14px;background:var(--c);padding:12px 14px;display:flex;flex-direction:column;gap:6px;min-width:0;box-shadow:0 4px 0 var(--ink)}
+.rcard h3{font-size:18px;line-height:1.25;letter-spacing:.02em}
+.rcard p{font-weight:800}
+.rcard p b{color:var(--bad-ink)}
+.rcard p i{font-style:normal;color:var(--irr-ink);font-weight:900}
+.rcard .note{font-size:14px;color:var(--muted);font-weight:700}
+.exs{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.exs li{display:flex;gap:10px;align-items:center;min-width:0;font-weight:700}
+.exs li span{min-width:0}
+.exs b{color:var(--bad-ink)}
+.mini{display:flex;flex-direction:column;gap:10px;background:var(--t-blue);border:3px solid var(--ink);border-radius:14px;padding:14px}
+.lis{display:flex;flex-direction:column;gap:8px}
+.li-item{display:grid;grid-template-columns:34px auto minmax(0,1fr);gap:8px 10px;align-items:center;padding:10px 12px;border-radius:12px;background:var(--panel-2);border:3px solid var(--ink)}
+.li-item.done{background:var(--ok-bg)}
+.li-item .opts{display:flex;flex-wrap:wrap;gap:6px;min-width:0}
+.li-item.done .opts{display:none}
+.li-item .txt{grid-column:3;font-size:18px;font-weight:900;color:var(--ok-ink);min-width:0}
+.li-item .key{grid-column:1/-1}
+
+/* choice gaps */
+.gaps{display:flex;flex-direction:column;gap:8px}
+.gap{display:grid;grid-template-columns:34px minmax(0,1fr);gap:6px 10px;padding:10px 12px;border-radius:12px;background:var(--panel-2);border:3px solid var(--ink)}
+.gap.done{background:var(--ok-bg)}
+.gap .n,.li-item .n{display:grid;place-items:center;width:30px;height:30px;border:2px solid var(--ink);border-radius:8px;background:var(--acc,var(--purple));color:var(--ink);font:400 16px/1 var(--display)}
+.gap.done .n,.li-item.done .n{background:var(--green)}
+.gap .s{font-size:19px;font-weight:700;min-width:0}
+.slot{display:inline-block;min-width:4.6em;border-bottom:3px solid var(--ink);text-align:center;color:var(--ok-ink);font-weight:900}
+.gap .opts{grid-column:2;display:flex;flex-wrap:wrap;gap:6px}
+.opt{border:3px solid var(--ink);background:var(--panel);border-radius:10px;padding:3px 12px;font-weight:900;box-shadow:0 3px 0 var(--ink)}
+.opt:hover{background:var(--t-yellow)}
+.gap.done .opts{display:none}
+
+/* 3 rule-breakers */
+.dont{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;background:var(--t-red);border:3px solid var(--ink);border-radius:14px;padding:10px 14px;font-weight:900;font-size:18px}
+.dont .lbl{font:400 14px/1 var(--display);letter-spacing:.08em;color:var(--muted);flex-basis:100%}
+.dont s{color:var(--bad-ink);text-decoration-thickness:3px}
+.dont b{color:var(--ok-ink)}
+.vcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(160px,100%),1fr));gap:10px}
+.vcard{min-height:160px;border:3px solid var(--ink);border-radius:14px;background:var(--c);color:var(--ink);padding:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;text-align:center;box-shadow:0 5px 0 var(--ink);min-width:0}
+.vcard .em{font-size:36px;line-height:1.1}
+.vcard .v{font:400 30px/1.05 var(--display)}
+.vcard .sm{font-size:14px;font-weight:800;line-height:1.3}
+.vcard.flip{background:var(--night);color:var(--on-dark)}
+.vcard.flip .v{color:var(--yellow)}
+.vcard .key,.die .key{align-self:center}
+.sound-tip{background:var(--t-yellow);border:3px solid var(--ink);border-radius:14px;padding:10px 14px;font-weight:700}
+.sound-tip b{color:var(--bad-ink)}
+
+/* 4 sort + typing */
+.pool{display:flex;flex-wrap:wrap;gap:10px;min-height:52px;padding:12px;border:3px dashed var(--muted);border-radius:14px;background:var(--panel-2)}
+.chip{border:3px solid var(--ink);background:var(--c,var(--pop-yellow));color:var(--ink);border-radius:10px;padding:7px 14px;font:900 19px/1.2 var(--body);box-shadow:0 3px 0 var(--ink)}
+.chip.sel{background:var(--panel);outline:4px solid var(--sky);outline-offset:2px;transform:translateY(-4px) rotate(-2deg)}
+.chip.placed{cursor:default;box-shadow:none;font-size:16px;padding:4px 10px;background:var(--panel)}
+.bins{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));gap:12px}
+.bin{display:flex;flex-direction:column;gap:10px;border:3px solid var(--ink);border-radius:14px;padding:10px;background:var(--c)}
+.bin-drop{display:flex;flex-direction:column;align-items:flex-start;gap:2px;border:3px solid var(--ink);background:var(--panel);border-radius:10px;padding:8px 14px;text-align:left;box-shadow:0 4px 0 var(--ink)}
+.bin-drop:hover{background:var(--yellow)}
+.bin-drop .big{font:400 22px/1.1 var(--display);letter-spacing:.03em}
+.bin-drop .eg{font-weight:800;color:var(--muted)}
+.bin-words{display:flex;flex-wrap:wrap;gap:6px;min-height:34px}
+.typer{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(210px,100%),1fr));gap:10px}
+.typer label{display:flex;align-items:center;gap:8px;background:var(--panel-2);border:3px solid var(--ink);border-radius:12px;padding:8px 10px;font-weight:900;min-width:0}
+.typer label > span:first-child{min-width:62px}
+.typer input{flex:1;min-width:0;border:none;border-bottom:3px solid var(--ink);padding:3px 2px;font-weight:800;font-size:18px;background:transparent}
+.typer input:focus{outline:none;border-bottom-color:var(--sky)}
+.typer label:focus-within{background:var(--t-blue)}
+.typer label.right{border-color:var(--ok);background:var(--ok-bg)}
+.typer label.wrong{border-color:var(--bad)}
+.typer .fix{color:var(--bad-ink);font-size:14px;font-weight:900}
+
+/* 5 Dan's blog */
+.blog{background:var(--panel-2);border:3px solid var(--ink);border-radius:14px;overflow:hidden}
+.blog-top{background:var(--orange);color:var(--ink);padding:10px 16px;display:flex;justify-content:space-between;gap:6px 10px;flex-wrap:wrap;align-items:center;border-bottom:3px solid var(--ink)}
+.blog-top h3{font-size:19px;letter-spacing:.04em}
+.blog-top span{font-weight:900;font-size:14px}
+.blog-body{padding:14px 18px;display:flex;flex-direction:column;gap:10px;font-weight:600;font-size:18px;line-height:1.7;max-width:70ch}
+.blog-body .post-title{font:400 24px/1.2 var(--display)}
+.blog-body .by{font-weight:900;color:var(--irr-ink);font-size:15px;line-height:1.4}
+.w{display:inline-block;border:0;margin:0;padding:0 2px;background:none;color:inherit;font:inherit;line-height:1.35;border-radius:5px}
+.w:hover{background:var(--t-yellow)}
+.w.tk{text-decoration:underline dashed 2px;text-underline-offset:4px}
+.w.reg{background:var(--ok-bg);color:var(--ok-ink);font-weight:900;box-shadow:inset 0 -3px 0 var(--ok)}
+.w.irr{background:var(--t-purple);color:var(--irr-ink);font-weight:900;box-shadow:inset 0 -3px 0 var(--purple)}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;font-weight:800;font-size:15px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:18px;height:18px;border:2px solid var(--ink);border-radius:5px;background:var(--c)}
+
+/* 6 match replay */
+.replay{background:var(--screen);color:var(--on-dark);border:3px solid var(--ink);border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:12px}
+.score{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px}
+.team{border:3px solid var(--ink);border-radius:12px;padding:6px 10px;font:400 18px/1.1 var(--display);text-align:center;letter-spacing:.03em}
+.team.blue{background:var(--sky);color:var(--ink)}
+.team.red{background:var(--red);color:var(--on-dark)}
+.team small{display:block;font:800 13px/1.2 var(--body)}
+.final{background:var(--yellow);color:var(--ink);border:3px solid var(--ink);border-radius:8px;padding:3px 10px;font:400 15px/1 var(--display);letter-spacing:.08em}
+.comms{display:flex;flex-direction:column;gap:10px}
+.comm{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px 12px;align-items:center;background:var(--panel);color:var(--ink);border:3px solid var(--ink);border-radius:12px;padding:10px 12px}
+.comm .em{font-size:34px;line-height:1;grid-row:span 2}
+.comm .s{font-weight:900;font-size:19px;min-width:0}
+.comm .opts{display:flex;flex-wrap:wrap;gap:6px}
+.comm .opts button{border:3px solid var(--ink);background:var(--yellow);border-radius:10px;padding:3px 12px;font-weight:900;box-shadow:0 3px 0 var(--ink)}
+.comm .opts button:hover{background:var(--orange)}
+.comm.done{background:var(--ok-bg)}
+.comm.done .opts{display:none}
+.starts{background:var(--t-yellow);border:3px solid var(--ink);border-radius:14px;padding:10px 14px;font-weight:800}
+
+/* 1 mystery game + 7 dice (dark screens) */
+.game{background:var(--screen);color:var(--on-dark);border:3px solid var(--ink);border-radius:16px;padding:clamp(14px,3vw,24px);display:flex;flex-direction:column;gap:14px}
+.mystery{font:400 clamp(20px,3.6vw,30px)/1.2 var(--display);color:var(--yellow);-webkit-text-stroke:1.5px var(--ink);paint-order:stroke fill}
+.game .hint{color:var(--on-dark-dim)}
+.places{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(142px,100%),1fr));gap:10px}
+.place{display:flex;flex-direction:column;align-items:center;gap:4px;border:3px solid var(--ink);background:var(--screen-2);color:var(--on-dark);border-radius:12px;padding:10px 6px;font-weight:800;font-size:15px;text-align:center;box-shadow:0 4px 0 var(--ink)}
+.place:hover{background:var(--screen-line)}
+.place .em{font-size:30px;line-height:1.1}
+.place.no{opacity:.4;cursor:default;text-decoration:line-through}
+.place.no:hover{background:var(--screen-2)}
+.place.yes{background:var(--green);color:var(--ink);cursor:default}
+.log{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px;min-height:1.5em}
+.log li{font-weight:800}
+.log .q{color:var(--sky)}
+.log .a{color:var(--on-dark)}
+.log .a.win{color:var(--green)}
+.game .status{color:var(--green)}
+.talk{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(210px,100%),1fr));gap:10px}
+.tcard{min-height:112px;border:3px solid var(--ink);border-radius:14px;background:var(--c);color:var(--ink);padding:12px;display:grid;place-items:center;text-align:center;font-weight:900;font-size:17px;box-shadow:0 5px 0 var(--ink)}
+.tcard .num{font:400 38px/1 var(--display);color:var(--on-dark);-webkit-text-stroke:2px var(--ink);paint-order:stroke fill}
+.dice{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(130px,100%),1fr));gap:14px}
+.die{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;min-width:0}
+.die .cat{font:400 13px/1 var(--display);letter-spacing:.1em;color:var(--on-dark-dim)}
+.die .face{width:100px;height:100px;display:grid;place-items:center;font-size:56px;line-height:1;background:var(--panel);border:4px solid var(--ink);border-radius:22px;box-shadow:0 6px 0 var(--ink),inset 0 -6px 0 var(--panel-2)}
+.die .lab{font-weight:900;font-size:18px;color:var(--on-dark)}
+@keyframes roll{0%{transform:rotate(0) scale(1)}50%{transform:rotate(200deg) scale(.82)}100%{transform:rotate(360deg) scale(1)}}
+.die .face.rolling{animation:roll .6s ease-out}
+.task{background:var(--t-yellow);color:var(--ink);border:3px solid var(--ink);border-radius:14px;padding:12px 14px;font-weight:800;display:flex;flex-direction:column;gap:6px}
+.task b{color:var(--bad-ink)}
+
+.hw h3{margin-top:4px}
+.hw ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px;font-weight:700}
+.hw a{color:var(--irr-ink);font-weight:900}
+
+/* trophy counter + toast */
+.trophies{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:10;display:flex;align-items:center;gap:8px;background:var(--night);color:var(--yellow);border:3px solid var(--ink);border-radius:14px;padding:8px 16px 8px 12px;font:400 24px/1 var(--display);box-shadow:0 5px 0 var(--ink);outline:2px solid var(--yellow);outline-offset:-6px}
+.toast{position:fixed;left:50%;top:calc(18px + env(safe-area-inset-top,0px));transform:translateX(-50%);z-index:11;background:var(--yellow);color:var(--ink);border:4px solid var(--ink);border-radius:16px;padding:10px 22px;font:400 clamp(22px,4vw,32px)/1.1 var(--display);box-shadow:0 6px 0 var(--ink);text-align:center;max-width:calc(100% - 32px)}
+.toast small{display:block;font:900 14px/1.3 var(--body)}
+
+/* teacher-only parts: every one sits between a pair of T comment markers, which scripts/student-site.sh cuts out of the student copy */
+.scroll{overflow-x:auto}
+.tstrip{display:flex;flex-wrap:wrap;align-items:center;gap:8px 18px;background:rgba(0,0,0,.35);border:3px dashed var(--yellow);border-radius:14px;padding:10px 14px}
+.tbadge{background:var(--yellow);color:var(--ink);border:3px solid var(--ink);border-radius:8px;padding:2px 12px;font:400 15px/1.3 var(--display);letter-spacing:.06em}
+.tfacts{display:flex;flex-wrap:wrap;gap:4px 18px;margin:0;font-size:14.5px;font-weight:700;color:var(--on-dark-dim)}
+.tfacts div{display:flex;gap:6px}
+.tfacts dt{color:var(--on-dark);font-weight:900}
+.tfacts dd{margin:0}
+.plan table{border-collapse:collapse;width:100%;min-width:560px;margin-top:10px;font-size:15px}
+.plan th,.plan td{text-align:left;vertical-align:top;padding:6px 12px 6px 0;border-top:2px solid rgba(255,255,255,.18)}
+.plan th{border-top:0;font:400 13px/1.2 var(--display);letter-spacing:.08em;color:var(--yellow)}
+.plan td:first-child{white-space:nowrap;font-variant-numeric:tabular-nums;color:var(--on-dark-dim)}
+.plan td:nth-child(2){font-weight:900}
+.plan td:nth-child(3){color:var(--on-dark-dim);font-size:14px}
+.tnote{background:var(--t-yellow);color:var(--ink);border:3px dashed var(--ink);border-radius:14px;padding:10px 14px;font-size:15px;font-weight:700;line-height:1.45;display:flex;flex-direction:column;gap:6px}
+.tnote > b:first-child{font:400 14px/1.2 var(--display);letter-spacing:.08em}
+.key{display:inline-block;justify-self:start;align-self:flex-start;margin:0;font-size:14px;font-weight:800;line-height:1.4;background:var(--t-yellow);color:var(--ink);border:2px dashed var(--ink);border-radius:8px;padding:1px 8px}
+.gap .key,.comm .key{grid-column:2}
+footer.fin{color:var(--on-dark-dim);font-size:14.5px;font-weight:700;border-top:3px dashed var(--on-dark-dim);padding-top:14px}
+/* lesson notes (teacher's page only): a quick strip under every section and a notes block at the bottom */
+.tn{border:3px dashed var(--ink);background:var(--t-yellow);color:var(--ink);border-radius:14px;padding:10px 14px 12px;display:flex;flex-direction:column;gap:8px;font-size:14.5px;font-weight:700}
+.tn-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.tn-lab{font:400 13px/1.2 var(--display);letter-spacing:.08em;min-width:9.5em}
+.tn-chip{border:2px solid var(--ink);background:var(--panel);color:var(--ink);border-radius:999px;padding:3px 12px;font-size:14.5px;font-weight:800;line-height:1.3}
+.tn-chip:hover{background:var(--t-blue)}
+.tn-chip[aria-pressed="true"]{background:var(--purple);color:var(--on-dark)}
+.tn-text{width:100%;border:2px solid var(--ink);border-radius:8px;background:var(--panel);color:var(--ink);padding:5px 10px;font-size:15px;font-weight:700}
+.tn-final{background:var(--panel);color:var(--ink);border:4px dashed var(--ink);border-radius:20px;padding:clamp(14px,3vw,26px);display:flex;flex-direction:column;gap:16px;scroll-margin-top:104px;min-width:0}
+.tn-final h2{font-family:var(--display);font-size:clamp(24px,4.4vw,36px);line-height:1.05}
+.tn-field{display:flex;flex-direction:column;gap:6px}
+.tn-field label{font-weight:900}
+.tn-field textarea,.tn-out{width:100%;min-height:120px;border:3px solid var(--ink);border-radius:12px;background:var(--panel-2);color:var(--ink);padding:10px;font-weight:600;resize:vertical}
+.tn-out{font:14px/1.45 ui-monospace,Menlo,monospace}
+.tn-sum table{border-collapse:collapse;width:100%;min-width:480px;font-size:15px}
+.tn-sum th,.tn-sum td{text-align:left;vertical-align:top;padding:6px 10px 6px 0;border-top:2px solid var(--panel-2)}
+.tn-sum th{border-top:0;font:400 13px/1.2 var(--display);letter-spacing:.08em;color:var(--muted)}
+.tn-status{font-size:14.5px;color:var(--muted);font-weight:700}
+/* lesson timer (teacher's page only) */
+.tmr{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;margin-top:-20px;margin-bottom:-8px;background:var(--night);border:3px solid var(--ink);border-top:0;border-radius:0 0 14px 14px;padding:8px 12px 10px;display:flex;flex-direction:column;gap:8px;box-shadow:0 6px 0 rgba(0,0,0,.35)}
+.tm-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;min-width:0}
+.tm-go{flex:none;border:3px solid var(--ink);border-radius:10px;background:var(--yellow);color:var(--ink);font:400 16px/1.2 var(--display);padding:4px 14px;min-width:5.8em}
+.tm-clock{flex:none;font:400 20px/1 var(--display);font-variant-numeric:tabular-nums;color:var(--on-dark)}
+.tm-clock small{font:800 13px/1 var(--body);color:var(--on-dark-dim)}
+.tm-clock.over{color:var(--red)}
+.tm-now{flex:1;min-width:0;font-size:14.5px;font-weight:800;color:var(--on-dark-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tm-reset{flex:none;border:2px solid var(--on-dark-dim);background:none;color:var(--on-dark);border-radius:10px;padding:3px 10px;font-weight:800;font-size:14px}
+.tm-bar{display:flex;gap:3px;height:24px}
+.tm-seg{position:relative;flex-basis:0;min-width:0;border-radius:6px;overflow:hidden;background:color-mix(in srgb,var(--c) 45%,#fff);color:var(--ink);text-decoration:none;font:900 12px/24px var(--body);text-align:center}
+.tm-seg i{position:absolute;inset:0 auto 0 0;width:0;background:var(--c)}
+.tm-seg b{position:relative}
+.tm-seg.now{outline:2px solid #fff;outline-offset:1px}
+[data-view="student"] .stage{scroll-margin-top:104px}
+main.page:has(#tmr) ~ .toast{top:calc(100px + env(safe-area-inset-top,0px))}
+@media (max-width:520px){ .tm-now{display:none} .tm-row{justify-content:space-between} }
+
+@media (max-width:520px){
+  body{font-size:16px} .gap .s,.comm .s{font-size:17px} .title-card h1{transform:none}
+  .li-item{grid-template-columns:34px minmax(0,1fr)} .li-item .opts{grid-column:1/-1} .li-item .txt{grid-column:1/-1}
+  .blog-body{font-size:17px}
+}
+@media (prefers-reduced-motion:reduce){ .shake,.pop,.die .face.rolling{animation:none} .chip.sel{transform:none} .btn,.bar i{transition:none} .btn:active{transform:none} }
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-say" viewBox="0 0 24 24"><path fill="currentColor" d="M3 9v6h4l5 4V5L7 9H3z"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></symbol>
+</svg>
+
+<main class="wrap page" data-view="student">
+
+
+
+  <header class="lobby">
+    <div class="topbar">
+      <div class="player"><span class="avatar" aria-hidden="true">A</span><div><div class="name outline">ARON</div><div class="lvl-txt">Season: Past Simple</div></div></div>
+      <div class="rank"><span aria-hidden="true">🏆</span><span class="tier outline" id="rank-name">BRONZE</span></div>
+    </div>
+    <div class="title-card">
+      <span class="mode">EPISODE 2</span>
+      <h1 class="outline">Rule <span>breakers</span></h1>
+      <div class="tags">
+        <span class="tag">past simple, part 2</span>
+        <span class="tag">why -ed?</span>
+        <span class="tag">rule-followers: + ed</span>
+        <span class="tag">rule-breakers: went, won, saw</span>
+        <span class="tag">story dice</span>
+      </div>
+    </div>
+    <div class="road" aria-label="Trophy road">
+      <div class="road-top"><span>Trophy road</span><span><b id="road-count">0</b> trophies · next: <b id="road-next">SILVER at 10</b></span></div>
+      <div class="bar"><i id="road-bar"></i></div>
+      <div class="tiers" id="tiers"></div>
+    </div>
+    <nav class="levels" aria-label="Lesson events">
+      <a href="#warm"><b>1</b>Mystery</a><a href="#why"><b>2</b>Why -ed?</a><a href="#breakers"><b>3</b>Rule-breakers</a><a href="#sort"><b>4</b>Pick a team</a><a href="#blog"><b>5</b>Dan's blog</a><a href="#replay"><b>6</b>Match replay</a><a href="#dice"><b>7</b>Story dice</a>
+    </nav>
+  </header>
+
+
+  <div class="stages">
+
+    <section class="stage" id="warm" data-title="Mystery: where were they?" style="--acc:var(--red-d)">
+      <div class="stage-head"><span class="lvl">1</span><div class="head-txt">
+        <p class="eyebrow">EVENT 1 · WARM-UP MYSTERY</p>
+        <h2>Where were they?</h2>
+        <p class="hint">Ask the question out loud, then click a place to check. Find the place in three questions for two trophies!</p>
+      </div></div>
+      <div class="game">
+        <p class="mystery" id="gm-q"></p>
+        <p class="hint" id="gm-hint"></p>
+        <div class="places" id="gm-places"></div>
+        <ul class="log" id="gm-log" aria-live="polite"></ul>
+        <div class="row"><button class="btn" type="button" id="gm-new">New mystery</button><span class="status" id="gm-status"></span></div>
+      </div>
+      <h3>Talk cards</h3>
+      <p class="hint">Click a card to see the question. Answer in full sentences: "I was …", "I wasn't …".</p>
+      <div class="talk" id="talk"></div>
+    </section>
+
+    <section class="stage" id="why" data-title="Why -ed?" style="--acc:var(--aqua-d)">
+      <div class="stage-head"><span class="lvl">2</span><div class="head-txt">
+        <p class="eyebrow">EVENT 2 · TRAINING CAVE</p>
+        <h2>Why do we need -ed?</h2>
+        <p class="hint">In English, the <b>verb</b> tells you <b>when</b>.</p>
+      </div></div>
+      <div class="steps" aria-label="The past simple, step by step">
+        <span class="lbl">The past, step by step</span>
+        <span class="step done">✔ was / were</span><span class="arr" aria-hidden="true">→</span>
+        <span class="step now">rule-followers: + ed</span><span class="arr" aria-hidden="true">→</span>
+        <span class="step now">rule-breakers</span><span class="arr" aria-hidden="true">→</span>
+        <span class="step later">next time: didn't / Did …?</span>
+      </div>
+      <div class="chart">
+        <div class="gcol" style="--h:var(--blue-d)">
+          <h3>🔁 Every day</h3>
+          <p class="big">I play Brawl Stars.<br>Dan plays chess.</p>
+          <p class="ex">It happens again and again.</p>
+        </div>
+        <div class="gcol" style="--h:var(--red-d)">
+          <h3>⏪ Yesterday</h3>
+          <p class="big">I play<b>ed</b> Brawl Stars.<br>Dan play<b>ed</b> chess.</p>
+          <p class="ex">It happened. It's finished, like a match replay.</p>
+        </div>
+      </div>
+      <div class="rules">
+        <div class="rcard" style="--c:var(--t-yellow)"><h3>1 · -ed means "finished"</h3><p>I walk my dogs. = every day<br>I walk<b>ed</b> my dogs. = yesterday</p><p class="note">No -ed? Then it sounds like every day.</p></div>
+        <div class="rcard" style="--c:var(--t-blue)"><h3>2 · The same for everyone</h3><p>I / you / he / she / we / they play<b>ed</b></p><p class="note">No -s in the past: Dan plays → Dan play<b>ed</b>. Easier than was / were!</p></div>
+        <div class="rcard" style="--c:var(--t-purple)"><h3>3 · Two teams of verbs</h3><p>Rule-followers: play → play<b>ed</b><br>Rule-breakers: go → <i>went</i></p><p class="note">Rule-breakers have their own past. You learn them like new words. was and were are rule-breakers too!</p></div>
+      </div>
+      <ul class="exs" id="why-ex">
+        <li><button class="say" type="button" aria-label="Listen"><svg><use href="#i-say"/></svg></button><span>Every day I walk my dogs. Yesterday I walk<b>ed</b> my dogs.</span></li>
+        <li><button class="say" type="button" aria-label="Listen"><svg><use href="#i-say"/></svg></button><span>Rosie usually trains at six. Yesterday she train<b>ed</b> at seven.</span></li>
+        <li><button class="say" type="button" aria-label="Listen"><svg><use href="#i-say"/></svg></button><span>We often play chess. Last Sunday we play<b>ed</b> chess with Grandpa.</span></li>
+        <li><button class="say" type="button" aria-label="Listen"><svg><use href="#i-say"/></svg></button><span>Yesterday I <b>was</b> at home and I watch<b>ed</b> a film.</span></li>
+      </ul>
+      <div class="mini">
+        <h3>Listen: usually or in the past?</h3>
+        <p class="hint">Press the speaker. Listen for the end of the verb. Then choose.</p>
+        <div class="lis" id="lis"></div>
+      </div>
+      <div class="mini">
+        <h3>Switch to the past</h3>
+        <div class="gaps" id="sw-gaps"></div>
+        <div class="row"><button class="btn" type="button" id="sw-again">Again</button></div>
+      </div>
+    </section>
+
+    <section class="stage" id="breakers" data-title="Rule-breakers" style="--acc:var(--purple-d)">
+      <div class="stage-head"><span class="lvl">3</span><div class="head-txt">
+        <p class="eyebrow">EVENT 3 · NEW BRAWLERS</p>
+        <h2>Rule-breakers</h2>
+        <p class="hint">These verbs <b>don't</b> take -ed. Each one has its own past. Say the past, then click the card to check.</p>
+      </div></div>
+      <div class="dont">
+        <span class="lbl">Don't say</span>
+        <span><s>goed</s> → <b>went</b></span><span><s>winned</s> → <b>won</b></span><span><s>eated</s> → <b>ate</b></span><span><s>seed</s> → <b>saw</b></span>
+      </div>
+      <div class="vcards" id="vcards"></div>
+      <div class="row"><button class="btn go" type="button" id="vc-mix">Mix and test</button><button class="btn" type="button" id="vc-all">Show all</button></div>
+      <p class="sound-tip"><b>won</b> sounds just like <b>one</b>. <b>saw</b> rhymes with <b>four</b>. <b>ate</b> rhymes with <b>eight</b>.</p>
+    </section>
+
+    <section class="stage" id="sort" data-title="Pick a team" style="--acc:var(--green-d)">
+      <div class="stage-head"><span class="lvl">4</span><div class="head-txt">
+        <p class="eyebrow">EVENT 4 · PICK A TEAM</p>
+        <h2>Follower or breaker?</h2>
+        <p class="hint">Click a verb, then click its team. Then write the past forms.</p>
+      </div></div>
+      <div class="pool" id="team-pool"></div>
+      <div class="bins">
+        <div class="bin" style="--c:var(--ok-bg)"><button class="bin-drop" type="button" data-k="r"><span class="big">Rule-followers</span><span class="eg">+ ed: play → played</span></button><div class="bin-words" id="bin-r"></div></div>
+        <div class="bin" style="--c:var(--t-purple)"><button class="bin-drop" type="button" data-k="i"><span class="big">Rule-breakers</span><span class="eg">own past: go → went</span></button><div class="bin-words" id="bin-i"></div></div>
+      </div>
+      <div class="row"><button class="btn" type="button" id="team-again">Again</button><span class="status" id="team-status" aria-live="polite"></span></div>
+      <h3>Write the past</h3>
+      <div class="typer" id="pt-list"></div>
+      <div class="row"><button class="btn go" type="button" id="pt-check">Check all</button><button class="btn" type="button" id="pt-show">Show answers</button><button class="btn" type="button" id="pt-clear">Clear</button><span class="status" id="pt-score" aria-live="polite"></span></div>
+    </section>
+
+    <section class="stage" id="blog" data-title="Dan's blog" style="--acc:var(--orange-d)">
+      <div class="stage-head"><span class="lvl">5</span><div class="head-txt">
+        <p class="eyebrow">EVENT 5 · READING</p>
+        <h2>Dan's best match</h2>
+        <p class="hint">Rosie's big brother Dan has a blog too. Read his post, then click <b>every verb in the past</b>.</p>
+      </div></div>
+      <article class="blog">
+        <div class="blog-top"><h3>Dan's Game Zone</h3><span>Sunday, 10.30 am</span></div>
+        <div class="blog-body">
+          <p class="post-title">The best match ever</p>
+          <p class="by">by Dan Wilson</p>
+          <p class="dp">Yesterday was a great day! In the morning I went to the pool with Rosie. She swam for an hour, but I only swam for ten minutes. Then we had pancakes at a café.</p>
+          <p class="dp">In the afternoon I played Brawl Stars with my friends Max and Leo. The first match was terrible. We lost! So we started again. I played Colt, and I shot the red team's Bull three times. Max played Dynamike and threw a bomb at their Shelly. Leo collected ten gems, and we waited for the countdown. We won! We jumped and shouted, and Mum laughed at us.</p>
+          <p class="dp">In the evening I was tired. I ate two burgers and watched a video about a new brawler. What a day!</p>
+          <div class="row"><button class="say" type="button" id="dan-say" aria-label="Listen to the blog post"><svg><use href="#i-say"/></svg></button><span class="hint">Listen</span></div>
+        </div>
+      </article>
+      <div class="legend"><span><i style="--c:var(--ok-bg)"></i>rule-follower (+ ed)</span><span><i style="--c:var(--t-purple)"></i>rule-breaker</span></div>
+      <div class="row"><span class="status" id="dan-status" aria-live="polite"></span></div>
+    </section>
+
+    <section class="stage" id="replay" data-title="Yesterday's match" style="--acc:var(--red-d)">
+      <div class="stage-head"><span class="lvl">6</span><div class="head-txt">
+        <p class="eyebrow">EVENT 6 · MATCH REPLAY</p>
+        <h2>Yesterday's match</h2>
+        <p class="hint">The match is over, so we talk about it in the <b>past</b>. Choose the right words, then read the whole replay out loud.</p>
+      </div></div>
+      <div class="replay">
+        <div class="score">
+          <div class="team blue">BLUE TEAM<small>10 gems</small></div>
+          <span class="final">FINAL</span>
+          <div class="team red">RED TEAM<small>7 gems</small></div>
+        </div>
+        <div class="comms" id="replay-list"></div>
+      </div>
+      <p class="starts">Your turn: tell Alena about the last match you played. “Yesterday I played … I was … I collected / shot / threw … We won! / We lost …”</p>
+    </section>
+
+    <section class="stage" id="dice" data-title="Story dice" style="--acc:var(--yellow-d)">
+      <div class="stage-head"><span class="lvl">7</span><div class="head-txt">
+        <p class="eyebrow">EVENT 7 · STORY DICE</p>
+        <h2>Roll a story</h2>
+        <p class="hint">Roll the dice. Tell a story about <b>yesterday</b> with all four.</p>
+      </div></div>
+      <div class="game">
+        <div class="dice" id="dice-box"></div>
+        <p class="vh" id="dice-read" aria-live="polite"></p>
+        <div class="row"><button class="btn big" type="button" id="dice-roll">🎲 Roll</button></div>
+      </div>
+      <div class="task">
+        <span>Start like this: <b>Yesterday</b> … <b>First</b> … <b>Then</b> … <b>In the end</b> …</span>
+        <span>Change the action verbs to the past: run → ? win → ? play → ?</span>
+      </div>
+    </section>
+
+    <section class="stage hw" id="homework" data-title="Homework" style="--acc:var(--ink2)">
+      <div class="stage-head"><span class="lvl">+</span><div class="head-txt">
+        <p class="eyebrow">BONUS</p>
+        <h2>Homework</h2>
+      </div></div>
+      <h3>For Sunday</h3>
+      <ul>
+        <li>Learn the ten rule-breakers: go – went, have – had, see – saw, eat – ate, swim – swam, run – ran, win – won, lose – lost, shoot – shot, throw – threw. Say them to Mum or Dad.</li>
+        <li>Write 5 sentences about today. Use 3 rule-followers (-ed) and 2 rule-breakers.</li>
+      </ul>
+      <h3>For next Saturday</h3>
+      <ul>
+        <li>Write a blog post like Dan's: "My best day" or "My best match" (50 to 60 words). Use 5 rule-followers and 5 rule-breakers. Underline the rule-followers once and the rule-breakers twice.</li>
+        <li>Put these verbs into the two teams and write the past: walk, go, cook, see, open, eat, jump, win, start, have.</li>
+        <li>Video: <a href="https://www.youtube.com/results?search_query=regular+and+irregular+verbs+for+kids" target="_blank" rel="noopener">regular and irregular verbs for kids (YouTube search)</a> and <a href="https://www.youtube.com/results?search_query=irregular+verbs+song+for+kids" target="_blank" rel="noopener">irregular verbs song (YouTube search)</a></li>
+      </ul>
+    </section>
+  </div>
+
+</main>
+
+<div class="trophies" id="trophybox" aria-live="polite"><span aria-hidden="true">🏆</span><span id="trophies">0</span><span class="vh">trophies</span></div>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script>
+(function(){
+  const $ = (s, r = document) => r.querySelector(s);
+  // the teacher's page shows the answers; scripts/student-site.sh turns data-view into "student"
+  const TEACHER = (($('main.page') || document.body).getAttribute('data-view')) === 'teacher';
+  const COLORS = ['var(--pop-yellow)', 'var(--pop-blue)', 'var(--pop-purple)', 'var(--pop-orange)', 'var(--pop-aqua)', 'var(--pop-green)'];
+  const REDUCE = (() => { try { return matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } })();
+
+  function shuffle(a){ a = [...a]; for (let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+  function el(tag, props = {}, ...kids){
+    const e = document.createElement(tag);
+    for (const [k, v] of Object.entries(props)){
+      if (k === 'class') e.className = v;
+      else if (k === 'text') e.textContent = v;
+      else e.setAttribute(k, v);
+    }
+    for (const k of kids) if (k != null) e.append(k);
+    return e;
+  }
+  function nope(e){ e.classList.remove('shake'); void e.offsetWidth; e.classList.add('shake'); clearTimeout(e._nt); e._nt = setTimeout(() => e.classList.remove('shake'), 450); }
+  function norm(v){ return String(v).trim().toLowerCase().replace(/[‘’`]/g, "'").replace(/\s+/g, ' '); }
+  function plain(t){ return t.replace(/[“”]/g, '').replace(/\s+/g, ' ').trim(); }
+  function sayBtn(label){ const b = el('button', {class: 'say', type: 'button', 'aria-label': label}); b.innerHTML = '<svg><use href="#i-say"/></svg>'; return b; }
+
+  // lesson timer: one coloured segment per section, as long as that section's minutes
+  if (TEACHER && $('#tmr')) (function(){
+    const box = $('#tmr'), go = $('#tm-go'), clock = $('#tm-clock'), now = $('#tm-now'), bar = $('#tm-bar');
+    const COLORS = ['#ff3b4e', '#1fd1b8', '#8a3ffc', '#4fd93a', '#ff8a1f', '#38c6ff', '#ffd23f', '#ff4fa3'];
+    const KEY = 'lesson-timer:' + document.title;
+    const fmt = s => Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0');
+    let from = 0;
+    const segs = box.dataset.segs.split(',').map((part, i) => {
+      const bits = part.split(':'), sec = document.getElementById(bits[0]), len = (+bits[1] || 1) * 60;
+      const a = document.createElement('a'), fill = document.createElement('i'), num = document.createElement('b');
+      const title = (sec && sec.dataset.title) || bits[0];
+      a.className = 'tm-seg'; a.href = '#' + bits[0];
+      a.style.flexGrow = len; a.style.setProperty('--c', COLORS[i % COLORS.length]);
+      a.title = (i + 1) + '. ' + title + ' · ' + (len / 60) + ' min';
+      a.setAttribute('aria-label', a.title);
+      num.textContent = i + 1;
+      a.append(fill, num); bar.append(a);
+      const seg = {a, fill, title, n: i + 1, from, len};
+      from += len;
+      return seg;
+    });
+    const total = from;
+    let base = 0, t0 = null, tick = null;
+    try {
+      const saved = JSON.parse(localStorage.getItem(KEY) || 'null');
+      if (saved && (!saved.t0 || (Date.now() - saved.t0) / 1000 + saved.base < total + 1800)) { base = +saved.base || 0; t0 = saved.t0 || null; }
+    } catch (e) {}
+    const save = () => { try { localStorage.setItem(KEY, JSON.stringify({base, t0})); } catch (e) {} };
+    const elapsed = () => base + (t0 ? (Date.now() - t0) / 1000 : 0);
+    function render(){
+      const s = elapsed();
+      clock.innerHTML = '';
+      const small = document.createElement('small');
+      small.textContent = ' / ' + fmt(total);
+      clock.append(fmt(s), small);
+      clock.classList.toggle('over', s >= total);
+      let cur = null;
+      segs.forEach(g => {
+        const done = Math.max(0, Math.min(1, (s - g.from) / g.len));
+        g.fill.style.width = (done * 100) + '%';
+        const on = s >= g.from && s < g.from + g.len && (t0 || s > 0);
+        g.a.classList.toggle('now', !!on);
+        if (on) cur = g;
+      });
+      now.textContent = cur ? cur.n + '. ' + cur.title + ' · ' + fmt(cur.from + cur.len - s + 0.999) + ' left'
+        : s >= total ? 'Time is up · ' + fmt(s - total) + ' over' : segs.length + ' sections';
+      go.textContent = t0 ? 'Pause' : s > 0 ? 'Continue' : 'Start';
+    }
+    function run(){ clearInterval(tick); if (t0) tick = setInterval(render, 500); render(); }
+    go.addEventListener('click', () => {
+      if (t0) { base = elapsed(); t0 = null; } else { t0 = Date.now(); }
+      save(); run();
+    });
+    $('#tm-reset').addEventListener('click', () => { base = 0; t0 = null; save(); run(); });
+    run();
+  })();
+
+  // lesson notes: a quick strip under every section, a notes block at the bottom, saved as one file
+  if (TEACHER && $('#tmr') && $('#tmr').dataset.notes) (function(){
+    const where = $('#tmr').dataset.notes.split('/');           // student / lesson folder
+    const FILE = where.join('-') + '-notes.md';
+    const KEY = 'lesson-notes:' + where.join('/');
+    const MARKS = ['Easy', 'OK', 'Hard', 'Skipped'];
+    const TAGS = ['Grammar', 'Words', 'Pronunciation', 'Speaking', 'Understanding', 'Too slow'];
+    const HW = ['Done', 'Partly', 'Not done'];
+    let st = {sec: {}, hw: '', went: '', next: ''};
+    try {
+      const saved = JSON.parse(localStorage.getItem(KEY) || 'null');
+      if (saved && typeof saved === 'object') st = Object.assign(st, saved, {sec: saved.sec || {}});
+    } catch (e) {}
+    const secs = Array.from(document.querySelectorAll('main.page section[data-title]')).map((sec, i) => ({id: sec.id, n: i + 1, title: sec.dataset.title || sec.id, sec}));
+    const of = id => st.sec[id] || (st.sec[id] = {mark: '', tags: [], text: ''});
+    const status = el('p', {class: 'tn-status', id: 'tn-status', role: 'status'});
+    const sumBody = el('tbody');
+    function changed(){
+      try { localStorage.setItem(KEY, JSON.stringify(st)); } catch (e) {}
+      summary();
+      status.textContent = 'Kept in this browser. Press “Save notes” at the end of the lesson to make the file.';
+    }
+    function chip(label, id, isOn, toggle){
+      const b = el('button', {type: 'button', class: 'tn-chip', id, 'aria-pressed': String(isOn()), text: label});
+      b.addEventListener('click', () => { toggle(); changed(); b.closest('.tn-row').querySelectorAll('.tn-chip').forEach(x => x.setAttribute('aria-pressed', String(x._on()))); });
+      b._on = isOn;
+      return b;
+    }
+    function row(label, chips){ return el('div', {class: 'tn-row'}, el('span', {class: 'tn-lab', text: label}), ...chips); }
+
+    secs.forEach(s => {
+      const d = of(s.id);
+      const text = el('input', {type: 'text', class: 'tn-text', id: 'tn-' + s.id + '-text', placeholder: 'A quick note: what was hard, what to repeat', 'aria-label': 'Note for section ' + s.n, autocomplete: 'off'});
+      text.value = d.text || '';
+      text.addEventListener('input', () => { d.text = text.value; changed(); });
+      s.sec.append(el('div', {class: 'tn', role: 'group', 'aria-label': 'Notes for section ' + s.n},
+        row('How it went', MARKS.map(m => chip(m, 'tn-' + s.id + '-m-' + m.toLowerCase(), () => d.mark === m, () => { d.mark = d.mark === m ? '' : m; }))),
+        row('What was hard', TAGS.map(g => chip(g, 'tn-' + s.id + '-t-' + g.toLowerCase().replace(/\s+/g, '-'), () => d.tags.includes(g), () => { d.tags = d.tags.includes(g) ? d.tags.filter(x => x !== g) : d.tags.concat(g); }))),
+        text));
+    });
+
+    function summary(){
+      sumBody.replaceChildren(...secs.map(s => {
+        const d = of(s.id);
+        return el('tr', {}, el('td', {text: String(s.n)}), el('td', {text: s.title}), el('td', {text: d.mark || '–'}), el('td', {text: d.tags.join(', ') || '–'}), el('td', {text: d.text || '–'}));
+      }));
+    }
+    function area(id, label, key, hint){
+      const ta = el('textarea', {id, placeholder: hint});
+      ta.value = st[key] || '';
+      ta.addEventListener('input', () => { st[key] = ta.value; changed(); });
+      return el('div', {class: 'tn-field'}, el('label', {for: id, text: label}), ta);
+    }
+    const cell = v => String(v || '–').replace(/\|/g, '/').replace(/\s*\n\s*/g, ' ');
+    function markdown(){
+      const now = new Date(), two = n => String(n).padStart(2, '0');
+      const stamp = now.getFullYear() + '-' + two(now.getMonth() + 1) + '-' + two(now.getDate()) + ' ' + two(now.getHours()) + ':' + two(now.getMinutes());
+      const lines = ['# Lesson notes: ' + document.title, '',
+        'Lesson folder: ' + where.join('/') + '. Notes saved ' + stamp + '.', '',
+        '## Section by section', '',
+        '| # | Section | How it went | What was hard | Note |', '|---|---|---|---|---|'];
+      secs.forEach(s => { const d = of(s.id); lines.push('| ' + [s.n, cell(s.title), cell(d.mark), cell(d.tags.join(', ')), cell(d.text)].join(' | ') + ' |'); });
+      lines.push('', '## Homework brought to this lesson', '', st.hw || 'Not marked.', '',
+        '## How the lesson went', '', (st.went || '').trim() || 'No notes.', '',
+        '## Practise next time', '', (st.next || '').trim() || 'No notes.', '');
+      return lines.join('\n');
+    }
+    const out = el('textarea', {class: 'tn-out', id: 'tn-out', readonly: '', 'aria-label': 'Your notes as text'});
+    out.hidden = true;
+    const save = el('button', {type: 'button', class: 'btn go', id: 'tn-save', text: 'Save notes'});
+    save.addEventListener('click', () => {
+      try {
+        const a = el('a', {href: URL.createObjectURL(new Blob([markdown()], {type: 'text/markdown;charset=utf-8'})), download: FILE});
+        document.body.append(a); a.click(); a.remove();
+        setTimeout(() => { try { URL.revokeObjectURL(a.href); } catch (e) {} }, 4000);
+        status.textContent = 'Saved as “' + FILE + '” in your Downloads folder. Tell Claude the lesson is done and it goes into the lesson folder.';
+      } catch (e) {
+        out.hidden = false; out.value = markdown(); out.focus(); out.select();
+        status.textContent = 'The file could not be saved here. Copy this text and send it to Claude.';
+      }
+    });
+    const copy = el('button', {type: 'button', class: 'btn', id: 'tn-copy', text: 'Copy notes'});
+    copy.addEventListener('click', () => {
+      const text = markdown();
+      const show = () => { out.hidden = false; out.value = text; out.focus(); out.select(); status.textContent = 'Press ⌘C to copy the notes.'; };
+      try { navigator.clipboard.writeText(text).then(() => { status.textContent = 'Notes copied.'; }, show); } catch (e) { show(); }
+    });
+    let armed = null;
+    const clear = el('button', {type: 'button', class: 'btn', id: 'tn-clear', text: 'Clear notes'});
+    clear.addEventListener('click', () => {
+      if (!armed) { clear.textContent = 'Press again to clear everything'; armed = setTimeout(() => { armed = null; clear.textContent = 'Clear notes'; }, 4000); return; }
+      clearTimeout(armed);
+      try { localStorage.removeItem(KEY); } catch (e) {}
+      location.reload();
+    });
+
+    const fin = el('section', {class: 'tn-final', id: 'lesson-notes', 'aria-label': 'Lesson notes'},
+      el('h2', {text: 'Lesson notes'}),
+      el('div', {class: 'tn'}, row('His homework', HW.map(h => chip(h, 'tn-hw-' + h.toLowerCase().replace(/\s+/g, '-'), () => st.hw === h, () => { st.hw = st.hw === h ? '' : h; })))),
+      area('tn-went', 'How the lesson went', 'went', 'Your thoughts about the lesson'),
+      area('tn-next', 'Practise next time', 'next', 'What to come back to in the next lessons'),
+      el('div', {class: 'tn-sum scroll'}, el('table', {}, el('thead', {}, el('tr', {}, ...['#', 'Section', 'How it went', 'What was hard', 'Note'].map(h => el('th', {text: h})))), sumBody)),
+      el('div', {class: 'row'}, save, copy, clear),
+      status, out);
+    const last = secs[secs.length - 1];
+    if (last) last.sec.after(fin); else $('main.page').append(fin);
+    summary();
+    status.textContent = 'Notes are kept in this browser while you work. Press “Save notes” at the end of the lesson.';
+  })();
+
+  // speech: en-GB voice, only from clicks
+  const synth = window.speechSynthesis;
+  let voice = null;
+  function pickVoice(){
+    try {
+      const vs = synth ? synth.getVoices() : [];
+      voice = vs.find(v => v.lang === 'en-GB') || vs.find(v => /^en[-_]/i.test(v.lang)) || null;
+    } catch (e) { voice = null; }
+  }
+  if (synth){ pickVoice(); try { synth.addEventListener('voiceschanged', pickVoice); } catch (e) {} }
+  function speak(text){
+    try {
+      if (!synth) return;
+      synth.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = 'en-GB'; if (voice) u.voice = voice; u.rate = 0.92;
+      synth.speak(u);
+    } catch (e) {}
+  }
+
+  // trophies, trophy road, rank-up toast
+  const TIERS = [['BRONZE', 0], ['SILVER', 10], ['GOLD', 20], ['DIAMOND', 30], ['MYTHIC', 42], ['LEGENDARY', 54], ['MASTERS', 66]];
+  let trophies = 0, tierIdx = 0, toastT = null;
+  const tiersBox = $('#tiers');
+  TIERS.forEach(([n]) => tiersBox.append(el('span', {text: n})));
+  function toast(big, small){
+    const t = $('#toast');
+    t.replaceChildren(...[big, small ? el('small', {text: small}) : null].filter(Boolean));
+    t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => { t.hidden = true; }, 2200);
+  }
+  function renderRoad(){
+    $('#trophies').textContent = trophies; $('#road-count').textContent = trophies;
+    let i = 0; TIERS.forEach(([, at], k) => { if (trophies >= at) i = k; });
+    const nx = TIERS[i + 1];
+    $('#road-next').textContent = nx ? nx[0] + ' at ' + nx[1] : 'MAX RANK';
+    const from = TIERS[i][1];
+    $('#road-bar').style.width = (nx ? Math.round(100 * (trophies - from) / (nx[1] - from)) : 100) + '%';
+    $('#rank-name').textContent = TIERS[i][0];
+    [...tiersBox.children].forEach((s, k) => s.classList.toggle('on', k <= i));
+    if (i > tierIdx){ tierIdx = i; toast('RANK UP: ' + TIERS[i][0] + '!', trophies + ' trophies'); }
+  }
+  function award(n = 1){ trophies += n; renderRoad(); const b = $('#trophybox'); b.classList.remove('pop'); void b.offsetWidth; b.classList.add('pop'); }
+
+  // Generic click-the-answer gaps. Each item: [before, after, answer, options]. Trophies only on the first correct answer per item, even after "Again".
+  function choiceGaps(box, items, againBtn, fixedOrder){
+    const won = new Set();
+    function render(){
+      box.replaceChildren();
+      items.forEach(([a, z, ans, opts], i) => {
+        const slot = el('span', {class: 'slot', text: ' '});
+        const row = el('div', {class: 'gap'}, el('span', {class: 'n', text: String(i + 1)}), el('span', {class: 's'}, a, slot, z));
+        const o = el('div', {class: 'opts'});
+        (fixedOrder ? opts : shuffle(opts)).forEach(t => {
+          const b = el('button', {class: 'opt', type: 'button', text: t});
+          b.addEventListener('click', () => {
+            if (row.classList.contains('done')) return;
+            if (t !== ans) return nope(b);
+            slot.textContent = t; row.classList.add('done');
+            speak(plain(a + t + z));
+            if (!won.has(i)){ won.add(i); award(1); }
+          });
+          o.append(b);
+        });
+        row.append(o); if (TEACHER) row.append(el('span', {class: 'key', text: 'Answer: ' + ans})); box.append(row);
+      });
+    }
+    if (againBtn) againBtn.addEventListener('click', render);
+    render();
+  }
+
+  // Generic typing check: instant green when right while typing; red on Enter, blur or Check all when wrong.
+  function makeTypeRow(input, mark, answer){
+    const r = {input, mark, answer, got: false};
+    r.test = (strict) => {
+      const v = norm(input.value);
+      mark.classList.remove('right', 'wrong');
+      if (!v) return false;
+      if (v === answer){
+        mark.classList.add('right');
+        if (!r.got){ r.got = true; award(1); }
+        return true;
+      }
+      if (strict){ mark.classList.add('wrong'); nope(mark); }
+      return false;
+    };
+    input.addEventListener('input', () => r.test(false));
+    input.addEventListener('blur', () => { if (norm(input.value)) r.test(true); });
+    return r;
+  }
+
+  // 1 mystery game + talk cards (event 11 of lesson 2)
+  (function(){
+    const PEOPLE = [
+      {name: 'Dan', pr: 'he', be: 'was'},
+      {name: 'Nora', pr: 'she', be: 'was'},
+      {name: 'Rosie', pr: 'she', be: 'was'},
+      {name: 'Max and Leo', pr: 'they', be: 'were'},
+      {name: 'Rosie\'s dad', pr: 'he', be: 'was'},
+    ];
+    const PLACES = [
+      ['🏠', 'at home'], ['🏫', 'at school'], ['🎬', 'at the cinema'], ['🏊', 'at the swimming pool'], ['🌳', 'at the park'],
+      ['📚', 'at the library'], ['🛍️', 'at the shopping centre'], ['🏟️', 'at the football stadium'], ['🛋️', 'at a friend\'s house'], ['🛒', 'at the supermarket'],
+    ];
+    const qEl = $('#gm-q'), hint = $('#gm-hint'), grid = $('#gm-places'), log = $('#gm-log'), status = $('#gm-status');
+    const cap = s => s[0].toUpperCase() + s.slice(1);
+    const key = TEACHER ? el('p', {class: 'key'}) : null;
+    if (key) grid.after(key);
+    let who, secret, tries, done, last = -1, gmStars = 0; // the game gives at most 6 trophies in total
+    function round(){
+      let p;
+      do { p = Math.floor(Math.random() * PEOPLE.length); } while (p === last && PEOPLE.length > 1);
+      last = p; who = PEOPLE[p];
+      secret = Math.floor(Math.random() * PLACES.length); tries = 0; done = false;
+      if (key) key.textContent = 'Answer: ' + PLACES[secret][1];
+      qEl.textContent = 'Where ' + who.be + ' ' + who.name + ' at 6 pm yesterday?';
+      hint.textContent = 'Ask: "' + cap(who.be) + ' ' + who.name + ' at …?" Then click the place.';
+      status.textContent = ''; log.replaceChildren(); grid.replaceChildren();
+      PLACES.forEach(([em, place], i) => {
+        const b = el('button', {class: 'place', type: 'button'}, el('span', {class: 'em', 'aria-hidden': 'true', text: em}), el('span', {text: place}));
+        b.addEventListener('click', () => {
+          if (done || b.classList.contains('no')) return;
+          tries++;
+          const q = cap(who.be) + ' ' + who.name + ' ' + place + '?';
+          let a;
+          if (i === secret){
+            done = true; b.classList.add('yes');
+            a = 'Yes, ' + who.pr + ' ' + who.be + '! ' + cap(who.pr) + ' ' + who.be + ' ' + place + '.';
+            let n = 0;
+            if (gmStars < 6){ n = Math.min(tries <= 3 ? 2 : 1, 6 - gmStars); gmStars += n; award(n); }
+            status.textContent = 'Found in ' + tries + (tries === 1 ? ' question' : ' questions') + '!' + (n ? ' +' + n + (n === 1 ? ' trophy' : ' trophies') : '');
+          } else {
+            b.classList.add('no'); b.setAttribute('aria-disabled', 'true');
+            a = 'No, ' + who.pr + ' ' + who.be + 'n\'t.';
+          }
+          log.append(el('li', {class: 'q', text: 'Q: ' + q}), el('li', {class: 'a' + (done ? ' win' : ''), text: 'A: ' + a}));
+          speak(q + ' ' + a);
+        });
+        grid.append(b);
+      });
+    }
+    $('#gm-new').addEventListener('click', round);
+    round();
+
+    const TALK = [
+      'Where were you yesterday at 6 pm?',
+      'Were you at school yesterday? Was it a good day?',
+      'Where were you last Saturday morning?',
+      'Were you tired last night? Why?',
+      'Where were you on your last birthday? Who was with you?',
+      'What was your favourite game when you were seven?',
+      'Who was your first teacher? Was he or she nice?',
+      'Where were you at this time last week?',
+    ];
+    const box = $('#talk');
+    TALK.forEach((q, i) => {
+      const c = el('button', {class: 'tcard', type: 'button', 'aria-label': 'Talk card ' + (i + 1)}, el('span', {class: 'num', 'aria-hidden': 'true', text: String(i + 1)}));
+      c.style.setProperty('--c', COLORS[(i + 2) % COLORS.length]);
+      c.addEventListener('click', () => {
+        if (c.dataset.open){ speak(q); return; }
+        c.dataset.open = '1'; c.replaceChildren(q); c.removeAttribute('aria-label'); speak(q);
+      });
+      box.append(c);
+    });
+  })();
+
+  // 2 why -ed: examples, listening, switch to the past
+  (function(){
+    document.querySelectorAll('#why-ex li').forEach(li => {
+      const t = li.querySelector('span').textContent;
+      li.querySelector('.say').addEventListener('click', () => speak(t));
+    });
+    const L = [
+      ['We visited Grandma.', 'past'],
+      ['I watch videos after school.', 'now'],
+      ['Dan wanted a new game.', 'past'],
+      ['They play football in the park.', 'now'],
+      ['I started my homework at five.', 'past'],
+      ['My dogs love the park.', 'now'],
+    ];
+    const box = $('#lis');
+    const won = new Set();
+    L.forEach(([s, k], i) => {
+      const txt = el('span', {class: 'txt', text: s}); txt.hidden = true;
+      const item = el('div', {class: 'li-item'}, el('span', {class: 'n', text: String(i + 1)}));
+      const sb = sayBtn('Listen to sentence ' + (i + 1));
+      sb.addEventListener('click', () => speak(s));
+      const o = el('div', {class: 'opts'});
+      [['now', '🔁 usually'], ['past', '⏪ in the past']].forEach(([val, lab]) => {
+        const b = el('button', {type: 'button', class: 'opt', id: 'lis-' + (i + 1) + '-' + val, text: lab});
+        b.addEventListener('click', () => {
+          if (item.classList.contains('done')) return;
+          if (val !== k) return nope(b);
+          item.classList.add('done'); txt.hidden = false; speak(s);
+          if (!won.has(i)){ won.add(i); award(1); }
+        });
+        o.append(b);
+      });
+      item.append(sb, o, txt);
+      if (TEACHER) item.append(el('span', {class: 'key', text: 'Answer: ' + (k === 'past' ? 'in the past' : 'usually') + ' · “' + s + '”'}));
+      box.append(item);
+    });
+
+    choiceGaps($('#sw-gaps'), [
+      ['Every day I walk my dogs. Yesterday I ', ' my dogs too.', 'walked', ['walked', 'walk', 'walks']],
+      ['Dan plays computer games every day. Yesterday he ', ' for four hours.', 'played', ['played', 'plays', 'play']],
+      ['Nora usually dances in her room. Yesterday she ', ' at school.', 'danced', ['danced', 'danceed', 'dances']],
+      ['We often watch films on Friday. Last Friday we ', ' a scary film.', 'watched', ['watched', 'watch', 'watches']],
+      ['Rosie usually stays at home on Sunday. Last Sunday she ', ' at home too.', 'stayed', ['stayed', 'staied', 'stays']],
+      ['My dad cooks dinner every evening. Yesterday he ', ' pizza.', 'cooked', ['cooked', 'cooks', 'cook']],
+      ['I usually finish school at two. Yesterday I ', ' at three.', 'finished', ['finished', 'finish', 'finishes']],
+      ['Max and Leo chat online every day. Yesterday they ', ' for two hours.', 'chatted', ['chatted', 'chated', 'chat']],
+    ], $('#sw-again'));
+  })();
+
+  // 3 rule-breakers: flip cards
+  (function(){
+    const V = [
+      ['🚌', 'go', 'went', 'I went to the pool.'],
+      ['🍕', 'have', 'had', 'We had pizza for dinner.'],
+      ['👀', 'see', 'saw', 'I saw a funny video.'],
+      ['🍔', 'eat', 'ate', 'Dan ate three burgers!'],
+      ['🏊', 'swim', 'swam', 'Rosie swam for an hour.'],
+      ['🏃', 'run', 'ran', 'El Primo ran to the gems.'],
+      ['🏆', 'win', 'won', 'We won the match!'],
+      ['😭', 'lose', 'lost', 'The red team lost.'],
+      ['🎯', 'shoot', 'shot', 'Colt shot three times.'],
+      ['💣', 'throw', 'threw', 'Dynamike threw a bomb.'],
+    ];
+    const box = $('#vcards');
+    let order = V.map((v, i) => i);
+    function render(flipAll){
+      box.replaceChildren();
+      order.forEach(vi => {
+        const [em, base, past, ex] = V[vi];
+        const c = el('button', {type: 'button', class: 'vcard', id: 'vc-' + base});
+        c.style.setProperty('--c', COLORS[vi % COLORS.length]);
+        const face = on => {
+          c.classList.toggle('flip', on); c.setAttribute('aria-pressed', String(on));
+          const kids = on
+            ? [el('span', {class: 'em', 'aria-hidden': 'true', text: em}), el('span', {class: 'sm', text: base + ' →'}), el('span', {class: 'v', text: past}), el('span', {class: 'sm', text: ex})]
+            : [el('span', {class: 'em', 'aria-hidden': 'true', text: em}), el('span', {class: 'v', text: base}), el('span', {class: 'sm', text: 'Past? Say it, then click!'})];
+          if (TEACHER && !on) kids.push(el('span', {class: 'key', text: 'past: ' + past}));
+          c.replaceChildren(...kids);
+        };
+        face(!!flipAll);
+        c.addEventListener('click', () => {
+          const on = !c.classList.contains('flip');
+          face(on); speak(on ? base + ', ' + past + '. ' + ex : base);
+        });
+        box.append(c);
+      });
+    }
+    $('#vc-mix').addEventListener('click', () => { order = shuffle(order); render(false); });
+    $('#vc-all').addEventListener('click', () => render(true));
+    render(false);
+  })();
+
+  // 4 pick a team (sort) + write the past
+  (function(){
+    const ITEMS = [['play', 'played', 'r'], ['go', 'went', 'i'], ['watch', 'watched', 'r'], ['win', 'won', 'i'], ['jump', 'jumped', 'r'], ['have', 'had', 'i'],
+                   ['visit', 'visited', 'r'], ['see', 'saw', 'i'], ['collect', 'collected', 'r'], ['eat', 'ate', 'i'], ['walk', 'walked', 'r'], ['lose', 'lost', 'i']];
+    const pool = $('#team-pool'), status = $('#team-status');
+    const bins = {r: $('#bin-r'), i: $('#bin-i')};
+    let sel = null, left = 0, awarded = false;
+    if (TEACHER) pool.after(el('p', {class: 'key', text: 'Rule-followers: ' + ITEMS.filter(x => x[2] === 'r').map(x => x[0] + ' → ' + x[1]).join(', ') + ' · Rule-breakers: ' + ITEMS.filter(x => x[2] === 'i').map(x => x[0] + ' → ' + x[1]).join(', ')}));
+    function render(){
+      sel = null; left = ITEMS.length; status.textContent = '';
+      pool.replaceChildren(); Object.values(bins).forEach(b => b.replaceChildren());
+      shuffle(ITEMS).forEach(([base, past, k], i) => {
+        const b = el('button', {class: 'chip', type: 'button', 'aria-pressed': 'false', text: base});
+        b.dataset.k = k; b.style.setProperty('--c', COLORS[i % COLORS.length]);
+        b.addEventListener('click', () => {
+          if (b.parentElement !== pool) { speak(base + ', ' + past); return; }
+          pool.querySelectorAll('.sel').forEach(x => { x.classList.remove('sel'); x.setAttribute('aria-pressed', 'false'); });
+          sel = b; b.classList.add('sel'); b.setAttribute('aria-pressed', 'true'); speak(base);
+        });
+        b._base = base; b._past = past;
+        pool.append(b);
+      });
+    }
+    document.querySelectorAll('#sort .bin-drop').forEach(bin => {
+      bin.addEventListener('click', () => {
+        if (!sel) return nope(bin);
+        if (sel.dataset.k !== bin.dataset.k) return nope(sel);
+        const c = sel; sel = null;
+        c.classList.remove('sel'); c.removeAttribute('aria-pressed'); c.classList.add('placed');
+        c.textContent = c._base + ' → ' + c._past;
+        bins[bin.dataset.k].append(c); left--; speak(c._base + ', ' + c._past);
+        if (left === 0){
+          status.textContent = 'All 12 in their teams!';
+          if (!awarded){ awarded = true; award(3); }
+        }
+      });
+    });
+    $('#team-again').addEventListener('click', render);
+    render();
+
+    const W = [['go', 'went'], ['play', 'played'], ['have', 'had'], ['watch', 'watched'], ['see', 'saw'], ['win', 'won'], ['eat', 'ate'], ['jump', 'jumped']];
+    const list = $('#pt-list'), score = $('#pt-score');
+    if (TEACHER) list.after(el('p', {class: 'key', text: 'Answers: ' + W.map(w => w[1]).join(', ')}));
+    const rows = W.map(([base, past]) => {
+      const input = el('input', {id: 'pt-' + base, type: 'text', autocomplete: 'off', autocapitalize: 'off', spellcheck: 'false', 'aria-label': base + ' in the past'});
+      const fix = el('span', {class: 'fix'});
+      const lab = el('label', {for: 'pt-' + base}, el('span', {text: base}), input, fix);
+      list.append(lab);
+      const r = makeTypeRow(input, lab, past);
+      r.fix = fix;
+      input.addEventListener('input', () => { if (lab.classList.contains('right')) fix.textContent = ''; });
+      return r;
+    });
+    rows.forEach((r, k) => r.input.addEventListener('keydown', e => {
+      if (e.key !== 'Enter') return;
+      e.preventDefault(); if (r.test(true)) speak(r.answer);
+      const nx = rows[k + 1]; if (nx) nx.input.focus();
+    }));
+    $('#pt-check').addEventListener('click', () => { const n = rows.filter(r => r.test(true)).length; score.textContent = n + ' / ' + rows.length; });
+    $('#pt-show').addEventListener('click', () => rows.forEach(r => { if (!r.mark.classList.contains('right')) r.fix.textContent = r.answer; }));
+    $('#pt-clear').addEventListener('click', () => { rows.forEach(r => { r.input.value = ''; r.mark.classList.remove('right', 'wrong'); r.fix.textContent = ''; }); score.textContent = ''; });
+  })();
+
+  // 5 Dan's blog: click every past verb; green = rule-follower, purple = rule-breaker
+  (function(){
+    const REG = ['played', 'started', 'collected', 'waited', 'jumped', 'shouted', 'laughed', 'watched'];
+    const IRR = ['was', 'went', 'swam', 'had', 'lost', 'shot', 'threw', 'won', 'ate'];
+    const status = $('#dan-status');
+    let total = 0, found = 0, done = false;
+    const paras = [...document.querySelectorAll('#blog .dp')];
+    const fullText = paras.map(p => p.textContent).join(' ');
+    paras.forEach(p => {
+      const parts = p.textContent.split(/([A-Za-zÀ-ÿ']+)/);
+      p.replaceChildren();
+      parts.forEach((part, k) => {
+        if (k % 2 === 0){ if (part) p.append(part); return; }
+        const w = part.toLowerCase();
+        const kind = REG.includes(w) ? 'reg' : IRR.includes(w) ? 'irr' : '';
+        const b = el('button', {type: 'button', class: 'w', text: part});
+        if (kind){ total++; if (TEACHER) b.classList.add('tk'); }
+        b.addEventListener('click', () => {
+          if (b.dataset.got){ speak(part); return; }
+          if (!kind) return nope(b);
+          b.dataset.got = '1'; b.classList.add(kind); found++; speak(part);
+          status.textContent = found + ' / ' + total + ' past verbs found';
+          if (found === total && !done){ done = true; award(3); status.textContent = 'All ' + total + ' past verbs found! +3 trophies'; }
+        });
+        p.append(b);
+      });
+    });
+    status.textContent = '0 / ' + total + ' past verbs found';
+    if (TEACHER) status.after(el('span', {class: 'key', text: 'Answer: 10 rule-followers (played ×3, started, collected, waited, jumped, shouted, laughed, watched) · 12 rule-breakers (was ×3, went, swam ×2, had, lost, shot, threw, won, ate)'}));
+    $('#dan-say').addEventListener('click', () => speak(fullText));
+  })();
+
+  // 6 match replay (event 10 of lesson 2, plus two rule-breaker lines)
+  (function(){
+    const R = [
+      ['💥', 'Yesterday El Primo ', ' over the wall three times!', 'jumped', ['jumped', 'jumps', 'is jumping']],
+      ['💎', 'Shelly ', ' six gems in the first minute.', 'collected', ['collected', 'collects', 'collectted']],
+      ['🎵', 'Poco ', ' his team with music.', 'healed', ['healed', 'heals', 'is healing']],
+      ['🐂', 'Bull ', ' at the red team.', 'charged', ['charged', 'chargeed', 'charges']],
+      ['🐻', 'Nita\'s bear ', ' very angry!', 'was', ['was', 'were', 'is']],
+      ['🛠️', 'Jessie and Colt ', ' near the gem mine.', 'were', ['were', 'was', 'are']],
+      ['🎯', 'Colt ', ' the red team\'s Brock five times.', 'shot', ['shot', 'shooted', 'shoots']],
+      ['🌵', 'Spike ', ' the red team\'s turret.', 'destroyed', ['destroyed', 'destroied', 'destroys']],
+      ['🏆', 'The blue team ', ' the match 10 to 7!', 'won', ['won', 'winned', 'wins']],
+      ['😤', 'The red players ', ' happy at the end.', 'weren\'t', ['weren\'t', 'wasn\'t', 'aren\'t']],
+      ['📣', '“', ' the match exciting?” “Yes, it was!”', 'Was', ['Was', 'Were', 'Is']],
+    ];
+    const box = $('#replay-list');
+    const won = new Set();
+    R.forEach(([em, a, z, ans, opts], i) => {
+      const slot = el('span', {class: 'slot', text: ' '});
+      const row = el('div', {class: 'comm'}, el('span', {class: 'em', 'aria-hidden': 'true', text: em}), el('span', {class: 's'}, a, slot, z));
+      const o = el('div', {class: 'opts'});
+      shuffle(opts).forEach((t, k) => {
+        const b = el('button', {type: 'button', id: 'replay-' + (i + 1) + '-' + k, text: t});
+        b.addEventListener('click', () => {
+          if (row.classList.contains('done')) return;
+          if (t !== ans) return nope(b);
+          slot.textContent = t; row.classList.add('done'); speak(plain(a + t + z));
+          if (!won.has(i)){ won.add(i); award(1); }
+          if ([...box.children].every(r => r.classList.contains('done'))) toast('VICTORY!', 'Match replay complete');
+        });
+        o.append(b);
+      });
+      row.append(o); if (TEACHER) row.append(el('span', {class: 'key', text: 'Answer: ' + ans})); box.append(row);
+    });
+  })();
+
+  // 7 story dice: who, where and two actions. No score, no timer.
+  (function(){
+    const DICE = [
+      ['WHO', [['🐕', 'our dog'], ['👦', 'my brother'], ['👵', 'Grandma'], ['🤖', 'a robot'], ['🦖', 'a dinosaur'], ['🧙', 'a wizard']]],
+      ['WHERE', [['🏖️', 'the beach'], ['🏫', 'school'], ['🏟️', 'the stadium'], ['🌳', 'the park'], ['🏰', 'a castle'], ['🚀', 'space']]],
+      ['ACTION', [['🏃', 'run', 'ran'], ['🏆', 'win', 'won'], ['😭', 'lose', 'lost'], ['🍔', 'eat', 'ate'], ['👀', 'see', 'saw'], ['🚌', 'go', 'went']]],
+      ['ACTION', [['💣', 'throw', 'threw'], ['🎯', 'shoot', 'shot'], ['🏊', 'swim', 'swam'], ['🎮', 'play', 'played'], ['🦘', 'jump', 'jumped'], ['💎', 'collect', 'collected']]],
+    ];
+    const box = $('#dice-box'), read = $('#dice-read');
+    const dies = DICE.map(([cat, faces]) => {
+      const face = el('span', {class: 'face', 'aria-hidden': 'true'});
+      const lab = el('span', {class: 'lab'});
+      const key = TEACHER ? el('span', {class: 'key'}) : null;
+      box.append(el('div', {class: 'die'}, el('span', {class: 'cat', text: cat}), face, lab, key));
+      return {faces, face, lab, key};
+    });
+    const any = d => d.faces[Math.floor(Math.random() * d.faces.length)];
+    function show(d, f){
+      d.face.textContent = f[0]; d.lab.textContent = f[1];
+      if (d.key){ d.key.textContent = f[2] ? 'past: ' + f[2] : ''; d.key.hidden = !f[2]; }
+    }
+    let rolling = false;
+    function roll(){
+      if (rolling) return;
+      const pick = dies.map(any);
+      const finish = () => { dies.forEach((d, i) => show(d, pick[i])); rolling = false; read.textContent = 'Your dice: ' + pick.map(f => f[1]).join(', ') + '.'; };
+      if (REDUCE) return finish();
+      rolling = true;
+      dies.forEach(d => { d.face.classList.remove('rolling'); void d.face.offsetWidth; d.face.classList.add('rolling'); });
+      let n = 0;
+      const t = setInterval(() => { dies.forEach(d => show(d, any(d))); if (++n >= 6){ clearInterval(t); finish(); } }, 90);
+    }
+    $('#dice-roll').addEventListener('click', roll);
+    dies.forEach((d, i) => show(d, d.faces[i]));
+  })();
+
+  renderRoad();
+})();
+</script>
+
+</html>
