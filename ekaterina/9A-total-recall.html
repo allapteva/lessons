@@ -1,0 +1,980 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta charset="utf-8">
+<title>Total Recall, Out Loud</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Noto+Sans:wght@400;500&display=swap">
+<style>
+/* Layout: a clean clinical worksheet in Nord. One reading column of numbered sections on a cool grey ground.
+   The one recurring device is the stress dot: a small dot above every word that carries sentence stress,
+   so pronunciation is visible in the hero, the grammar table, the drills and the doctor's script. */
+:root{
+  --bg:#eceff4; --surface:#fbfcfd; --sunk:#e5e9f0; --line:#d8dee9; --line2:#b9c3d3;
+  --text:#2e3440; --soft:#4c566a;
+  --accent:#3d6491; --on-accent:#ffffff; --frost:#5e81ac;
+  --good:#3c6b3a; --bad:#a23f4a; --dot:#c4623f;
+  --good-bg:color-mix(in srgb, #a3be8c 30%, var(--surface));
+  --bad-bg:color-mix(in srgb, #bf616a 14%, var(--surface));
+  --mark:color-mix(in srgb, #ebcb8b 45%, var(--surface));
+  --tint:color-mix(in srgb, #88c0d0 20%, var(--surface));
+  --display:"Lexend","Avenir Next","Segoe UI",system-ui,sans-serif;
+  --body:"Public Sans","Segoe UI",system-ui,-apple-system,sans-serif;
+  --ipa:"Noto Sans","Charis SIL","DejaVu Sans","Lucida Sans Unicode",sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#2e3440; --surface:#3b4252; --sunk:#353c4a; --line:#4c566a; --line2:#66728a;
+    --text:#eceff4; --soft:#c7cfdc;
+    --accent:#88c0d0; --on-accent:#2e3440; --frost:#81a1c1;
+    --good:#a3be8c; --bad:#eba0a7; --dot:#ebcb8b;
+    --good-bg:color-mix(in srgb, #a3be8c 16%, var(--surface));
+    --bad-bg:color-mix(in srgb, #bf616a 22%, var(--surface));
+    --mark:color-mix(in srgb, #ebcb8b 24%, var(--surface));
+    --tint:color-mix(in srgb, #88c0d0 14%, var(--surface));
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#2e3440; --surface:#3b4252; --sunk:#353c4a; --line:#4c566a; --line2:#66728a;
+  --text:#eceff4; --soft:#c7cfdc;
+  --accent:#88c0d0; --on-accent:#2e3440; --frost:#81a1c1;
+  --good:#a3be8c; --bad:#eba0a7; --dot:#ebcb8b;
+  --good-bg:color-mix(in srgb, #a3be8c 16%, var(--surface));
+  --bad-bg:color-mix(in srgb, #bf616a 22%, var(--surface));
+  --mark:color-mix(in srgb, #ebcb8b 24%, var(--surface));
+  --tint:color-mix(in srgb, #88c0d0 14%, var(--surface));
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--text);font:400 17px/1.6 var(--body);-webkit-font-smoothing:antialiased}
+.page{max-width:860px;margin-inline:auto;padding-inline:16px;padding-block:40px 110px;display:flex;flex-direction:column;gap:56px}
+@media (min-width:700px){ .page{padding-inline:28px} }
+h1,h2,h3{font-family:var(--display);font-weight:600;margin:0;text-wrap:balance;letter-spacing:-.015em}
+p{margin:0}
+ol,ul{margin:0;padding:0}
+a{color:var(--accent);text-underline-offset:3px}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer;-webkit-tap-highlight-color:transparent}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
+
+/* stress dot */
+.s{position:relative;font-weight:600}
+.s::before{content:"";position:absolute;left:50%;top:-.28em;width:.34em;height:.34em;margin-left:-.17em;border-radius:50%;background:var(--dot)}
+.weak{color:var(--soft)}
+.dotted{line-height:2.1}
+
+/* masthead */
+.mast{display:flex;flex-direction:column;gap:20px}
+.eyebrow{font:600 12.5px/1.3 var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--soft)}
+.mast h1{font-size:clamp(40px,8.5vw,72px);line-height:1;font-weight:700;letter-spacing:-.03em}
+.mast h1 span{color:var(--accent)}
+.dek{font-size:clamp(18px,2.3vw,20px);line-height:1.5;max-width:40em}
+.meta{display:flex;flex-wrap:wrap;gap:6px 22px;margin:0;font-size:14.5px;color:var(--soft)}
+.meta div{display:flex;gap:6px}
+.meta dt{font-weight:600;color:var(--text)}
+.meta dd{margin:0}
+.flip{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.flip div{background:var(--surface);padding:16px 20px 18px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.flip .lab{font:600 12px/1.2 var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--soft)}
+.flip p{font:500 clamp(20px,2.8vw,24px)/2 var(--display)}
+.legend{font-size:14.5px;color:var(--soft)}
+
+.toc{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:2px 28px;counter-reset:toc;list-style:none;font-size:15.5px}
+.toc li{counter-increment:toc;display:flex;align-items:baseline;gap:10px;padding-block:7px;border-bottom:1px solid var(--line);min-width:0}
+.toc li::before{content:counter(toc);font:600 13.5px/1 var(--display);color:var(--accent);min-width:1.5em;font-variant-numeric:tabular-nums}
+.toc a{color:var(--text);text-decoration:none;flex:1;min-width:0}
+.toc a:hover{color:var(--accent);text-decoration:underline}
+.toc .sc{font-size:13.5px;color:var(--soft);font-variant-numeric:tabular-nums;white-space:nowrap}
+
+details.plan{border:1px solid var(--line2);border-radius:12px;background:var(--surface);padding:0 20px}
+details.plan summary{cursor:pointer;padding-block:14px;font-weight:600;display:flex;justify-content:space-between;gap:12px;list-style:none}
+details.plan summary::-webkit-details-marker{display:none}
+details.plan summary::after{content:"Show";font-weight:500;font-size:14px;color:var(--accent)}
+details.plan[open] summary::after{content:"Hide"}
+.plan-body{padding-bottom:18px;display:flex;flex-direction:column;gap:12px;font-size:15.5px}
+.plan-body .aim{color:var(--soft)}
+.scroll{overflow-x:auto}
+.plan-body table{border-collapse:collapse;width:100%;min-width:480px}
+.plan-body th,.plan-body td{text-align:left;vertical-align:top;padding:8px 10px 8px 0;border-top:1px solid var(--line)}
+.plan-body th{font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);font-weight:600;border-top:0}
+.plan-body td:first-child{font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--soft);width:4.5em}
+.plan-body td:nth-child(2){font-weight:600;white-space:nowrap}
+
+/* sections */
+.sec{display:flex;flex-direction:column;gap:20px;scroll-margin-top:16px}
+.sec-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 16px;padding-top:20px;border-top:2px solid var(--text)}
+.sec-no{font:700 15px/1 var(--display);color:var(--on-accent);background:var(--accent);border-radius:6px;padding:6px 9px;font-variant-numeric:tabular-nums;align-self:flex-start;margin-top:4px}
+.sec-title{flex:1 1 300px;min-width:0;display:flex;flex-direction:column;gap:6px}
+.sec-title h2{font-size:clamp(25px,4vw,31px);line-height:1.15}
+.lede{color:var(--soft);max-width:62ch}
+.score{font:600 14px/1 var(--body);font-variant-numeric:tabular-nums;color:var(--soft);border:1px solid var(--line2);border-radius:999px;padding:7px 12px;white-space:nowrap}
+.score.full{color:var(--good);border-color:var(--good)}
+.sub{font:600 19px/1.3 var(--display);margin-top:6px}
+.note{font-size:15px;color:var(--soft);max-width:64ch}
+.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.btn{border:1px solid var(--line2);background:var(--surface);border-radius:8px;padding:8px 16px;font-weight:600;font-size:15px;line-height:1.2}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.btn.quiet{border-color:transparent;background:transparent;color:var(--soft)}
+.btn.quiet:hover{color:var(--text);border-color:var(--line2)}
+
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px 20px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.panel h3{font-size:18px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:14px}
+.forms{border-collapse:collapse;width:100%;min-width:560px;font-size:16px}
+.forms th,.forms td{text-align:left;vertical-align:top;padding:9px 12px 9px 0;border-top:1px solid var(--line)}
+.forms thead th{border-top:0;font:600 12.5px/1.3 var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--soft)}
+.forms tbody th{font-weight:600;white-space:nowrap}
+.forms td:nth-child(2){font-family:var(--display);font-size:15px;color:var(--accent);white-space:nowrap}
+.forms b,.panel b.hl,.read b{font-weight:600;background:var(--mark);border-radius:3px;padding:0 3px}
+.line{display:flex;gap:8px;align-items:flex-start;min-width:0}
+.line > span{flex:1;min-width:0}
+.plain{list-style:none;display:flex;flex-direction:column;gap:8px}
+.say{flex:none;width:30px;height:30px;border-radius:50%;border:1px solid var(--line2);background:transparent;display:inline-grid;place-items:center;color:var(--soft);padding:0}
+.say:hover{color:var(--accent);border-color:var(--accent)}
+.say svg{width:15px;height:15px}
+.ipa{font-family:var(--ipa)}
+.weak-list{display:flex;flex-wrap:wrap;gap:8px;list-style:none}
+.weak-list li{background:var(--sunk);border-radius:8px;padding:4px 10px;font-size:15.5px}
+.weak-list li span{font-family:var(--ipa);color:var(--accent)}
+
+/* items */
+.items{list-style:none;counter-reset:it;display:flex;flex-direction:column}
+.item{counter-increment:it;display:grid;grid-template-columns:2rem minmax(0,1fr);gap:4px 10px;padding-block:14px;border-bottom:1px solid var(--line)}
+.item::before{content:counter(it);font:600 14px/1.9 var(--display);color:var(--soft);font-variant-numeric:tabular-nums;grid-row:1/span 4}
+.item > *{grid-column:2;min-width:0}
+.q{font-size:17.5px;line-height:1.8}
+.q .src{display:block;color:var(--soft);font-style:italic}
+.blank{display:inline-block;min-width:5.5ch;border-bottom:2px solid var(--line2);text-align:center;line-height:1.3;padding-inline:2px}
+.blank.filled{border-color:var(--good);color:var(--good);font-weight:600}
+.opts{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.opt{border:1px solid var(--line2);background:var(--surface);border-radius:8px;padding:6px 14px;font-size:16px;text-align:left}
+.opt:hover:not([aria-disabled="true"]){border-color:var(--accent)}
+.opt.no{border-style:dashed;border-color:var(--bad);background:var(--bad-bg);text-decoration:line-through;text-decoration-color:var(--bad)}
+.opt.yes{border-color:var(--good);background:var(--good-bg);font-weight:600}
+.opt[aria-disabled="true"]{cursor:default}
+.why{font-size:14.5px;color:var(--soft)}
+.why:empty,.fb:empty{display:none}
+.ok{color:var(--good);font-weight:600}
+.badw{color:var(--bad);font-weight:600}
+.gap{border:0;border-bottom:2px solid var(--line2);background:var(--sunk);border-radius:4px 4px 0 0;padding:1px 6px;font-size:17px;line-height:1.4;max-width:100%}
+.gap.right{border-color:var(--good);background:var(--good-bg)}
+.gap.wrong{border-color:var(--bad);background:var(--bad-bg)}
+.gap.shown{color:var(--soft);font-style:italic}
+.hint{color:var(--soft);font-size:15px}
+.fb{font-size:14.5px;color:var(--soft);display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline}
+.link{background:none;border:0;padding:0;color:var(--accent);text-decoration:underline;text-underline-offset:3px;font-size:14.5px}
+
+/* tap the stress */
+.words{display:flex;flex-wrap:wrap;gap:6px;padding-top:10px}
+.wd{position:relative;border:1px solid var(--line2);background:var(--surface);border-radius:8px;padding:5px 11px;font-size:17px}
+.wd:hover:not(:disabled){border-color:var(--accent)}
+.wd[aria-pressed="true"]{background:var(--tint);border-color:var(--accent);font-weight:600}
+.wd[aria-pressed="true"]::before{content:"";position:absolute;left:50%;top:-11px;width:7px;height:7px;margin-left:-3.5px;border-radius:50%;background:var(--dot)}
+.wd:disabled{cursor:default;color:var(--text)}
+.wd.fixed[aria-pressed="false"]{border-color:transparent;background:transparent;color:var(--soft)}
+
+/* drills, reading, script */
+.build{list-style:none;display:flex;flex-direction:column;gap:6px;font:500 18px/1.5 var(--display)}
+.build li{display:flex;gap:10px;align-items:flex-start}
+.build li > span{flex:1;min-width:0}
+.build li:last-child > span{color:var(--accent)}
+.read{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:22px clamp(18px,4vw,30px) 26px;display:flex;flex-direction:column;gap:14px}
+.read h3{font-size:clamp(22px,3.4vw,27px)}
+.read p{max-width:66ch;line-height:1.7}
+.read .by{font-size:14px;color:var(--soft);letter-spacing:.06em;text-transform:uppercase;font-weight:600}
+.script{list-style:none;display:flex;flex-direction:column;gap:2px;font-size:18px}
+.script li{display:flex;gap:10px;align-items:flex-start;padding-block:6px;border-bottom:1px dashed var(--line)}
+.script li > span{flex:1;min-width:0;line-height:2.1}
+.script i{font-style:normal;color:var(--frost);padding-inline:3px}
+.talk{list-style:none;counter-reset:t;display:flex;flex-direction:column;gap:10px}
+.talk li{counter-increment:t;display:grid;grid-template-columns:1.8rem minmax(0,1fr);gap:8px;font-size:17.5px;line-height:1.5}
+.talk li::before{content:counter(t);font:600 14px/1.9 var(--display);color:var(--accent);font-variant-numeric:tabular-nums}
+.hw{list-style:none;display:flex;flex-direction:column;gap:12px}
+.hw li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px}
+.hw .tag{font:600 12px/1 var(--body);letter-spacing:.08em;text-transform:uppercase;background:var(--sunk);border-radius:6px;padding:7px 9px;align-self:flex-start;white-space:nowrap}
+textarea.draft{width:100%;min-height:150px;border:1px solid var(--line2);border-radius:8px;background:var(--surface);padding:10px 12px;font-size:16.5px;line-height:1.5;resize:vertical}
+.count{font-size:14px;color:var(--soft);font-variant-numeric:tabular-nums}
+
+.sum{border:1px solid var(--line);border-radius:12px;background:var(--surface);overflow:hidden}
+.sum table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.sum td,.sum th{padding:11px 18px;text-align:left;border-top:1px solid var(--line)}
+.sum tr:first-child td{border-top:0}
+.sum td:last-child,.sum th:last-child{text-align:right;white-space:nowrap}
+.sum td:first-child{color:var(--soft);width:2.5em}
+.sum tfoot th{font-weight:600;border-top:1px solid var(--line2);background:var(--sunk)}
+@media (max-width:420px){ .sum td,.sum th{padding-inline:12px} }
+footer.fin{color:var(--soft);font-size:14.5px;border-top:1px solid var(--line2);padding-top:18px}
+
+.order{list-style:none;display:flex;flex-direction:column;gap:8px}
+.ev{width:100%;display:flex;gap:12px;align-items:center;text-align:left;border:1px solid var(--line2);background:var(--surface);border-radius:8px;padding:9px 14px;font-size:16.5px}
+.ev:hover:not(:disabled){border-color:var(--accent)}
+.ev > span:nth-child(2){flex:1;min-width:0}
+.ev-no{flex:none;width:26px;height:26px;border-radius:50%;border:1px dashed var(--line2);display:grid;place-items:center;font:600 13.5px/1 var(--display)}
+.ev.placed{background:var(--good-bg);border-color:var(--good);cursor:default;color:var(--text)}
+.ev.placed .ev-no{border:0;background:var(--good);color:var(--surface)}
+.silent{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:10px 18px}
+.sw{display:flex;align-items:center;gap:10px;min-width:0}
+.letters{display:flex;gap:3px;flex-wrap:wrap;min-width:0}
+.lt{width:32px;height:40px;border:1px solid var(--line2);background:var(--surface);border-radius:6px;font:500 19px/1 var(--display);padding:0}
+.lt:hover:not(:disabled){border-color:var(--accent)}
+.lt:disabled{cursor:default;color:var(--text)}
+.lt.mute{background:var(--bad-bg);border-color:var(--bad);color:var(--soft);text-decoration:line-through}
+.sw.solved .lt:not(.mute){border-color:transparent;background:transparent}
+.forms td:nth-child(2){white-space:normal;min-width:11em}
+/* teacher-only parts: every one sits between a pair of T comment markers, which scripts/student-site.sh cuts out of the student copy */
+.tbadge{align-self:flex-start;font:600 12.5px/1 var(--body);letter-spacing:.1em;text-transform:uppercase;background:var(--mark);border-radius:6px;padding:7px 10px}
+.tnote{border:1px dashed var(--line2);background:var(--mark);border-radius:10px;padding:12px 16px;font-size:15px;line-height:1.5;display:flex;flex-direction:column;gap:6px}
+.tnote b:first-child{font:600 12px/1.2 var(--body);letter-spacing:.1em;text-transform:uppercase}
+.tnote p{max-width:72ch}
+.key{font-size:14.5px;background:var(--mark);border-radius:6px;padding:2px 8px;justify-self:start}
+.key-n{flex:none;white-space:nowrap;font-size:13.5px;background:var(--mark);border-radius:6px;padding:2px 8px}
+.lt.tkey{box-shadow:inset 0 -4px 0 var(--dot)}
+[data-view="student"] .tnote,[data-view="student"] .key,[data-view="student"] .key-n,[data-view="student"] .tbadge{display:none}
+/* lesson notes (teacher's page only): a quick strip under every section and a notes block at the bottom */
+.tn{border:1px dashed var(--line2);background:var(--mark);border-radius:10px;padding:10px 14px 12px;display:flex;flex-direction:column;gap:8px;font-size:14.5px}
+.tn-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.tn-lab{font:600 12px/1.2 var(--body);letter-spacing:.1em;text-transform:uppercase;min-width:9.5em}
+.tn-chip{border:1px solid var(--line2);background:var(--surface);border-radius:999px;padding:4px 12px;font-size:14.5px;line-height:1.3}
+.tn-chip:hover{border-color:var(--accent)}
+.tn-chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-weight:600}
+.tn-text{width:100%;border:1px solid var(--line2);border-radius:8px;background:var(--surface);padding:6px 10px;font-size:15px}
+.tn-final{display:flex;flex-direction:column;gap:16px;border-top:2px solid var(--text);padding-top:20px;scroll-margin-top:104px}
+.tn-final h2{font-size:clamp(25px,4vw,31px);line-height:1.15}
+.tn-field{display:flex;flex-direction:column;gap:6px}
+.tn-field label{font-weight:600}
+.tn-field textarea{width:100%;min-height:130px;border:1px solid var(--line2);border-radius:8px;background:var(--surface);padding:10px 12px;font-size:16.5px;line-height:1.5;resize:vertical}
+.tn-sum table{border-collapse:collapse;width:100%;min-width:480px;font-size:15px}
+.tn-sum th,.tn-sum td{text-align:left;vertical-align:top;padding:7px 10px 7px 0;border-top:1px solid var(--line)}
+.tn-sum th{font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);font-weight:600;border-top:0}
+.tn-sum td:first-child{color:var(--soft);font-variant-numeric:tabular-nums;width:2em}
+.tn-status{font-size:14.5px;color:var(--soft)}
+.tn-out{width:100%;min-height:160px;border:1px solid var(--line2);border-radius:8px;background:var(--surface);padding:10px 12px;font:14px/1.45 ui-monospace,Menlo,monospace}
+/* lesson timer (teacher's page only) */
+.tmr{position:sticky;top:0;z-index:20;margin-top:-40px;margin-bottom:-32px;background:var(--surface);border:1px solid var(--line2);border-top:0;border-radius:0 0 12px 12px;padding:8px 12px 10px;display:flex;flex-direction:column;gap:8px;box-shadow:0 6px 18px rgb(0 0 0 / .14)}
+.tm-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;min-width:0}
+.tm-go{flex:none;border:0;border-radius:8px;background:var(--accent);color:var(--on-accent);font-weight:600;padding:6px 14px;min-width:5.6em}
+.tm-clock{flex:none;font:600 19px/1 var(--display);font-variant-numeric:tabular-nums}
+.tm-clock small{font-size:13px;font-weight:500;color:var(--soft)}
+.tm-clock.over{color:var(--bad)}
+.tm-now{flex:1;min-width:0;font-size:14.5px;color:var(--soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tm-reset{flex:none;border:1px solid var(--line2);background:none;border-radius:8px;padding:5px 10px;font-size:14px}
+.tm-bar{display:flex;gap:3px;height:24px}
+.tm-seg{position:relative;flex-basis:0;min-width:0;border-radius:5px;overflow:hidden;background:color-mix(in srgb,var(--c) 32%,#eceff4);color:#2e3440;text-decoration:none;font:600 12px/24px var(--body);text-align:center}
+.tm-seg i{position:absolute;inset:0 auto 0 0;width:0;background:color-mix(in srgb,var(--c) 82%,#fff)}
+.tm-seg b{position:relative}
+.tm-seg.now{box-shadow:inset 0 0 0 2px #2e3440}
+[data-view="student"] .sec{scroll-margin-top:104px}
+@media (max-width:520px){ .tm-now{display:none} .tm-row{justify-content:space-between} }
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.shake{animation:shake .28s ease}
+@media (prefers-reduced-motion: reduce){ *{transition:none!important;animation:none!important;scroll-behavior:auto!important} }
+/* memory game */
+.mem{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,128px),1fr));gap:10px}
+.mtile{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 10px;min-height:98px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;min-width:0}
+.mtile .em{font-size:34px;line-height:1}
+.mtile .mw{font-size:15px;line-height:1.3}
+.mem.covered .mtile{background:var(--sunk)}
+.mem.covered .mtile > *{visibility:hidden}
+.mem.covered .mtile::after{content:"?";position:absolute;inset:0;display:grid;place-items:center;font:600 28px/1 var(--display);color:var(--soft)}
+.mem-clock{font:600 17px/1 var(--display);font-variant-numeric:tabular-nums;color:var(--soft)}
+.case{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:6px 18px;font-size:16.5px}
+.case li{display:flex;gap:8px;min-width:0}
+.case li::before{content:"";flex:none;width:7px;height:7px;margin-top:.62em;border-radius:50%;background:var(--accent)}
+.lk{color:var(--dot);font-weight:700;font-size:1.25em;line-height:1;padding-inline:1px}
+.rule{font-size:16px}
+.rule i{color:var(--soft)}
+</style>
+
+<main class="page" data-view="student">
+
+
+  <header class="mast">
+    <h1>Total recall, <span>out loud</span></h1>
+    <p class="dek">Famous places, a memory test, a woman who can&rsquo;t forget, a worried mother and doctors on TV. Today you test your memory, learn the quick way to tell someone what another person said, and make your questions sound friendly.</p>
+    <div class="flip" role="group" aria-label="The same words, direct and reported">
+      <div><span class="lab">What she said</span><p>&ldquo;<span class="weak">I</span> <span class="s">can&rsquo;t</span> re<span class="s">mem</span>ber <span class="weak">his</span> <span class="s">name</span>.&rdquo;</p></div>
+      <div><span class="lab">What you tell a friend</span><p><span class="weak">She</span> <span class="s">said</span> <span class="weak">she</span> <span class="s">couldn&rsquo;t</span> re<span class="s">mem</span>ber <span class="weak">his</span> <span class="s">name</span>.</p></div>
+    </div>
+    <p class="legend">A dot marks a word you say strongly. Grey words are said quickly and quietly.</p>
+  </header>
+
+  <nav aria-label="Contents"><ol class="toc" id="toc"></ol></nav>
+
+
+  <!-- 1 -->
+  <section class="sec" id="warm" data-title="Guess the place">
+    <header class="sec-head">
+      <span class="sec-no">1</span>
+      <div class="sec-title"><h2>Guess the place</h2><p class="lede">Six famous places, each described with the passive. Read the clue aloud, then guess. Only your first choice counts.</p></div>
+      <span class="score" data-score="warm">0 / 0</span>
+    </header>
+    <ol class="items" id="warm-list"></ol>
+    <div class="tools"><button type="button" class="btn" id="warm-reset">Start again</button></div>
+  </section>
+
+  <!-- 2 -->
+  <section class="sec" id="memory" data-title="Memory test and memory words">
+    <header class="sec-head">
+      <span class="sec-no">2</span>
+      <div class="sec-title"><h2>How good is your memory?</h2><p class="lede">Press Start. You have 30 seconds to look at twelve things. When they disappear, say as many as you can remember.</p></div>
+      <span class="score" data-score="mwords">0 / 0</span>
+    </header>
+    <div class="mem covered" id="mem-grid" aria-live="polite"></div>
+    <div class="tools">
+      <button type="button" class="btn primary" id="mem-go">Start: 30 seconds</button>
+      <button type="button" class="btn" id="mem-show">Show them again</button>
+      <span class="mem-clock" id="mem-clock" role="status"></span>
+    </div>
+    <h3 class="sub">Words for remembering and forgetting</h3>
+    <ol class="items" id="mwords-list"></ol>
+    <div class="tools"><button type="button" class="btn" id="mwords-reset">Start again</button></div>
+    <ol class="talk">
+      <li>What are you good at remembering: names, faces, numbers, dates, the words of songs?</li>
+      <li>When did your mind last go blank? What happened?</li>
+      <li>What do you do so that you don&rsquo;t forget things: lists, reminders on your phone, a diary?</li>
+    </ol>
+  </section>
+
+  <!-- 3 -->
+  <section class="sec" id="listen" data-title="Listening: the woman who can't forget">
+    <header class="sec-head">
+      <span class="sec-no">3</span>
+      <div class="sec-title"><h2>The woman who can&rsquo;t forget</h2><p class="lede">You are going to hear part of a radio programme about Jill Price, a woman who remembers almost every day of her life. Read the questions first, then listen and choose.</p></div>
+      <span class="score" data-score="listen">0 / 0</span>
+    </header>
+    <div class="panel">
+      <h3>Words you will hear</h3>
+      <ul class="plain">
+        <li><b class="hl">extraordinary</b>: very unusual and surprising</li>
+        <li><b class="hl">come up with an answer</b>: find an answer, think of one</li>
+        <li><b class="hl">in great detail</b>: with all the small facts</li>
+        <li><b class="hl">it drives me crazy</b>: it makes me very annoyed or unhappy</li>
+      </ul>
+    </div>
+    <ol class="items" id="listen-list"></ol>
+    <div class="tools"><button type="button" class="btn" id="listen-reset">Start again</button></div>
+    <ol class="talk">
+      <li>Would you like to have a memory like Jill&rsquo;s? What would be good about it, and what would be bad?</li>
+      <li>What is your earliest memory? How old were you?</li>
+    </ol>
+  </section>
+
+  <!-- 4 -->
+  <section class="sec" id="report" data-title="What did they say?">
+    <header class="sec-head">
+      <span class="sec-no">4</span>
+      <div class="sec-title"><h2>What did they say?</h2><p class="lede">When you tell someone what another person said, the verb usually goes one step back into the past. Four short rules, then seven sentences.</p></div>
+      <span class="score" data-score="report">0 / 0</span>
+    </header>
+    <div class="grid2">
+      <div class="panel">
+        <h3>Statements</h3>
+        <ul class="plain rule">
+          <li><i>&ldquo;I&rsquo;m tired.&rdquo;</i> &rarr; She said she <b class="hl">was</b> tired.</li>
+          <li><i>&ldquo;I&rsquo;ve lost my keys.&rdquo;</i> &rarr; He said he <b class="hl">had lost</b> his keys.</li>
+          <li><i>&ldquo;I&rsquo;ll call you.&rdquo;</i> &rarr; She said she <b class="hl">would</b> call me.</li>
+          <li><b class="hl">say</b> something, but <b class="hl">tell</b> somebody: <i>She told <b class="hl">me</b> she was tired.</i></li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h3>Questions and requests</h3>
+        <ul class="plain rule">
+          <li>No <i>do / did</i>, normal word order: <i>&ldquo;Where do you live?&rdquo;</i> &rarr; He asked me where <b class="hl">I lived</b>.</li>
+          <li>Yes / no questions take <b class="hl">if</b>: <i>&ldquo;Are you OK?&rdquo;</i> &rarr; She asked <b class="hl">if</b> I was OK.</li>
+          <li>Instructions: <b class="hl">tell / ask + (not) to</b>: <i>&ldquo;Don&rsquo;t worry.&rdquo;</i> &rarr; He told me <b class="hl">not to</b> worry.</li>
+        </ul>
+      </div>
+    </div>
+    <ol class="items" id="report-list"></ol>
+    <div class="tools"><button type="button" class="btn" id="report-reset">Start again</button></div>
+  </section>
+
+  <!-- 5 -->
+  <section class="sec" id="stress" data-title="Word families: does the stress move?">
+    <header class="sec-head">
+      <span class="sec-no">5</span>
+      <div class="sec-title"><h2>Word families: does the stress move?</h2><p class="lede">Listen and say both words. Does the strong syllable stay in the same place, or does it move? The answer shows the strong syllable in capitals.</p></div>
+      <span class="score" data-score="stress">0 / 0</span>
+    </header>
+    <ol class="items" id="stress-list"></ol>
+    <div class="tools"><button type="button" class="btn" id="stress-reset">Start again</button></div>
+  </section>
+
+  <!-- 6 -->
+  <section class="sec" id="ask" data-title="Questions that sound friendly">
+    <header class="sec-head">
+      <span class="sec-no">6</span>
+      <div class="sec-title"><h2>Questions that sound friendly</h2><p class="lede">A doctor asks a lot of questions, and the voice makes them sound kind or cold. Listen, decide whether the voice goes up or down at the end, then say the question with the links.</p></div>
+      <span class="score" data-score="ask">0 / 0</span>
+    </header>
+    <div class="panel">
+      <p class="rule">↘ <b class="hl">down</b> at the end: questions with <i>what, when, where, how long&hellip;</i></p>
+      <p class="rule">↗ <b class="hl">up</b> at the end: questions you answer with yes or no.</p>
+      <p class="rule"><span class="lk">&#8255;</span> join the words: a consonant at the end of a word runs into a vowel at the start of the next one.</p>
+    </div>
+    <ol class="items" id="ask-list"></ol>
+    <div class="tools"><button type="button" class="btn" id="ask-reset">Start again</button></div>
+  </section>
+
+  <!-- 7 -->
+  <section class="sec" id="history" data-title="Medical English: a history from a parent">
+    <header class="sec-head">
+      <span class="sec-no">7</span>
+      <div class="sec-title"><h2>Medical English: a history from a parent</h2><p class="lede">A mother brings her four-year-old daughter, Alice, to your clinic. You are the doctor. Ask your questions, then tell a colleague what the mother said.</p></div>
+    </header>
+    <div class="panel">
+      <h3>What you need to find out</h3>
+      <ul class="case">
+        <li>What the problem is</li>
+        <li>When it started</li>
+        <li>Temperature</li>
+        <li>Eating and drinking</li>
+        <li>Sleep</li>
+        <li>Medicine she has had</li>
+        <li>Allergies</li>
+        <li>Anyone else ill at home</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h3>Now tell your colleague</h3>
+      <p class="note">Listen to a line, then say it. Finish it with what the mother told you.</p>
+      <ol class="script">
+        <li data-say><span>I&rsquo;ve <span class="s">just</span> <span class="s">seen</span> a <span class="s">four</span>-year-old <span class="s">girl</span>, <i>/</i> <span class="s">Alice</span>.</span></li>
+        <li data-say><span>Her <span class="s">mother</span> <span class="s">told</span> me <i>/</i> that she&rsquo;d <span class="s">had</span> a <span class="s">cough</span> <i>/</i> for&hellip;</span></li>
+        <li data-say><span>She <span class="s">said</span> it had <span class="s">started</span> <i>/</i> on&hellip;</span></li>
+        <li data-say><span>I <span class="s">asked</span> her <i>/</i> if Alice had <span class="s">had</span> a <span class="s">temperature</span>, <i>/</i> and she <span class="s">said</span>&hellip;</span></li>
+        <li data-say><span>She <span class="s">told</span> me that <span class="s">Alice</span> <i>/</i> was <span class="s">allergic</span> to&hellip;</span></li>
+        <li data-say><span>She <span class="s">asked</span> me <i>/</i> if it was <span class="s">serious</span>.</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 8 -->
+  <section class="sec" id="read" data-title="Reading: TV doctors">
+    <header class="sec-head">
+      <span class="sec-no">8</span>
+      <div class="sec-title"><h2>Reading: TV doctors</h2><p class="lede">Read the text once without stopping. Then decide if the sentences are true or false.</p></div>
+      <span class="score" data-score="tf">0 / 0</span>
+    </header>
+    <article class="read">
+      <p class="by">Films and series</p>
+      <h3>Why TV patients always survive</h3>
+      <p>Many doctors love medical dramas, and many doctors can&rsquo;t watch them. Series like <i>ER</i>, <i>House</i> and <i>Grey&rsquo;s Anatomy</i> have been watched by millions of people, and for a lot of viewers they are the only picture of a hospital they have.</p>
+      <p>The problem is that TV medicine is often too good to be true. In 1996, three American doctors watched almost a hundred episodes of popular series and counted every time a patient&rsquo;s heart stopped and someone started CPR. On TV, about three out of four of these patients survived. In real life, far fewer do. The researchers said that the series were giving people false hopes, and that this could make difficult decisions even harder for families.</p>
+      <p>Other mistakes are smaller. On screen, doctors often use a defibrillator when the heart line is completely flat, but in a real hospital a shock doesn&rsquo;t help a flat line. TV doctors also do everything themselves: they take the blood, run the scans, operate and talk to the family, all in one shift.</p>
+      <p>Still, not everything about TV doctors is bad. Many nurses and doctors say that a series was the first thing that made them interested in medicine, and some programmes ask real doctors to check their scripts. A nurse I know told me that she didn&rsquo;t mind the mistakes. She said that the best thing a TV doctor could do was make people curious, and then send them to a real one.</p>
+    </article>
+    <ol class="items" id="tf-list"></ol>
+    <div class="tools"><button type="button" class="btn" id="tf-reset">Start again</button></div>
+  </section>
+
+  <!-- 9 -->
+  <section class="sec" id="stories" data-title="Speaking: I'll never forget…">
+    <header class="sec-head">
+      <span class="sec-no">9</span>
+      <div class="sec-title"><h2>I&rsquo;ll never forget&hellip;</h2><p class="lede">Choose one topic and tell the story for one or two minutes. Start with one of the phrases.</p></div>
+    </header>
+    <ul class="plain dotted panel">
+      <li class="line" data-say><span><span class="weak">I&rsquo;ll</span> <span class="s">never</span> for<span class="s">get</span> <span class="weak">the</span> <span class="s">time</span> <span class="weak">when</span>&hellip;</span></li>
+      <li class="line" data-say><span><span class="weak">This</span> <span class="s">happened</span> <span class="weak">to me</span> <span class="weak">when I</span> <span class="weak">was</span>&hellip;</span></li>
+      <li class="line" data-say><span><span class="weak">What I</span> re<span class="s">mem</span>ber <span class="s">most</span> <span class="weak">is</span>&hellip;</span></li>
+    </ul>
+    <ol class="talk">
+      <li>A trip or a holiday you still remember in great detail</li>
+      <li>The first time you drove a car on your own</li>
+      <li>A day at work you will never forget</li>
+      <li>How your cats came into your life</li>
+      <li>A film or a series with a scene you still remember</li>
+      <li>A present you made yourself, or one you were given</li>
+    </ol>
+  </section>
+
+  <!-- 10 -->
+  <section class="sec" id="home" data-title="Homework">
+    <header class="sec-head">
+      <span class="sec-no">10</span>
+      <div class="sec-title"><h2>Homework</h2><p class="lede">Four tasks for the week.</p></div>
+    </header>
+    <ul class="hw">
+      <li><span class="tag">Write</span><div><b>A conversation I remember.</b> Write 120&ndash;150 words about a conversation you won&rsquo;t forget: with a patient, a parent, a friend or a stranger on a trip. Where were you? What did the other person say, and what did you say? Use at least five sentences with <i>said</i>, <i>told</i> or <i>asked</i>.</div></li>
+      <li><span class="tag">Watch</span><div>A talk by Joshua Foer, a journalist who became a memory champion: <a href="https://www.youtube.com/results?search_query=Joshua+Foer+Feats+of+memory+anyone+can+do+TED" target="_blank" rel="noopener">&ldquo;Feats of memory anyone can do&rdquo; on YouTube</a>. Think about these questions: Why did he go to a memory competition the first time? What is a &ldquo;memory palace&rdquo;? What happened a year later? Then try his trick with your next shopping list.</div></li>
+      <li><span class="tag">Speak</span><div>Record yourself on your phone: the eight questions from section 6, then your report to a colleague about Alice from section 7. Are the questions going up and down? Send the better recording to Alena.</div></li>
+      <li><span class="tag">Workbook</span><div>Workbook 9A, and Grammar Bank 9A exercises a and b on p. 148.</div></li>
+    </ul>
+    <div class="panel">
+      <label class="sub" for="draft" style="margin:0">Your writing</label>
+      <textarea class="draft" id="draft" placeholder="Write your text here. It is saved in this browser only."></textarea>
+      <p class="count" id="draft-count">0 words</p>
+    </div>
+  </section>
+
+</main>
+
+<script>
+(function(){
+  'use strict';
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+  // the teacher's page shows the answers; scripts/student-site.sh turns data-view into "student"
+  const TEACHER = (($('main.page') || document.body).getAttribute('data-view')) === 'teacher';
+
+  // lesson timer: one coloured segment per section, as long as that section's minutes
+  if (TEACHER && $('#tmr')) (function(){
+    const box = $('#tmr'), go = $('#tm-go'), clock = $('#tm-clock'), now = $('#tm-now'), bar = $('#tm-bar');
+    const COLORS = ['#5e81ac', '#a3be8c', '#ebcb8b', '#d08770', '#b48ead', '#88c0d0', '#bf616a', '#8fbcbb'];
+    const KEY = 'lesson-timer:' + document.title;
+    const fmt = s => Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0');
+    let from = 0;
+    const segs = box.dataset.segs.split(',').map((part, i) => {
+      const bits = part.split(':'), sec = document.getElementById(bits[0]), len = (+bits[1] || 1) * 60;
+      const a = document.createElement('a'), fill = document.createElement('i'), num = document.createElement('b');
+      const title = (sec && sec.dataset.title) || bits[0];
+      a.className = 'tm-seg'; a.href = '#' + bits[0];
+      a.style.flexGrow = len; a.style.setProperty('--c', COLORS[i % COLORS.length]);
+      a.title = (i + 1) + '. ' + title + ' · ' + (len / 60) + ' min';
+      a.setAttribute('aria-label', a.title);
+      num.textContent = i + 1;
+      a.append(fill, num); bar.append(a);
+      const seg = {a, fill, title, n: i + 1, from, len};
+      from += len;
+      return seg;
+    });
+    const total = from;
+    let base = 0, t0 = null, tick = null;
+    try {
+      const saved = JSON.parse(localStorage.getItem(KEY) || 'null');
+      if (saved && (!saved.t0 || (Date.now() - saved.t0) / 1000 + saved.base < total + 1800)) { base = +saved.base || 0; t0 = saved.t0 || null; }
+    } catch (e) {}
+    const save = () => { try { localStorage.setItem(KEY, JSON.stringify({base, t0})); } catch (e) {} };
+    const elapsed = () => base + (t0 ? (Date.now() - t0) / 1000 : 0);
+    function render(){
+      const s = elapsed();
+      clock.innerHTML = '';
+      const small = document.createElement('small');
+      small.textContent = ' / ' + fmt(total);
+      clock.append(fmt(s), small);
+      clock.classList.toggle('over', s >= total);
+      let cur = null;
+      segs.forEach(g => {
+        const done = Math.max(0, Math.min(1, (s - g.from) / g.len));
+        g.fill.style.width = (done * 100) + '%';
+        const on = s >= g.from && s < g.from + g.len && (t0 || s > 0);
+        g.a.classList.toggle('now', !!on);
+        if (on) cur = g;
+      });
+      now.textContent = cur ? cur.n + '. ' + cur.title + ' · ' + fmt(cur.from + cur.len - s + 0.999) + ' left'
+        : s >= total ? 'Time is up · ' + fmt(s - total) + ' over' : segs.length + ' sections';
+      go.textContent = t0 ? 'Pause' : s > 0 ? 'Continue' : 'Start';
+    }
+    function run(){ clearInterval(tick); if (t0) tick = setInterval(render, 500); render(); }
+    go.addEventListener('click', () => {
+      if (t0) { base = elapsed(); t0 = null; } else { t0 = Date.now(); }
+      save(); run();
+    });
+    $('#tm-reset').addEventListener('click', () => { base = 0; t0 = null; save(); run(); });
+    run();
+  })();
+
+  // lesson notes: a quick strip under every section, a notes block at the bottom, saved as one file
+  if (TEACHER && $('#tmr') && $('#tmr').dataset.notes) (function(){
+    const where = $('#tmr').dataset.notes.split('/');           // student / lesson folder
+    const FILE = where.join('-') + '-notes.md';
+    const KEY = 'lesson-notes:' + where.join('/');
+    const MARKS = ['Easy', 'OK', 'Hard', 'Skipped'];
+    const TAGS = ['Grammar', 'Words', 'Pronunciation', 'Speaking', 'Understanding', 'Too slow'];
+    const HW = ['Done', 'Partly', 'Not done'];
+    let st = {sec: {}, hw: '', went: '', next: ''};
+    try {
+      const saved = JSON.parse(localStorage.getItem(KEY) || 'null');
+      if (saved && typeof saved === 'object') st = Object.assign(st, saved, {sec: saved.sec || {}});
+    } catch (e) {}
+    const secs = $$('main.page > section.sec').map((sec, i) => ({id: sec.id, n: i + 1, title: sec.dataset.title || sec.id, sec}));
+    const of = id => st.sec[id] || (st.sec[id] = {mark: '', tags: [], text: ''});
+    const status = el('p', {class: 'tn-status', id: 'tn-status', role: 'status'});
+    const sumBody = el('tbody');
+    let dirty = false;
+    function changed(){
+      dirty = true;
+      try { localStorage.setItem(KEY, JSON.stringify(st)); } catch (e) {}
+      summary();
+      status.textContent = 'Kept in this browser. Press “Save notes” at the end of the lesson to make the file.';
+    }
+    function chip(label, id, isOn, toggle){
+      const b = el('button', {type: 'button', class: 'tn-chip', id, 'aria-pressed': String(isOn()), text: label});
+      b.addEventListener('click', () => { toggle(); changed(); b.closest('.tn-row').querySelectorAll('.tn-chip').forEach(x => x.setAttribute('aria-pressed', String(x._on()))); });
+      b._on = isOn;
+      return b;
+    }
+    function row(label, chips){ return el('div', {class: 'tn-row'}, el('span', {class: 'tn-lab', text: label}), ...chips); }
+
+    secs.forEach(s => {
+      const d = of(s.id);
+      const text = el('input', {type: 'text', class: 'tn-text', id: 'tn-' + s.id + '-text', placeholder: 'A quick note: what was hard, what to repeat', 'aria-label': 'Note for section ' + s.n, autocomplete: 'off'});
+      text.value = d.text || '';
+      text.addEventListener('input', () => { d.text = text.value; changed(); });
+      s.sec.append(el('div', {class: 'tn', role: 'group', 'aria-label': 'Notes for section ' + s.n},
+        row('How it went', MARKS.map(m => chip(m, 'tn-' + s.id + '-m-' + m.toLowerCase(), () => d.mark === m, () => { d.mark = d.mark === m ? '' : m; }))),
+        row('What was hard', TAGS.map(g => chip(g, 'tn-' + s.id + '-t-' + g.toLowerCase().replace(/\s+/g, '-'), () => d.tags.includes(g), () => { d.tags = d.tags.includes(g) ? d.tags.filter(x => x !== g) : d.tags.concat(g); }))),
+        text));
+    });
+
+    function summary(){
+      sumBody.replaceChildren(...secs.map(s => {
+        const d = of(s.id);
+        return el('tr', null, el('td', {text: String(s.n)}), el('td', {text: s.title}), el('td', {text: d.mark || '–'}), el('td', {text: d.tags.join(', ') || '–'}), el('td', {text: d.text || '–'}));
+      }));
+    }
+    function area(id, label, key, hint){
+      const ta = el('textarea', {id, placeholder: hint});
+      ta.value = st[key] || '';
+      ta.addEventListener('input', () => { st[key] = ta.value; changed(); });
+      return el('div', {class: 'tn-field'}, el('label', {for: id, text: label}), ta);
+    }
+    const cell = v => String(v || '–').replace(/\|/g, '/').replace(/\s*\n\s*/g, ' ');
+    function markdown(){
+      const now = new Date(), two = n => String(n).padStart(2, '0');
+      const stamp = now.getFullYear() + '-' + two(now.getMonth() + 1) + '-' + two(now.getDate()) + ' ' + two(now.getHours()) + ':' + two(now.getMinutes());
+      const lines = ['# Lesson notes: ' + document.title, '',
+        'Lesson folder: ' + where.join('/') + '. Notes saved ' + stamp + '.', '',
+        '## Section by section', '',
+        '| # | Section | How it went | What was hard | Note |', '|---|---|---|---|---|'];
+      secs.forEach(s => { const d = of(s.id); lines.push('| ' + [s.n, cell(s.title), cell(d.mark), cell(d.tags.join(', ')), cell(d.text)].join(' | ') + ' |'); });
+      lines.push('', '## Homework brought to this lesson', '', st.hw || 'Not marked.', '',
+        '## How the lesson went', '', (st.went || '').trim() || 'No notes.', '',
+        '## Practise next time', '', (st.next || '').trim() || 'No notes.', '');
+      return lines.join('\n');
+    }
+    const out = el('textarea', {class: 'tn-out', id: 'tn-out', readonly: '', hidden: '', 'aria-label': 'Your notes as text'});
+    const save = el('button', {type: 'button', class: 'btn primary', id: 'tn-save', text: 'Save notes'});
+    save.addEventListener('click', () => {
+      try {
+        const a = el('a', {href: URL.createObjectURL(new Blob([markdown()], {type: 'text/markdown;charset=utf-8'})), download: FILE});
+        document.body.append(a); a.click(); a.remove();
+        setTimeout(() => { try { URL.revokeObjectURL(a.href); } catch (e) {} }, 4000);
+        dirty = false;
+        status.textContent = 'Saved as “' + FILE + '” in your Downloads folder. Tell Claude the lesson is done and it goes into the lesson folder.';
+      } catch (e) {
+        out.hidden = false; out.value = markdown(); out.focus(); out.select();
+        status.textContent = 'The file could not be saved here. Copy this text and send it to Claude.';
+      }
+    });
+    const copy = el('button', {type: 'button', class: 'btn', id: 'tn-copy', text: 'Copy notes'});
+    copy.addEventListener('click', () => {
+      const text = markdown();
+      const show = () => { out.hidden = false; out.value = text; out.focus(); out.select(); status.textContent = 'Press ⌘C to copy the notes.'; };
+      try { navigator.clipboard.writeText(text).then(() => { status.textContent = 'Notes copied.'; }, show); } catch (e) { show(); }
+    });
+    let armed = null;
+    const clear = el('button', {type: 'button', class: 'btn quiet', id: 'tn-clear', text: 'Clear notes'});
+    clear.addEventListener('click', () => {
+      if (!armed) { clear.textContent = 'Press again to clear everything'; armed = setTimeout(() => { armed = null; clear.textContent = 'Clear notes'; }, 4000); return; }
+      clearTimeout(armed);
+      try { localStorage.removeItem(KEY); } catch (e) {}
+      location.reload();
+    });
+
+    const fin = el('section', {class: 'tn-final', id: 'lesson-notes', 'aria-label': 'Lesson notes'},
+      el('h2', {text: 'Lesson notes'}),
+      el('div', {class: 'tn'}, row('Her homework', HW.map(h => chip(h, 'tn-hw-' + h.toLowerCase().replace(/\s+/g, '-'), () => st.hw === h, () => { st.hw = st.hw === h ? '' : h; })))),
+      area('tn-went', 'How the lesson went', 'went', 'Your thoughts about the lesson'),
+      area('tn-next', 'Practise next time', 'next', 'What to come back to in the next lessons'),
+      el('div', {class: 'tn-sum scroll'}, el('table', null, el('thead', null, el('tr', null, ...['#', 'Section', 'How it went', 'What was hard', 'Note'].map(h => el('th', {text: h})))), sumBody)),
+      el('div', {class: 'tools'}, save, copy, clear),
+      status, out);
+    const last = secs[secs.length - 1];
+    if (last) last.sec.after(fin); else $('main.page').append(fin);
+    summary();
+    status.textContent = 'Notes are kept in this browser while you work. Press “Save notes” at the end of the lesson.';
+  })();
+
+  function el(tag, props, ...kids){
+    const e = document.createElement(tag);
+    if (props) for (const k of Object.keys(props)){
+      const v = props[k];
+      if (v == null) continue;
+      if (k === 'class') e.className = v;
+      else if (k === 'text') e.textContent = v;
+      else e.setAttribute(k, v);
+    }
+    for (const k of kids) if (k != null) e.append(k);
+    return e;
+  }
+  // wrong-answer shake clears itself
+  function nudge(e){ e.classList.remove('shake'); void e.offsetWidth; e.classList.add('shake'); setTimeout(() => e.classList.remove('shake'), 400); }
+
+  // ---------- speech ----------
+  const synth = window.speechSynthesis;
+  let voice = null;
+  function pickVoice(){
+    try {
+      const vs = synth ? synth.getVoices() : [];
+      voice = vs.find(v => v.lang === 'en-GB') || vs.find(v => /^en[-_]GB/i.test(v.lang)) || vs.find(v => /^en[-_]/i.test(v.lang)) || null;
+    } catch (e) { voice = null; }
+  }
+  if (synth){ pickVoice(); try { synth.addEventListener('voiceschanged', pickVoice); } catch (e) {} }
+  function speak(text){
+    try {
+      if (!synth) return;
+      synth.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = 'en-GB'; if (voice) u.voice = voice; u.rate = 0.9;
+      synth.speak(u);
+    } catch (e) {}
+  }
+  const SPEAKER = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>';
+  function sayButton(text, id){
+    const b = el('button', {type: 'button', class: 'say', id: id, 'aria-label': 'Listen: ' + text});
+    b.innerHTML = SPEAKER;
+    b.addEventListener('click', () => speak(text));
+    return b;
+  }
+  $$('[data-say]').forEach((node, i) => {
+    const text = node.textContent.replace(/\s*\/\s*/g, ' ').replace(/\s+/g, ' ').trim();
+    node.prepend(sayButton(text, 'say-' + (i + 1)));
+  });
+
+  // ---------- forgiving answer check ----------
+  function norm(s){
+    s = String(s).toLowerCase()
+      .replace(/[‘’ʼ`´]/g, "'")
+      .replace(/[–—-]/g, ' ')
+      .replace(/[.,!?;:"“”()]/g, ' ')
+      .replace(/\s+/g, ' ').trim();
+    s = s.replace(/\bcan't\b/g, 'can not').replace(/\bcannot\b/g, 'can not')
+         .replace(/\bwon't\b/g, 'will not')
+         .replace(/n't\b/g, ' not')
+         .replace(/'m\b/g, ' am').replace(/'re\b/g, ' are').replace(/'ve\b/g, ' have').replace(/'ll\b/g, ' will')
+         .replace(/\b(he|she|it|that|there)'s\b/g, '$1 is');
+    return s.replace(/\s+/g, ' ').trim();
+  }
+  function matches(value, answers){ const v = norm(value); return !!v && answers.some(a => norm(a) === v); }
+
+  // ---------- scores ----------
+  const SCORE = {};
+  const SECTIONS = [];
+  $$('.sec').forEach((sec, i) => {
+    const sc = $('.score', sec);
+    SECTIONS.push({id: sec.id, no: i + 1, title: sec.dataset.title, parts: sc ? sc.dataset.score.split(' ') : []});
+  });
+  function partsTotal(parts){
+    let got = 0, total = 0;
+    parts.forEach(p => { if (SCORE[p]){ got += SCORE[p].got; total += SCORE[p].total; } });
+    return {got, total};
+  }
+  function setScore(key, got, total){ SCORE[key] = {got, total}; renderScores(); }
+  let tocBuilt = false;
+  function renderScores(){
+    $$('.score[data-score]').forEach(s => {
+      const t = partsTotal(s.dataset.score.split(' '));
+      s.textContent = t.got + ' / ' + t.total + ' correct';
+      s.classList.toggle('full', t.total > 0 && t.got === t.total);
+    });
+    const toc = $('#toc');
+    if (!tocBuilt){
+      SECTIONS.filter(s => s.id !== 'summary').forEach(s => {
+        const li = el('li', null, el('a', {href: '#' + s.id, text: s.title}));
+        if (s.parts.length) li.append(el('span', {class: 'sc', 'data-toc': s.id}));
+        toc.append(li);
+      });
+      tocBuilt = true;
+    }
+    $$('[data-toc]').forEach(x => { const s = SECTIONS.find(q => q.id === x.dataset.toc); const t = partsTotal(s.parts); x.textContent = t.got + ' / ' + t.total; });
+    if (!$('#sum-table')) return;
+    const body = $('#sum-table tbody'), foot = $('#sum-table tfoot');
+    body.replaceChildren(); foot.replaceChildren();
+    let G = 0, T = 0;
+    SECTIONS.filter(s => s.parts.length).forEach(s => {
+      const t = partsTotal(s.parts); G += t.got; T += t.total;
+      body.append(el('tr', null, el('td', {text: String(s.no)}), el('td', null, el('a', {href: '#' + s.id, text: s.title})), el('td', {text: t.got + ' / ' + t.total + ' correct'})));
+    });
+    foot.append(el('tr', null, el('th'), el('th', {text: 'Total'}), el('th', {text: G + ' / ' + T + ' correct'})));
+  }
+  const RESETS = [];
+
+  // sentence with one ___ ; returns {frag, blank}
+  function withBlank(str, make){
+    const f = document.createDocumentFragment();
+    let blank = null;
+    str.split('___').forEach((part, i) => {
+      if (i > 0){ blank = make(); f.append(blank); }
+      if (part) f.append(document.createTextNode(part));
+    });
+    return {frag: f, blank};
+  }
+
+  // ---------- multiple choice: {q, o:[...], a:index, why} ----------
+  function buildMC(listId, items, key){
+    const list = $('#' + listId);
+    let state = [];
+    function score(){ setScore(key, state.filter(s => s.done && !s.missed).length, items.length); }
+    function render(){
+      list.replaceChildren();
+      state = items.map((it, i) => {
+        const st = {done: false, missed: false};
+        const r = withBlank(it.q, () => el('span', {class: 'blank', 'aria-label': 'gap'}, ' '));
+        const li = el('li', {class: 'item'});
+        const q = el('p', {class: it.say ? 'q line' : 'q'});
+        if (it.say){ const sp = el('span'); sp.append(r.frag); q.append(sayButton(it.say, listId + '-say-' + i), sp); } else q.append(r.frag);
+        const opts = el('div', {class: 'opts', role: 'group', 'aria-label': 'Options for item ' + (i + 1)});
+        const why = el('p', {class: 'why', 'aria-live': 'polite'});
+        it.o.forEach((o, j) => {
+          const b = el('button', {type: 'button', class: 'opt', id: listId + '-' + i + '-' + j, text: o});
+          b.addEventListener('click', () => {
+            if (st.done || b.classList.contains('no')) return;
+            if (j === it.a){
+              st.done = true;
+              b.classList.add('yes');
+              $$('.opt', opts).forEach(x => x.setAttribute('aria-disabled', 'true'));
+              if (r.blank){ r.blank.textContent = o; r.blank.classList.add('filled'); }
+              why.replaceChildren(el('span', {class: 'ok', text: st.missed ? 'Got it. ' : 'Correct. '}), it.why || '');
+            } else {
+              st.missed = true;
+              b.classList.add('no'); b.setAttribute('aria-label', o + ' (wrong)');
+              nudge(b);
+              why.textContent = 'Not this one. Try again.';
+            }
+            score();
+          });
+          opts.append(b);
+        });
+        li.append(q, opts, why);
+        if (TEACHER) li.append(el('p', {class: 'key', text: 'Answer: ' + it.o[it.a]}));
+        list.append(li);
+        return st;
+      });
+      score();
+    }
+    render();
+    RESETS.push(render);
+    return render;
+  }
+
+  // ---------- memory test: 30 seconds to look, then the tiles are covered ----------
+  (function(){
+    const THINGS = [['🐈', 'a cat'], ['🔑', 'a key'], ['🩺', 'a stethoscope'], ['🎬', 'a clapperboard'], ['🧸', 'a teddy bear'], ['🎂', 'a birthday cake'],
+      ['☂️', 'an umbrella'], ['✈️', 'a plane'], ['⌚', 'a watch'], ['💊', 'a pill'], ['🧦', 'a pair of socks'], ['🥕', 'a carrot']];
+    const grid = $('#mem-grid'), go = $('#mem-go'), show = $('#mem-show'), clock = $('#mem-clock');
+    THINGS.forEach(t => grid.append(el('div', {class: 'mtile'}, el('span', {class: 'em', 'aria-hidden': 'true', text: t[0]}), el('span', {class: 'mw', text: t[1]}))));
+    let left = 0, tick = null;
+    function cover(on){ grid.classList.toggle('covered', on); }
+    function stop(){ clearInterval(tick); tick = null; go.textContent = 'Start: 30 seconds'; }
+    go.addEventListener('click', () => {
+      if (tick){ stop(); cover(true); clock.textContent = 'Stopped. What do you remember?'; return; }
+      left = 30; cover(false); go.textContent = 'Stop';
+      clock.textContent = left + ' seconds';
+      tick = setInterval(() => {
+        left -= 1;
+        if (left > 0){ clock.textContent = left + ' seconds'; return; }
+        stop(); cover(true); clock.textContent = 'Time is up. What do you remember?';
+      }, 1000);
+    });
+    show.addEventListener('click', () => { stop(); cover(false); clock.textContent = 'How many did you remember?'; });
+  })();
+
+  // ================= content =================
+  $('#warm-reset').addEventListener('click', buildMC('warm-list', [
+    {q: 'It was built more than 2,000 years ago to keep enemies out. If all its parts are counted, it is more than 20,000 kilometres long.', o: ['Hadrian’s Wall', 'the Great Wall of China', 'the Kremlin'], a: 1, why: 'was built: past simple passive. Are counted: present simple passive.'},
+    {q: 'It was built by an emperor in memory of his wife, who died giving birth to their fourteenth child.', o: ['the Alhambra', 'the Blue Mosque', 'the Taj Mahal'], a: 2, why: 'was built by: past simple passive. It is in Agra, in India.'},
+    {q: 'This city is built on more than a hundred small islands. There are no cars in the old centre, so people are taken everywhere by boat.', o: ['Venice', 'Amsterdam', 'St Petersburg'], a: 0, why: 'is built, are taken: present simple passive.'},
+    {q: 'It was given to the United States by France in 1886, and it is made of copper.', o: ['the Eiffel Tower', 'the Statue of Liberty', 'Big Ben'], a: 1, why: 'was given: past simple passive. It is green because the copper has changed colour.'},
+    {q: 'This city was cut into pink rock in the desert about 2,000 years ago. Part of an Indiana Jones film was shot here.', o: ['Petra', 'Machu Picchu', 'Pompeii'], a: 0, why: 'was cut, was shot: past simple passive. It is in Jordan.'},
+    {q: 'It was designed by Antoni Gaudí, and work on it was started in 1882. It is visited by millions of people every year.', o: ['Notre-Dame', 'St Paul’s Cathedral', 'the Sagrada Família'], a: 2, why: 'was designed, was started: past simple passive. It is in Barcelona.'}
+  ], 'warm'));
+
+  $('#mwords-reset').addEventListener('click', buildMC('mwords-list', [
+    {q: 'Can you ___ me to buy milk on the way home?', o: ['remember', 'remind', 'memorise'], a: 1, why: 'remind somebody to do something: help them not to forget.'},
+    {q: 'Does this song ___ you of anything?', o: ['remind', 'remember', 'recall'], a: 0, why: 'remind somebody of something: make them think of it.'},
+    {q: 'Doctors have to ___ hundreds of Latin words.', o: ['remind', 'forget', 'memorise'], a: 2, why: 'memorise: learn so well that you can remember it exactly.'},
+    {q: 'His name is on the tip of my ___. It begins with S…', o: ['mind', 'tongue', 'head'], a: 1, why: 'on the tip of my tongue: I almost remember it.'},
+    {q: 'I stood up to give my talk, and my mind went ___.', o: ['blank', 'empty', 'white'], a: 0, why: 'my mind went blank: suddenly I couldn’t remember anything.'},
+    {q: 'Her name ___ a bell, but I can’t remember her face.', o: ['makes', 'rings', 'sounds'], a: 1, why: 'it rings a bell: it seems familiar.'},
+    {q: 'Actors have to learn their lines by ___.', o: ['head', 'memory', 'heart'], a: 2, why: 'learn by heart: memorise every word.'},
+    {q: 'I have a memory like a ___. I forget everything!', o: ['sieve', 'stone', 'sponge'], a: 0, why: 'A sieve has holes, so everything falls through.'},
+    {q: 'Look at this photo. Maybe it will ___ your memory.', o: ['push', 'jog', 'run'], a: 1, why: 'jog somebody’s memory: help them remember.'},
+    {q: 'I have a very ___ memory of my first day at school. I can still see the classroom.', o: ['vivid', 'loud', 'thick'], a: 0, why: 'a vivid memory: very clear, full of detail.'}
+  ], 'mwords'));
+
+  $('#listen-reset').addEventListener('click', buildMC('listen-list', [
+    {q: 'Jill Price can remember…', o: ['every phone number she has ever had', 'almost every day of her life', 'every book she has read'], a: 1, why: 'She remembers what she did and who she was with on most days.'},
+    {q: 'The presenter first asks her about…', o: ['the day he was born', 'her first car', 'her wedding'], a: 0, why: 'He gives her his date of birth, 24 January 1986.'},
+    {q: 'On that day in 1986, Jill…', o: ['was at university', 'was on holiday in Palm Springs', 'was working in an ice cream shop'], a: 2, why: 'She hated the job, and she went out with friends that night.'},
+    {q: 'Her first memory is from when she was…', o: ['eighteen months old', 'five', 'eight'], a: 0, why: 'She remembers looking down at the traffic in Manhattan.'},
+    {q: 'Her memory changed on the day her family moved to…', o: ['New Jersey', 'Los Angeles', 'New York'], a: 1, why: 'She was eight. She says her brain “snapped”.'},
+    {q: 'How does Jill feel about her memory?', o: ['She thinks it is a gift.', 'She never thinks about it.', 'She says it is a nightmare.'], a: 2, why: 'Her whole life goes through her head every day, and it drives her crazy.'}
+  ], 'listen'));
+
+  $('#report-reset').addEventListener('click', buildMC('report-list', [
+    {q: '“I can remember every day of my life.” → Jill said she ___ remember every day of her life.', o: ['could', 'was able', 'had'], a: 0, why: 'can → could.'},
+    {q: '“Have you seen my car keys?” → He asked me ___ his car keys.', o: ['had I seen', 'if I had seen', 'did I see'], a: 1, why: 'A yes / no question: if + normal word order, and the present perfect goes back to the past perfect.'},
+    {q: '“I’ll bring a cake.” → My sister said she ___ a cake, but she forgot.', o: ['would bring', 'will bring', 'brings'], a: 0, why: 'will → would.'},
+    {q: 'She ___ me that she was feeling much better.', o: ['said', 'told', 'asked'], a: 1, why: 'tell somebody; say something. Not “said me”.'},
+    {q: '“How long has she had the cough?” → The doctor asked ___ the cough.', o: ['how long had she had', 'how long has she had', 'how long she had had'], a: 2, why: 'Normal word order in a reported question: she had had.'},
+    {q: '“Don’t eat anything before the scan.” → The nurse told him ___ anything before the scan.', o: ['don’t eat', 'not to eat', 'to not eating'], a: 1, why: 'tell somebody not to do something.'},
+    {q: '“Can you open your mouth, please?” → The doctor asked the boy ___ his mouth.', o: ['to open', 'that he opened', 'opening'], a: 0, why: 'ask somebody to do something.'}
+  ], 'report'));
+
+  const STRESS = [
+    ['memory', 'memorable', 'MEM·o·ry', 'MEM·o·ra·ble', 0],
+    ['person', 'personality', 'PER·son', 'per·son·AL·i·ty', 1],
+    ['emotion', 'emotional', 'e·MO·tion', 'e·MO·tion·al', 0],
+    ['able', 'ability', 'A·ble', 'a·BIL·i·ty', 1],
+    ['confidence', 'confident', 'CON·fi·dence', 'CON·fi·dent', 0],
+    ['photograph', 'photographer', 'PHO·to·graph', 'pho·TOG·ra·pher', 1],
+    ['accurate', 'accuracy', 'AC·cu·rate', 'AC·cu·ra·cy', 0],
+    ['allergy', 'allergic', 'AL·ler·gy', 'al·LER·gic', 1],
+    ['medicine', 'medical', 'MED·i·cine', 'MED·i·cal', 0],
+    ['paediatrics', 'paediatrician', 'pae·di·AT·rics', 'pae·di·a·TRI·cian', 1]
+  ];
+  $('#stress-reset').addEventListener('click', buildMC('stress-list', STRESS.map(p => ({
+    q: p[0] + '  →  ' + p[1], say: p[0] + '. ' + p[1] + '.', o: ['It stays', 'It moves'], a: p[4],
+    why: p[2] + '  →  ' + p[3] + (p[4] ? ': the stress moves.' : ': the stress stays in the same place.')
+  })), 'stress'));
+
+  // ‿ marks where two words join; the speech voice gets the plain words
+  const ASK = [
+    ['When did‿it start?', 1],
+    ['Has he had‿a temperature?', 0],
+    ['How long has he had‿it?', 1],
+    ['Is he eating‿and drinking normally?', 0],
+    ['Does‿it hurt when‿I press here?', 0],
+    ['What have you given him for‿it?', 1],
+    ['Where‿exactly does‿it hurt?', 1],
+    ['Has‿anyone‿else at home been ill?', 0]
+  ];
+  const askRender = buildMC('ask-list', ASK.map(x => ({
+    q: x[0], say: x[0].replace(/‿/g, ' '), o: ['↗ up', '↘ down'], a: x[1],
+    why: x[1] ? 'It starts with a question word, so the voice goes down.' : 'You can answer yes or no, so the voice goes up.'
+  })), 'ask');
+  const paintLinks = () => $$('#ask-list .q > span').forEach(s => { s.innerHTML = s.textContent.replace(/‿/g, '<span class="lk">‿</span>'); });
+  paintLinks();
+  $('#ask-reset').addEventListener('click', () => { askRender(); paintLinks(); });
+
+  $('#tf-reset').addEventListener('click', buildMC('tf-list', [
+    {q: 'The researchers in 1996 watched the series just for fun.', o: ['True', 'False'], a: 1, why: 'They counted every time a patient’s heart stopped and someone started CPR.'},
+    {q: 'On TV, most of the patients who had CPR survived.', o: ['True', 'False'], a: 0, why: 'About three out of four survived.'},
+    {q: 'In real life, more patients survive CPR than on TV.', o: ['True', 'False'], a: 1, why: 'In real life far fewer survive.'},
+    {q: 'In a real hospital, a shock helps when the heart line is completely flat.', o: ['True', 'False'], a: 1, why: 'A shock doesn’t help a flat line.'},
+    {q: 'The researchers were worried about what families expect.', o: ['True', 'False'], a: 0, why: 'They said the series were giving people false hopes.'},
+    {q: 'Some programmes ask real doctors to check their scripts.', o: ['True', 'False'], a: 0, why: 'It is in the last paragraph.'}
+  ], 'tf'));
+
+  // ---------- homework draft (this browser only) ----------
+  const draft = $('#draft'), count = $('#draft-count');
+  function countWords(){ const n = (draft.value.trim().match(/\S+/g) || []).length; count.textContent = n + (n === 1 ? ' word' : ' words'); }
+  try { draft.value = localStorage.getItem('ekaterina-9a-draft') || ''; } catch (e) {}
+  countWords();
+  draft.addEventListener('input', () => { countWords(); try { localStorage.setItem('ekaterina-9a-draft', draft.value); } catch (e) {} });
+
+  renderScores();
+})();
+</script>
+
+</html>
