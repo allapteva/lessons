@@ -1,0 +1,1394 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta charset="utf-8">
+<title>Treat Yourself</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Figtree:wght@400;500;600;700&family=Noto+Sans:wght@400;500&display=swap">
+<style>
+/* Layout: a calm workbook in the Kanagawa palette. One reading column, a hero "specimen"
+   (do it yourself / have it done), numbered sections from a short recap to the new unit:
+   grammar, picture vocabulary and a spa menu, a reading, a listening, speaking, homework, self-assessment. */
+/* Kanagawa palette: Lotus (light) and Wave (dark). Anastasia's look from 25 October 2026. */
+:root{
+  --base:#f2ecbc; --surface:#f8f4d6; --overlay:#e7dba0;
+  --muted:#a09cac; --subtle:#716e61; --text:#43436c;
+  --love:#b35b79; --gold:#cc6d00; --rose:#c84053; --pine:#4d699b; --foam:#597b75; --iris:#624c83;
+  --hl-low:#ebe3b4; --hl-med:#dcd5ac; --hl-high:#c8c093;
+
+  --soft:#5f5d73;
+  --accent:#4d699b; --on-accent:#f8f4d6;
+  --good:#4f6b35; --bad:#c84053;
+  --bad-ink:#a8364a;
+  --good-bg:color-mix(in srgb, var(--good) 12%, var(--surface));
+  --bad-bg:color-mix(in srgb, var(--bad) 11%, var(--surface));
+  --no-ink:var(--soft);
+  --mark:color-mix(in srgb, #de9800 26%, var(--surface));
+  --shadow:0 1px 0 var(--hl-med), 0 14px 30px -24px color-mix(in srgb, var(--text) 45%, transparent);
+
+  --cat-to:var(--pine); --cat-ing:var(--love); --cat-obj:var(--iris);
+  --cat-bare:var(--gold); --cat-same:var(--foam); --cat-diff:var(--rose);
+
+  /* pictures */
+  --pic-line:#43436c; --pic-skin:#efd2ac; --pic-hair:#7a5338; --pic-hl:#e6c384;
+  --pic-acc:#b35b79; --pic-acc2:#6693bf; --pic-mask:#b7d0ae; --pic-cuke:#6f894e; --pic-towel:#fbf8e6; --pic-floor:#a09cac;
+
+  --display:"Newsreader","Iowan Old Style","Palatino Linotype",Georgia,serif;
+  --body:"Figtree","Segoe UI",system-ui,-apple-system,sans-serif;
+  --ipa:"Noto Sans","Charis SIL","DejaVu Sans","Lucida Sans Unicode",sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --base:#1f1f28; --surface:#2a2a37; --overlay:#363646;
+    --muted:#727169; --subtle:#c8c093; --text:#dcd7ba;
+    --love:#d27e99; --gold:#e6c384; --rose:#e46876; --pine:#7e9cd8; --foam:#7aa89f; --iris:#957fb8;
+    --hl-low:#25252f; --hl-med:#363646; --hl-high:#54546d;
+    --soft:#a9a58f; --accent:#7fb4ca; --on-accent:#1f1f28;
+    --good:#98bb6c; --bad:#e46876; --bad-ink:#e46876;
+    --good-bg:color-mix(in srgb, var(--good) 14%, var(--surface));
+    --bad-bg:color-mix(in srgb, var(--bad) 14%, var(--surface));
+    --no-ink:color-mix(in srgb, var(--text) 75%, var(--subtle));
+    --mark:color-mix(in srgb, var(--gold) 20%, var(--surface));
+    --shadow:0 1px 0 var(--hl-med), 0 16px 32px -24px #000;
+    --cat-to:var(--foam);
+    --pic-line:#dcd7ba; --pic-skin:#d9b892; --pic-hair:#8f6a4c; --pic-hl:#e6c384;
+    --pic-acc:#d27e99; --pic-acc2:#7e9cd8; --pic-mask:#8fae84; --pic-cuke:#5d7a45; --pic-towel:#e8e3c8; --pic-floor:#727169;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --base:#1f1f28; --surface:#2a2a37; --overlay:#363646;
+  --muted:#727169; --subtle:#c8c093; --text:#dcd7ba;
+  --love:#d27e99; --gold:#e6c384; --rose:#e46876; --pine:#7e9cd8; --foam:#7aa89f; --iris:#957fb8;
+  --hl-low:#25252f; --hl-med:#363646; --hl-high:#54546d;
+  --soft:#a9a58f; --accent:#7fb4ca; --on-accent:#1f1f28;
+  --good:#98bb6c; --bad:#e46876; --bad-ink:#e46876;
+  --good-bg:color-mix(in srgb, var(--good) 14%, var(--surface));
+  --bad-bg:color-mix(in srgb, var(--bad) 14%, var(--surface));
+  --no-ink:color-mix(in srgb, var(--text) 75%, var(--subtle));
+  --mark:color-mix(in srgb, var(--gold) 20%, var(--surface));
+  --shadow:0 1px 0 var(--hl-med), 0 16px 32px -24px #000;
+  --cat-to:var(--foam);
+  --pic-line:#dcd7ba; --pic-skin:#d9b892; --pic-hair:#8f6a4c; --pic-hl:#e6c384;
+  --pic-acc:#d27e99; --pic-acc2:#7e9cd8; --pic-mask:#8fae84; --pic-cuke:#5d7a45; --pic-towel:#e8e3c8; --pic-floor:#727169;
+  color-scheme:dark;
+}
+/* in dark, "both / same meaning" moves to pine so it stays distinct from "to" (foam) */
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --cat-same:var(--pine); } }
+:root[data-theme="dark"]{ --cat-same:var(--pine); }
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--base);color:var(--text);font:400 17px/1.6 var(--body);-webkit-font-smoothing:antialiased}
+.page{max-width:880px;margin-inline:auto;padding-inline:16px;padding-block:44px 120px;display:flex;flex-direction:column;gap:64px}
+@media (min-width:700px){ .page{padding-inline:28px} }
+h1,h2,h3{font-family:var(--display);font-weight:500;margin:0;text-wrap:balance;letter-spacing:-.01em}
+p{margin:0}
+ol,ul{margin:0;padding:0}
+a{color:var(--accent);text-underline-offset:3px}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer;-webkit-tap-highlight-color:transparent}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ---------- masthead ---------- */
+.mast{display:flex;flex-direction:column;gap:22px}
+.eyebrow{font:600 12.5px/1.3 var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--soft)}
+.mast h1{font:400 clamp(54px,12vw,112px)/.92 var(--display);letter-spacing:-.025em}
+.mast h1 em{font-style:italic;color:var(--love)}
+.dek{font:400 clamp(19px,2.4vw,22px)/1.45 var(--display);max-width:38em;color:var(--text)}
+.meta{display:flex;flex-wrap:wrap;gap:6px 22px;margin:0;font-size:14.5px;color:var(--soft)}
+.meta div{display:flex;gap:6px}
+.meta dt{font-weight:600;color:var(--text)}
+.meta dd{margin:0}
+
+.specimen{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:1px;background:var(--hl-med);border:1px solid var(--hl-med);border-radius:14px;overflow:hidden}
+.spec{background:var(--surface);padding:18px 20px 20px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.spec .lab{font:600 12px/1 var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--soft);display:flex;align-items:center;gap:8px}
+.spec p{font:400 clamp(24px,3.2vw,30px)/1.2 var(--display)}
+.spec b{font-weight:500;font-style:italic;background:linear-gradient(transparent 62%, color-mix(in srgb, var(--c) 28%, transparent) 62%)}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--c);flex:none;display:inline-block}
+
+/* contents */
+.toc{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:2px 28px;counter-reset:toc;list-style:none;font-size:15.5px}
+.toc li{counter-increment:toc;display:flex;align-items:baseline;gap:10px;padding-block:7px;border-bottom:1px solid var(--hl-med);min-width:0}
+.toc li::before{content:counter(toc);font:italic 400 16px/1 var(--display);color:var(--bad-ink);min-width:1.4em;font-variant-numeric:tabular-nums}
+.toc a{color:var(--text);text-decoration:none;flex:1;min-width:0}
+.toc a:hover{color:var(--accent);text-decoration:underline}
+.toc .sc{font-size:13.5px;color:var(--soft);font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* teacher plan */
+details.plan{border:1px solid var(--hl-med);border-radius:12px;background:var(--surface);padding:0 20px}
+details.plan summary{cursor:pointer;padding-block:14px;font-weight:600;display:flex;justify-content:space-between;gap:12px;list-style:none}
+details.plan summary::-webkit-details-marker{display:none}
+details.plan summary::after{content:"Show";font-weight:500;font-size:14px;color:var(--accent)}
+details.plan[open] summary::after{content:"Hide"}
+.plan-body{padding-bottom:18px;display:flex;flex-direction:column;gap:12px;font-size:15.5px}
+.plan-body .aim{color:var(--soft)}
+.plan-table{overflow-x:auto}
+.plan-table table{border-collapse:collapse;width:100%;min-width:480px}
+.plan-table th,.plan-table td{text-align:left;vertical-align:top;padding:8px 10px 8px 0;border-top:1px solid var(--hl-med)}
+.plan-table th{font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);font-weight:600;border-top:0}
+.plan-table td:first-child{font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--soft);width:4.5em}
+.plan-table td:nth-child(2){font-weight:600;white-space:nowrap}
+
+/* ---------- sections ---------- */
+.sec{display:flex;flex-direction:column;gap:22px;scroll-margin-top:16px}
+.sec-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 18px;padding-top:22px;border-top:1px solid var(--hl-high)}
+.sec-no{font:italic 400 44px/.9 var(--display);color:var(--love);min-width:1.1em;font-variant-numeric:tabular-nums}
+.sec-title{flex:1 1 300px;min-width:0;display:flex;flex-direction:column;gap:6px}
+.sec-title h2{font-size:clamp(28px,4.4vw,36px);line-height:1.1}
+.lede{color:var(--soft);max-width:60ch}
+.score{font:600 14px/1 var(--body);font-variant-numeric:tabular-nums;color:var(--soft);border:1px solid var(--hl-high);border-radius:999px;padding:7px 12px;white-space:nowrap}
+.score.full{color:var(--good);border-color:var(--good)}
+.sub{font:500 21px/1.25 var(--display);margin-top:6px}
+.note{font-size:15px;color:var(--soft);max-width:62ch}
+
+.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.btn{border:1px solid var(--hl-high);background:var(--surface);border-radius:999px;padding:8px 16px;font-weight:600;font-size:15px;line-height:1.2;transition:background .15s,border-color .15s}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.btn.primary:hover{background:color-mix(in srgb, var(--accent) 86%, var(--text))}
+.btn.quiet{border-color:transparent;background:transparent;color:var(--soft)}
+.btn.quiet:hover{color:var(--text);border-color:var(--hl-high)}
+.status{font-size:15px;color:var(--soft);min-height:1.6em}
+
+/* ---------- reference ---------- */
+.ref-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:14px}
+.card{background:var(--surface);border:1px solid var(--hl-med);border-radius:14px;padding:18px 20px 20px;display:flex;flex-direction:column;gap:12px;min-width:0;box-shadow:var(--shadow)}
+.card.wide{grid-column:1/-1}
+.formula{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;font:600 13.5px/1.2 var(--body);letter-spacing:.02em;padding:6px 11px;border-radius:999px;background:color-mix(in srgb, var(--c) 15%, var(--surface));color:var(--text)}
+.card h3{font-size:23px;line-height:1.15}
+.verbs{font:italic 400 18px/1.45 var(--display);color:var(--text)}
+.ex{list-style:none;display:flex;flex-direction:column;gap:6px}
+.ex li{display:flex;gap:8px;align-items:flex-start;min-width:0}
+.ex li > span{flex:1;min-width:0}
+.ex b, .contrast b{font-weight:600;color:var(--text);background:var(--mark);border-radius:3px;padding:0 3px}
+.card .tip{font-size:14.5px;color:var(--soft);border-top:1px dashed var(--hl-high);padding-top:10px}
+.card .tip strong{color:var(--text);font-weight:600}
+.no-way{text-decoration:line-through;text-decoration-color:var(--bad);color:var(--soft)}
+
+.say{flex:none;width:30px;height:30px;border-radius:50%;border:1px solid var(--hl-high);background:transparent;display:inline-grid;place-items:center;color:var(--soft);padding:0;margin-top:-1px}
+.say:hover{color:var(--accent);border-color:var(--accent)}
+.say svg{width:15px;height:15px}
+
+.contrast{display:flex;flex-direction:column}
+.crow{display:grid;grid-template-columns:7.5rem minmax(0,1fr) minmax(0,1fr);gap:8px 22px;padding-block:12px;border-top:1px solid var(--hl-med)}
+.crow.head{border-top:0;padding-block:0 6px;font:600 12.5px/1.3 var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--soft)}
+.crow .verb{font:italic 500 21px/1.2 var(--display)}
+.crow .cell{display:flex;flex-direction:column;gap:3px;min-width:0}
+.crow .cell .mean{font-size:14.5px;color:var(--soft)}
+.crow .cell .tag{display:none;font:600 11.5px/1.3 var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--soft)}
+@media (max-width:640px){
+  .crow{grid-template-columns:1fr}
+  .crow.head{display:none}
+  .crow .cell .tag{display:block}
+}
+
+/* ---------- item lists ---------- */
+.items{list-style:none;counter-reset:it;display:flex;flex-direction:column}
+.item{counter-increment:it;display:grid;grid-template-columns:2rem minmax(0,1fr);gap:4px 10px;padding-block:14px;border-bottom:1px solid var(--hl-med)}
+.item::before{content:counter(it);font:500 14px/1.9 var(--body);color:var(--soft);font-variant-numeric:tabular-nums;grid-row:1/span 4}
+.item > *{grid-column:2;min-width:0}
+.q{font-size:17.5px;line-height:1.75}
+.q strong{font-weight:600;background:var(--mark);border-radius:3px;padding:0 3px}
+.blank{display:inline-block;min-width:5.5ch;border-bottom:2px solid var(--hl-high);text-align:center;line-height:1.3;padding-inline:2px}
+.blank.filled{border-color:var(--good);color:var(--good);font-weight:600}
+.opts{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.opts.stack{flex-direction:column;align-items:stretch}
+.opt{border:1px solid var(--hl-high);background:var(--surface);border-radius:8px;padding:6px 14px;font-size:16px;text-align:left;transition:background .15s,border-color .15s}
+.opt:hover:not([aria-disabled="true"]){border-color:var(--accent)}
+.opt.ipa{font-family:var(--ipa);font-size:17px}
+.opt.no{border-style:dashed;border-color:var(--bad);background:var(--bad-bg);color:var(--no-ink);text-decoration:line-through;text-decoration-color:var(--bad)}
+.opt.yes{border-color:var(--good);background:var(--good-bg);color:var(--text);font-weight:600}
+.opt[aria-disabled="true"]{cursor:default}
+.why{font-size:14.5px;color:var(--soft)}
+.why .ok{color:var(--good);font-weight:600}
+
+/* typed answers */
+.gap{border:0;border-bottom:2px solid var(--hl-high);background:var(--hl-low);border-radius:4px 4px 0 0;padding:1px 6px;font-size:17px;line-height:1.4;max-width:100%;transition:background .15s,border-color .15s}
+.gap:focus-visible{outline-offset:2px}
+.gap.right,.line-in.right{border-color:var(--good);background:var(--good-bg)}
+.gap.wrong,.line-in.wrong{border-color:var(--bad);background:var(--bad-bg)}
+.gap.shown,.line-in.shown{border-color:var(--hl-high);background:var(--overlay);color:var(--soft);font-style:italic}
+.hint{color:var(--soft);font-size:15px;white-space:nowrap}
+.fb{font-size:14.5px;color:var(--soft);display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline;min-height:0}
+.fb:empty{display:none}
+.fb .ok{color:var(--good);font-weight:600}
+.fb .bad{color:var(--bad-ink);font-weight:600}
+.link{background:none;border:0;padding:0;color:var(--accent);text-decoration:underline;text-underline-offset:3px;font-size:14.5px}
+.line-in{width:100%;border:1px solid var(--hl-high);border-bottom-width:2px;background:var(--surface);border-radius:8px;padding:9px 12px;font-size:17px;line-height:1.4}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.row .line-in{flex:1 1 260px;min-width:0}
+.orig{font:italic 400 19px/1.45 var(--display)}
+.key{font:700 12.5px/1 var(--body);letter-spacing:.12em;background:var(--overlay);border:1px solid var(--hl-high);border-radius:4px;padding:4px 7px;margin-left:6px;vertical-align:2px}
+.frame{font-size:17.5px;line-height:1.9}
+
+/* sort */
+.pool{display:flex;flex-wrap:wrap;gap:8px;min-height:44px;padding:14px;background:var(--hl-low);border:1px solid var(--hl-med);border-radius:12px}
+.pool:empty::after{content:"All sorted.";color:var(--soft);font-size:15px}
+.chip{border:1px solid var(--hl-high);background:var(--surface);border-radius:999px;padding:6px 14px;font-size:16px;font-weight:500;transition:background .15s,border-color .15s,color .15s}
+.chip:hover{border-color:var(--accent)}
+.chip.sel{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.bins{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:12px}
+.bin{display:flex;flex-direction:column;align-items:stretch;gap:10px;text-align:left;background:var(--surface);border:1px dashed var(--hl-high);border-radius:12px;padding:14px;min-height:150px;min-width:0;transition:border-color .15s,background .15s}
+.bin:hover{border-color:var(--c)}
+.bin.armed{border-style:solid;border-color:var(--c);background:color-mix(in srgb, var(--c) 7%, var(--surface))}
+.bin-name{display:flex;align-items:center;gap:8px;font-weight:600;font-size:15.5px;line-height:1.25}
+.bin-items{display:flex;flex-wrap:wrap;gap:6px}
+.placed{border-radius:999px;padding:3px 11px;font-size:15px;background:color-mix(in srgb, var(--c) 16%, var(--surface));color:var(--text)}
+.placed.miss::after{content:" *";color:var(--soft)}
+
+/* message */
+.letter{background:var(--surface);border:1px solid var(--hl-med);border-radius:14px;box-shadow:var(--shadow);overflow:hidden}
+.letter-head{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 14px;padding:16px 22px;border-bottom:1px solid var(--hl-med);background:var(--hl-low);font-size:14.5px}
+.letter-head dt{color:var(--soft);font-weight:600;text-transform:uppercase;letter-spacing:.08em;font-size:12px;padding-top:3px}
+.letter-head dd{margin:0;min-width:0}
+.letter-body{padding:20px 22px 24px;display:flex;flex-direction:column;gap:14px;font:400 19px/1.75 var(--display);max-width:68ch}
+.choice{display:inline-flex;flex-wrap:wrap;gap:4px;vertical-align:baseline;margin-inline:1px}
+.ch{border:1px solid var(--hl-high);background:var(--hl-low);border-radius:6px;padding:0 8px;font:500 15px/1.6 var(--body);transition:background .15s,border-color .15s}
+.ch:hover:not(:disabled){border-color:var(--accent)}
+.ch.no{border-style:dashed;border-color:var(--bad);background:var(--bad-bg);color:var(--no-ink);text-decoration:line-through}
+.done-word{font-weight:500;font-style:italic;color:var(--good);border-bottom:2px solid var(--good)}
+.done-word.miss{border-bottom-style:dotted}
+.done-word:focus{outline:none}
+.done-word:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+/* your turn */
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:28px}
+.two > div{display:flex;flex-direction:column;gap:14px;min-width:0}
+.talk{list-style:none;counter-reset:t;display:flex;flex-direction:column;gap:10px}
+.talk li{counter-increment:t;display:grid;grid-template-columns:1.8rem minmax(0,1fr);gap:8px;font:400 19px/1.45 var(--display)}
+.talk li::before{content:counter(t);font:500 14px/1.9 var(--body);color:var(--soft);font-variant-numeric:tabular-nums}
+.starters{display:flex;flex-direction:column;gap:12px}
+.starters label{display:flex;flex-direction:column;gap:5px;font-size:15.5px;font-weight:500}
+.starters input{width:100%;border:1px solid var(--hl-high);border-radius:8px;background:var(--surface);padding:8px 12px;font-size:16.5px}
+
+/* summary */
+.sum{border:1px solid var(--hl-med);border-radius:14px;background:var(--surface);overflow:hidden}
+.sum table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.sum td,.sum th{padding:11px 18px;text-align:left;border-top:1px solid var(--hl-med)}
+.sum tr:first-child td{border-top:0}
+.sum td:last-child,.sum th:last-child{text-align:right;white-space:nowrap}
+.sum td:first-child{color:var(--soft);width:2.5em}
+.sum tfoot th{font-weight:600;border-top:1px solid var(--hl-high);background:var(--hl-low)}
+.sum .bar{display:inline-block;vertical-align:middle;width:72px;height:4px;border-radius:2px;background:var(--hl-med);margin-right:12px;overflow:hidden}
+.sum .bar i{display:block;height:100%;background:var(--good);width:0}
+@media (max-width:420px){ .sum .bar{display:none} .sum td,.sum th{padding-inline:12px} }
+
+footer.fin{color:var(--soft);font-size:14.5px;border-top:1px solid var(--hl-high);padding-top:18px}
+
+/* teacher-only parts: every one sits between a pair of T comment markers, which scripts/student-site.sh cuts out of the student copy */
+.scroll{overflow-x:auto}
+.tbadge{align-self:flex-start;font:600 12.5px/1 var(--body);letter-spacing:.1em;text-transform:uppercase;background:var(--mark);border-radius:6px;padding:7px 10px}
+.tnote{border:1px dashed var(--hl-high);background:var(--mark);border-radius:10px;padding:12px 16px;font-size:15px;line-height:1.5;display:flex;flex-direction:column;gap:6px}
+.tnote > b:first-child{font:600 12px/1.2 var(--body);letter-spacing:.1em;text-transform:uppercase}
+.tnote p{max-width:72ch}
+.ans{font-size:14.5px;background:var(--mark);border-radius:6px;padding:2px 8px;justify-self:start;align-self:flex-start}
+.ch.tkey{box-shadow:inset 0 -3px 0 var(--gold)}
+/* lesson notes (teacher's page only): a quick strip under every section and a notes block at the bottom */
+.tn{border:1px dashed var(--hl-high);background:var(--mark);border-radius:10px;padding:10px 14px 12px;display:flex;flex-direction:column;gap:8px;font-size:14.5px}
+.tn-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.tn-lab{font:600 12px/1.2 var(--body);letter-spacing:.1em;text-transform:uppercase;min-width:9.5em}
+.tn-chip{border:1px solid var(--hl-high);background:var(--surface);border-radius:999px;padding:4px 12px;font-size:14.5px;line-height:1.3}
+.tn-chip:hover{border-color:var(--accent)}
+.tn-chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-weight:600}
+.tn-text{width:100%;border:1px solid var(--hl-high);border-radius:8px;background:var(--surface);padding:6px 10px;font-size:15px}
+.tn-final{display:flex;flex-direction:column;gap:16px;border-top:1px solid var(--hl-high);padding-top:22px;scroll-margin-top:104px}
+.tn-final h2{font-size:clamp(28px,4.4vw,36px);line-height:1.1}
+.tn-field{display:flex;flex-direction:column;gap:6px}
+.tn-field label{font-weight:600}
+.tn-field textarea{width:100%;min-height:130px;border:1px solid var(--hl-high);border-radius:8px;background:var(--surface);padding:10px 12px;font-size:16.5px;line-height:1.5;resize:vertical}
+.tn-sum table{border-collapse:collapse;width:100%;min-width:480px;font-size:15px}
+.tn-sum th,.tn-sum td{text-align:left;vertical-align:top;padding:7px 10px 7px 0;border-top:1px solid var(--hl-med)}
+.tn-sum th{font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);font-weight:600;border-top:0}
+.tn-sum td:first-child{color:var(--soft);font-variant-numeric:tabular-nums;width:2em}
+.tn-status{font-size:14.5px;color:var(--soft)}
+.tn-out{width:100%;min-height:160px;border:1px solid var(--hl-high);border-radius:8px;background:var(--surface);padding:10px 12px;font:14px/1.45 ui-monospace,Menlo,monospace}
+/* lesson timer (teacher's page only) */
+.tmr{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;margin-top:-44px;margin-bottom:-40px;background:var(--surface);border:1px solid var(--hl-high);border-top:0;border-radius:0 0 12px 12px;padding:8px 12px 10px;display:flex;flex-direction:column;gap:8px;box-shadow:0 6px 18px rgb(0 0 0 / .14)}
+.tm-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;min-width:0}
+.tm-go{flex:none;border:0;border-radius:999px;background:var(--accent);color:var(--on-accent);font-weight:600;padding:6px 16px;min-width:5.8em}
+.tm-clock{flex:none;font:500 21px/1 var(--display);font-variant-numeric:tabular-nums}
+.tm-clock small{font:500 13px/1 var(--body);color:var(--soft)}
+.tm-clock.over{color:var(--bad-ink)}
+.tm-now{flex:1;min-width:0;font-size:14.5px;color:var(--soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tm-reset{flex:none;border:1px solid var(--hl-high);background:none;border-radius:999px;padding:5px 12px;font-size:14px}
+.tm-bar{display:flex;gap:3px;height:24px}
+.tm-seg{position:relative;flex-basis:0;min-width:0;border-radius:5px;overflow:hidden;background:color-mix(in srgb,var(--c) 26%,#f8f4d6);color:#2a2a37;text-decoration:none;font:600 12px/24px var(--body);text-align:center}
+.tm-seg i{position:absolute;inset:0 auto 0 0;width:0;background:color-mix(in srgb,var(--c) 58%,#fff)}
+.tm-seg b{position:relative}
+.tm-seg.now{box-shadow:inset 0 0 0 2px #2a2a37}
+[data-view="student"] .sec{scroll-margin-top:104px}
+@media (max-width:520px){ .tm-now{display:none} .tm-row{justify-content:space-between} }
+
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.shake{animation:shake .28s ease}
+@media (prefers-reduced-motion: reduce){
+  *{transition:none !important;animation:none !important;scroll-behavior:auto !important}
+}
+
+/* ---------- added for this lesson ---------- */
+[hidden]{display:none!important}
+.mini-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:12px}
+.mini-grid .card{padding:14px 16px 16px;gap:8px}
+.pair{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:1px;background:var(--hl-med);border:1px solid var(--hl-med);border-radius:12px;overflow:hidden}
+.pair > div{background:var(--surface);padding:14px 16px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.pair .lab{font:600 12px/1.2 var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--soft)}
+.pair p{font:400 21px/1.35 var(--display)}
+.pair p b{font-weight:500;background:var(--mark);border-radius:3px;padding:0 3px}
+.forms{display:flex;flex-direction:column;gap:0}
+.forms div{display:grid;grid-template-columns:9.5rem minmax(0,1fr);gap:4px 16px;padding-block:8px;border-top:1px solid var(--hl-med)}
+.forms div:first-child{border-top:0}
+.forms dt{font-size:14.5px;color:var(--soft);font-weight:600}
+.forms dd{margin:0;min-width:0}
+.forms dd b{font-weight:600;background:var(--mark);border-radius:3px;padding:0 3px}
+@media (max-width:520px){ .forms div{grid-template-columns:1fr} }
+
+/* picture cards */
+.pics{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,156px),1fr));gap:12px}
+.pic{background:var(--surface);border:1px solid var(--hl-med);border-radius:14px;padding:10px 10px 12px;display:flex;flex-direction:column;gap:8px;min-width:0;transition:border-color .15s,background .15s}
+.pic.done{border-color:var(--good);background:var(--good-bg)}
+.pic-art{position:relative;background:var(--hl-low);border-radius:10px;padding:6px}
+.pic-art svg{display:block;width:100%;height:auto;max-height:120px}
+.pic-art .n{position:absolute;top:6px;left:9px;font:italic 400 15px/1 var(--display);color:var(--soft)}
+.pic-kind{font:600 11px/1.2 var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--soft)}
+.pic .opts{margin-top:0;gap:6px}
+.pic .opt{font-size:15px;padding:5px 10px;width:100%}
+.pic .why{font-size:14px}
+.pic .ans{font-size:13.5px}
+svg .ln{stroke:var(--pic-line);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;fill:none}
+svg .fl{fill:var(--pic-line)}
+svg .sk{fill:var(--pic-skin);stroke:var(--pic-line);stroke-width:2}
+svg .hr{fill:var(--pic-hair);stroke:var(--pic-line);stroke-width:2;stroke-linejoin:round}
+svg .ac{fill:var(--pic-acc);stroke:var(--pic-line);stroke-width:2;stroke-linejoin:round}
+svg .ac2{fill:var(--pic-acc2);stroke:var(--pic-line);stroke-width:2;stroke-linejoin:round}
+svg .hl{stroke:var(--pic-hl);stroke-width:3;stroke-linecap:round;fill:none}
+svg .gap-line{stroke:var(--pic-skin);stroke-width:3.4;stroke-linecap:round;fill:none}
+svg .mask{fill:var(--pic-mask);stroke:var(--pic-line);stroke-width:2}
+svg .cuke{fill:var(--pic-cuke);stroke:var(--pic-line);stroke-width:1.6}
+svg .cuke-in{fill:var(--pic-mask)}
+svg .towel{fill:var(--pic-towel);stroke:var(--pic-line);stroke-width:2;stroke-linejoin:round}
+svg .floor{stroke:var(--pic-floor);stroke-width:2;stroke-linecap:round;stroke-dasharray:3 4}
+svg .fig{stroke:var(--pic-line);stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round;fill:none}
+
+/* spa menu */
+.menu{background:var(--surface);border:1px solid var(--hl-med);border-radius:14px;box-shadow:var(--shadow);overflow:hidden}
+.menu-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:6px 16px;padding:16px 20px;border-bottom:1px solid var(--hl-med);background:var(--hl-low)}
+.menu-head h3{font:500 24px/1.15 var(--display)}
+.menu-head p{font-size:14.5px;color:var(--soft)}
+.menu-list{list-style:none;display:flex;flex-direction:column}
+.menu-item{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:4px 14px;width:100%;text-align:left;border:0;border-top:1px solid var(--hl-med);background:transparent;padding:11px 20px;font-size:16.5px;transition:background .15s}
+.menu-list li:first-child .menu-item{border-top:0}
+.menu-item:hover{background:var(--hl-low)}
+.menu-item .what{min-width:0}
+.menu-item .what small{display:block;font-size:14px;color:var(--soft)}
+.menu-item .price{font:500 19px/1 var(--display);font-variant-numeric:tabular-nums}
+.menu-item[aria-pressed="true"]{background:var(--good-bg)}
+.menu-item[aria-pressed="true"] .what::before{content:"✓ ";color:var(--good);font-weight:700}
+.menu-foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 16px;padding:14px 20px;border-top:1px solid var(--hl-high);background:var(--hl-low)}
+.budget{font:500 20px/1.2 var(--display);font-variant-numeric:tabular-nums}
+.budget.over{color:var(--bad-ink)}
+.say-box{border-left:3px solid var(--accent);padding:4px 0 4px 14px;font:italic 400 19px/1.5 var(--display);max-width:60ch}
+
+/* self-assessment */
+.self-list{list-style:none;display:flex;flex-direction:column}
+.self-item{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 16px;padding-block:12px;border-bottom:1px solid var(--hl-med)}
+.self-item > span{flex:1 1 280px;min-width:0;font-size:17px}
+.scale{display:flex;flex-wrap:wrap;gap:6px}
+.scale button{border:1px solid var(--hl-high);background:var(--surface);border-radius:999px;padding:5px 12px;font-size:14.5px;transition:background .15s,border-color .15s}
+.scale button:hover{border-color:var(--accent)}
+.scale button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-weight:600}
+.field{display:flex;flex-direction:column;gap:6px;font-weight:500;font-size:15.5px}
+.field input{width:100%;border:1px solid var(--hl-high);border-radius:8px;background:var(--surface);padding:8px 12px;font-size:16.5px;font-weight:400}
+
+/* homework */
+.draft{width:100%;min-height:180px;border:1px solid var(--hl-high);border-radius:8px;background:var(--surface);padding:10px 12px;font-size:16.5px;line-height:1.55;resize:vertical}
+.hw-list{list-style:none;display:flex;flex-direction:column;gap:10px}
+.hw-list li{display:grid;grid-template-columns:1.8rem minmax(0,1fr);gap:8px}
+.hw-list li::before{content:"—";color:var(--soft)}
+.wc{font-size:14.5px;color:var(--soft);font-variant-numeric:tabular-nums}
+.wc.over{color:var(--bad-ink);font-weight:600}
+.send-box{border:1px solid var(--hl-high);border-radius:12px;background:var(--surface);padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.send-status{font-size:15px;color:var(--soft)}
+.send-status.ok{color:var(--good);font-weight:600}
+.send-status.bad{color:var(--bad-ink)}
+.words{display:flex;flex-wrap:wrap;gap:6px}
+.words span{border:1px solid var(--hl-high);border-radius:999px;padding:3px 11px;font-size:15px;background:var(--surface)}
+</style>
+
+<main class="page" data-view="student">
+
+
+  <header class="mast">
+    <h1>Treat <em>yourself</em></h1>
+    <p class="dek">Looking after yourself: haircuts, the gym, a day at the spa. On the way, a new structure for things other people do for you, and a quick look back at verb patterns.</p>
+    <div class="specimen" role="group" aria-label="Doing it yourself or having it done">
+      <div class="spec" style="--c:var(--pine)"><span class="lab"><span class="dot"></span>I do it myself</span><p>I <b>cut</b> my hair.</p></div>
+      <div class="spec" style="--c:var(--love)"><span class="lab"><span class="dot"></span>someone does it for me</span><p>I <b>had</b> my hair <b>cut</b>.</p></div>
+      <div class="spec" style="--c:var(--iris)"><span class="lab"><span class="dot"></span>the same, less formal</span><p>I&rsquo;m <b>getting</b> my nails <b>done</b>.</p></div>
+    </div>
+  </header>
+
+  <nav aria-label="Contents">
+    <ol class="toc" id="toc"></ol>
+  </nav>
+
+
+  <!-- 1 WARM-UP -->
+  <section class="sec" id="warm" data-title="Last week, in a few sentences">
+    <header class="sec-head">
+      <span class="sec-no">1</span>
+      <div class="sec-title"><h2>Last week, in a few sentences</h2><p class="lede">Read out the sentences you finished at home. Then answer one or two of the questions below.</p></div>
+    </header>
+    <ol class="talk">
+      <li>What&rsquo;s something you&rsquo;ve stopped doing recently? Why did you stop?</li>
+      <li>What are you looking forward to doing this week?</li>
+      <li>What would you rather do on a free Sunday: go out or stay in?</li>
+    </ol>
+  </section>
+
+  <!-- 2 RECAP -->
+  <section class="sec" id="recap" data-title="Verb patterns: a quick round">
+    <header class="sec-head">
+      <span class="sec-no">2</span>
+      <div class="sec-title"><h2>Verb patterns: a quick round</h2><p class="lede">Three more patterns to remember, then eight quick sentences. Only your first choice counts.</p></div>
+      <span class="score" data-score="recap">0 / 0</span>
+    </header>
+    <div class="mini-grid">
+      <article class="card" style="--c:var(--gold)">
+        <span class="formula"><span class="dot"></span>no <i>to</i></span>
+        <ul class="ex">
+          <li><span>My trainer made me <b>do</b> twenty press-ups.</span></li>
+          <li><span>I&rsquo;d rather <b>stay</b> in tonight.</span></li>
+          <li><span>You&rsquo;d better <b>book</b> early.</span></li>
+        </ul>
+        <p class="tip">make / let + person, would rather, had better, can, must, should</p>
+      </article>
+      <article class="card" style="--c:var(--foam)">
+        <span class="formula"><span class="dot"></span>would + to</span>
+        <ul class="ex">
+          <li><span>I love <b>dancing</b>. = I love <b>to dance</b>.</span></li>
+          <li><span>I&rsquo;d love <b>to try</b> aerial yoga.</span></li>
+        </ul>
+        <p class="tip">like / love / prefer: both forms. would like / love / prefer: only <i>to</i>.</p>
+      </article>
+      <article class="card" style="--c:var(--love)">
+        <span class="formula"><span class="dot"></span>preposition + -ing</span>
+        <ul class="ex">
+          <li><span>I&rsquo;m thinking of <b>joining</b> a gym.</span></li>
+          <li><span>She&rsquo;s good at <b>relaxing</b>.</span></li>
+        </ul>
+        <p class="tip">Also after <i>look forward to</i>: I&rsquo;m looking forward to <b>seeing</b> you.</p>
+      </article>
+    </div>
+    <ol class="items" id="recap-list"></ol>
+    <div class="tools"><button type="button" class="btn" id="recap-reset">Start again</button></div>
+  </section>
+
+  <!-- 3 TREAT -->
+  <section class="sec" id="treat" data-title="What does treat mean?">
+    <header class="sec-head">
+      <span class="sec-no">3</span>
+      <div class="sec-title"><h2>What does <i>treat</i> mean?</h2><p class="lede">The same word, four meanings. Choose the meaning in each sentence.</p></div>
+      <span class="score" data-score="treat">0 / 0</span>
+    </header>
+    <ol class="items" id="treat-list"></ol>
+    <div class="tools"><button type="button" class="btn" id="treat-reset">Start again</button></div>
+  </section>
+
+  <!-- 4 HAVE SOMETHING DONE -->
+  <section class="sec" id="hsd" data-title="Do it yourself, or have it done?">
+    <header class="sec-head">
+      <span class="sec-no">4</span>
+      <div class="sec-title"><h2>Do it yourself, or have it done?</h2><p class="lede">When someone else does something for you, usually because you pay them, use <i>have</i> + the thing + the past participle.</p></div>
+      <span class="score" data-score="hsd">0 / 0</span>
+    </header>
+    <div class="pair">
+      <div><span class="lab">I do it myself</span><p>I <b>painted</b> the bedroom.</p></div>
+      <div><span class="lab">someone does it for me</span><p>I <b>had</b> the bedroom <b>painted</b>.</p></div>
+    </div>
+    <dl class="forms card">
+      <div><dt>present</dt><dd>I <b>have</b> my hair <b>cut</b> every two months.</dd></div>
+      <div><dt>right now</dt><dd>She&rsquo;s <b>having</b> her nails <b>done</b>.</dd></div>
+      <div><dt>past</dt><dd>We <b>had</b> the windows <b>cleaned</b> last week.</dd></div>
+      <div><dt>future</dt><dd>I&rsquo;m going to <b>have</b> my bike <b>repaired</b>.</dd></div>
+      <div><dt>experience</dt><dd>Have you ever <b>had</b> your photo <b>taken</b> professionally?</dd></div>
+      <div><dt>with get</dt><dd>I need to <b>get</b> my passport <b>renewed</b>. (= have)</dd></div>
+    </dl>
+    <ol class="items" id="hsd-list"></ol>
+    <div class="tools">
+      <button type="button" class="btn primary" id="hsd-check">Check answers</button>
+      <button type="button" class="btn" id="hsd-show">Show remaining answers</button>
+      <button type="button" class="btn quiet" id="hsd-reset">Clear</button>
+    </div>
+  </section>
+
+  <!-- 5 WORDS -->
+  <section class="sec" id="vocab" data-title="Looking after yourself: the words">
+    <header class="sec-head">
+      <span class="sec-no">5</span>
+      <div class="sec-title"><h2>Looking after yourself: the words</h2><p class="lede">Hairstyles, ways to keep fit and beauty treatments. Look at each picture and choose the right words. Only your first choice counts.</p></div>
+      <span class="score" data-score="pics">0 / 0</span>
+    </header>
+    <h3 class="sub">A. What&rsquo;s in the picture?</h3>
+    <div class="pics" id="pics"></div>
+    <h3 class="sub">B. A free Saturday at the wellbeing centre</h3>
+    <p class="note">You have &pound;100 to spend on yourself. Choose from the menu, then tell your teacher about your day.</p>
+    <div class="menu">
+      <div class="menu-head"><h3>The Willow Wellbeing Centre</h3><p>Open Saturday 9.00&ndash;19.00</p></div>
+      <ul class="menu-list" id="menu-list"></ul>
+      <div class="menu-foot"><span class="budget" id="menu-total" aria-live="polite">&pound;0 of &pound;100</span><button type="button" class="btn quiet" id="menu-clear">Clear my choices</button></div>
+    </div>
+    <p class="say-box">First I&rsquo;d have my hair&hellip; Then I&rsquo;d&hellip; I wouldn&rsquo;t have&hellip; because&hellip;</p>
+    <div class="tools"><button type="button" class="btn" id="vocab-reset">Start the pictures again</button></div>
+  </section>
+
+  <!-- 6 READING -->
+  <section class="sec" id="read" data-title="One fan, one sceptic">
+    <header class="sec-head">
+      <span class="sec-no">6</span>
+      <div class="sec-title"><h2>One fan, one sceptic</h2><p class="lede">Two friends spend a day at a new wellbeing centre. Read the article, then decide if each sentence is true or false.</p></div>
+      <span class="score" data-score="read">0 / 0</span>
+    </header>
+    <article class="letter article">
+      <div class="letter-body">
+        <h3>Spa day: one fan, one sceptic</h3>
+        <p>Olga has her nails done every two weeks and treats herself to a massage whenever work gets stressful. Her friend Mark, a keen cyclist, has never been to a spa in his life. &lsquo;I&rsquo;d rather spend the money on a new bike,&rsquo; he says. So when a new wellbeing centre opened near their office, we sent them both to try it for a day.</p>
+        <p>They started with a hot-stone massage. Olga loved it: &lsquo;I felt as if I&rsquo;d slept for ten hours.&rsquo; Mark was less sure. &lsquo;It was relaxing at first, but after forty minutes I couldn&rsquo;t stop thinking about my emails.&rsquo;</p>
+        <p>Next, they had their faces cleaned and moisturised in a facial. Mark admitted that his skin had never looked better, but he didn&rsquo;t enjoy lying still with cucumber slices on his eyes. &lsquo;I kept wanting to scratch my nose,&rsquo; he said.</p>
+        <p>The surprise of the day was the yoga class. Mark expected to find it boring, but he enjoyed it more than anything else. &lsquo;My back hurts after long rides, and the stretches really helped. I&rsquo;m thinking of joining a class.&rsquo; Olga, who usually does yoga at home, found the class too slow.</p>
+        <p>Would they go back? Olga is already planning to book a whole day there for her birthday. Mark says he probably won&rsquo;t have another facial, but he&rsquo;d happily go back for the yoga, and maybe the massage, if he could leave his phone in the car.</p>
+      </div>
+    </article>
+    <ol class="items" id="read-list"></ol>
+    <div class="tools"><button type="button" class="btn" id="read-reset">Start again</button></div>
+  </section>
+
+  <!-- 7 LISTENING -->
+  <section class="sec" id="listen" data-title="Interview with a hairdresser">
+    <header class="sec-head">
+      <span class="sec-no">7</span>
+      <div class="sec-title"><h2>Interview with a hairdresser</h2><p class="lede">You are going to hear an interview with Dino, a hairdresser in London. Before you listen: what would you like to ask a hairdresser? Then listen and choose the right answer.</p></div>
+      <span class="score" data-score="listen">0 / 0</span>
+    </header>
+    <ol class="items" id="listen-list"></ol>
+    <h3 class="sub">After listening</h3>
+    <ol class="talk">
+      <li>What do you think &ldquo;a bad hair day&rdquo; means? Have you had one recently?</li>
+      <li>Do you usually go to the same hairdresser? Would they agree with Dino?</li>
+    </ol>
+    <div class="tools"><button type="button" class="btn" id="listen-reset">Start again</button></div>
+  </section>
+
+  <!-- 8 YOUR TURN -->
+  <section class="sec" id="talk" data-title="Your turn">
+    <header class="sec-head">
+      <span class="sec-no">8</span>
+      <div class="sec-title"><h2>Your turn</h2><p class="lede">Answer the questions with as much detail as you can. Use <i>have something done</i> when someone does it for you.</p></div>
+    </header>
+    <div class="two">
+      <div>
+        <h3 class="sub">A. Have you ever had it done?</h3>
+        <ol class="talk">
+          <li>How often do you have your hair cut? Have you ever had a haircut you hated?</li>
+          <li>Have you ever had your hair dyed a completely different colour?</li>
+          <li>Which of these do you do yourself, and which do you have done: cut your hair, do your nails, fix your bike, clean the windows, paint the walls?</li>
+          <li>What have you had done in your flat? What would you like to have done next?</li>
+          <li>Would you ever have your teeth whitened, or have a tattoo done? Why (not)?</li>
+        </ol>
+      </div>
+      <div>
+        <h3 class="sub">B. Your top three</h3>
+        <p class="note">Which three are the most important ways to look after yourself? Add your own ideas.</p>
+        <div class="words">
+          <span>going to the gym</span><span>doing yoga or Pilates</span><span>cycling to work</span><span>dancing</span><span>eating well</span><span>cutting out sugar</span><span>sleeping eight hours</span><span>regular check-ups</span><span>reading</span><span>learning a new skill</span><span>a day at the spa</span><span>switching off your phone</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9 HOMEWORK -->
+  <section class="sec" id="hw" data-title="Homework">
+    <header class="sec-head">
+      <span class="sec-no">9</span>
+      <div class="sec-title"><h2>Homework</h2><p class="lede">Write a short review here on this page, then press &ldquo;Send to Alena&rdquo;.</p></div>
+    </header>
+    <ul class="hw-list">
+      <li><span><strong>A short review (under 100 words).</strong> Write about a place where you had something done: a hairdresser&rsquo;s, a beauty salon, a spa, a bike repair shop, or the people who did some work in your flat. What did you have done? How was it? Would you recommend it?</span></li>
+      <li><span>Use <i>have something done</i> at least twice, and one pattern from last week (for example <i>would rather, let me, made me, look forward to</i>).</span></li>
+      <li><span><strong>Extra practice:</strong> Grammar Bank, p. 146, exercises a and b.</span></li>
+    </ul>
+    <label class="field" for="hw-draft">Your review
+      <textarea class="draft" id="hw-draft" spellcheck="true" placeholder="Last month I had my hair cut at a new salon near my flat&hellip;"></textarea>
+    </label>
+    <p class="wc" id="hw-count" aria-live="polite">0 words</p>
+    <div class="send-box">
+      <p class="note">Your review is kept in this browser until you send it. Your answers from &ldquo;How did it go?&rdquo; at the end of the page are sent with it.</p>
+      <div class="tools"><button type="button" class="btn primary" id="hw-send">Send to Alena</button></div>
+      <p class="send-status" id="hw-status" role="status"></p>
+      <div id="hw-fallback" hidden>
+        <p class="note">Copy this text and send it to Alena by email (<span id="hw-mail-addr"></span>) or in a message.</p>
+        <textarea class="tn-out" id="hw-out" readonly aria-label="Your homework as text"></textarea>
+        <div class="tools"><button type="button" class="btn" id="hw-copy">Copy the text</button><a class="btn" id="hw-mail" href="#">Open my email</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 SELF-ASSESSMENT -->
+  <section class="sec" id="self" data-title="How did it go?">
+    <header class="sec-head">
+      <span class="sec-no">10</span>
+      <div class="sec-title"><h2>How did it go?</h2><p class="lede">Think about today&rsquo;s lesson. Choose what is true for you. There are no wrong answers.</p></div>
+    </header>
+    <ul class="self-list" id="self-list"></ul>
+    <label class="field" for="self-useful">The most useful thing today was&hellip;<input type="text" id="self-useful" autocomplete="off"></label>
+    <label class="field" for="self-more">Next time I&rsquo;d like to practise&hellip;<input type="text" id="self-more" autocomplete="off"></label>
+  </section>
+
+  <!-- SUMMARY -->
+  <section class="sec" id="summary" data-title="Your scores">
+    <header class="sec-head">
+      <span class="sec-no" aria-hidden="true">&sect;</span>
+      <div class="sec-title"><h2>Your scores</h2><p class="lede">Correct answers per section. Answers you revealed do not count, and in the multiple-choice sections only the first choice counts.</p></div>
+    </header>
+    <div class="sum"><table id="sum-table"><tbody></tbody><tfoot></tfoot></table></div>
+    <div class="tools"><button type="button" class="btn quiet" id="reset-all">Reset all exercises</button></div>
+  </section>
+
+</main>
+
+<script>
+(function(){
+  'use strict';
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+  // the teacher's page shows the answers; scripts/student-site.sh turns data-view into "student"
+  const TEACHER = (($('main.page') || document.body).getAttribute('data-view')) === 'teacher';
+
+  // lesson timer: one coloured segment per section, as long as that section's minutes
+  if (TEACHER && $('#tmr')) (function(){
+    const box = $('#tmr'), go = $('#tm-go'), clock = $('#tm-clock'), now = $('#tm-now'), bar = $('#tm-bar');
+    const COLORS = ['#4d699b', '#b35b79', '#cc6d00', '#597b75', '#624c83', '#c84053'];
+    const KEY = 'lesson-timer:' + document.title;
+    const fmt = s => Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0');
+    let from = 0;
+    const segs = box.dataset.segs.split(',').map((part, i) => {
+      const bits = part.split(':'), sec = document.getElementById(bits[0]), len = (+bits[1] || 1) * 60;
+      const a = document.createElement('a'), fill = document.createElement('i'), num = document.createElement('b');
+      const title = (sec && sec.dataset.title) || bits[0];
+      a.className = 'tm-seg'; a.href = '#' + bits[0];
+      a.style.flexGrow = len; a.style.setProperty('--c', COLORS[i % COLORS.length]);
+      a.title = (i + 1) + '. ' + title + ' · ' + (len / 60) + ' min';
+      a.setAttribute('aria-label', a.title);
+      num.textContent = i + 1;
+      a.append(fill, num); bar.append(a);
+      const seg = {a, fill, title, n: i + 1, from, len};
+      from += len;
+      return seg;
+    });
+    const total = from;
+    let base = 0, t0 = null, tick = null;
+    try {
+      const saved = JSON.parse(localStorage.getItem(KEY) || 'null');
+      if (saved && (!saved.t0 || (Date.now() - saved.t0) / 1000 + saved.base < total + 1800)) { base = +saved.base || 0; t0 = saved.t0 || null; }
+    } catch (e) {}
+    const save = () => { try { localStorage.setItem(KEY, JSON.stringify({base, t0})); } catch (e) {} };
+    const elapsed = () => base + (t0 ? (Date.now() - t0) / 1000 : 0);
+    function render(){
+      const s = elapsed();
+      clock.innerHTML = '';
+      const small = document.createElement('small');
+      small.textContent = ' / ' + fmt(total);
+      clock.append(fmt(s), small);
+      clock.classList.toggle('over', s >= total);
+      let cur = null;
+      segs.forEach(g => {
+        const done = Math.max(0, Math.min(1, (s - g.from) / g.len));
+        g.fill.style.width = (done * 100) + '%';
+        const on = s >= g.from && s < g.from + g.len && (t0 || s > 0);
+        g.a.classList.toggle('now', !!on);
+        if (on) cur = g;
+      });
+      now.textContent = cur ? cur.n + '. ' + cur.title + ' · ' + fmt(cur.from + cur.len - s + 0.999) + ' left'
+        : s >= total ? 'Time is up · ' + fmt(s - total) + ' over' : segs.length + ' sections';
+      go.textContent = t0 ? 'Pause' : s > 0 ? 'Continue' : 'Start';
+    }
+    function run(){ clearInterval(tick); if (t0) tick = setInterval(render, 500); render(); }
+    go.addEventListener('click', () => {
+      if (t0) { base = elapsed(); t0 = null; } else { t0 = Date.now(); }
+      save(); run();
+    });
+    $('#tm-reset').addEventListener('click', () => { base = 0; t0 = null; save(); run(); });
+    run();
+  })();
+  
+  // lesson notes: a quick strip under every section, a notes block at the bottom, saved as one file
+  if (TEACHER && $('#tmr') && $('#tmr').dataset.notes) (function(){
+    const where = $('#tmr').dataset.notes.split('/');           // student / lesson folder
+    const FILE = where.join('-') + '-notes.md';
+    const KEY = 'lesson-notes:' + where.join('/');
+    const MARKS = ['Easy', 'OK', 'Hard', 'Skipped'];
+    const TAGS = ['Grammar', 'Words', 'Pronunciation', 'Speaking', 'Understanding', 'Too slow'];
+    const HW = ['Done', 'Partly', 'Not done'];
+    let st = {sec: {}, hw: '', went: '', next: ''};
+    try {
+      const saved = JSON.parse(localStorage.getItem(KEY) || 'null');
+      if (saved && typeof saved === 'object') st = Object.assign(st, saved, {sec: saved.sec || {}});
+    } catch (e) {}
+    const secs = Array.from(document.querySelectorAll('main.page section[data-title]:not(#summary)')).map((sec, i) => ({id: sec.id, n: i + 1, title: sec.dataset.title || sec.id, sec}));
+    const of = id => st.sec[id] || (st.sec[id] = {mark: '', tags: [], text: ''});
+    const status = el('p', {class: 'tn-status', id: 'tn-status', role: 'status'});
+    const sumBody = el('tbody');
+    function changed(){
+      try { localStorage.setItem(KEY, JSON.stringify(st)); } catch (e) {}
+      summary();
+      status.textContent = 'Kept in this browser. Press “Save notes” at the end of the lesson to make the file.';
+    }
+    function chip(label, id, isOn, toggle){
+      const b = el('button', {type: 'button', class: 'tn-chip', id, 'aria-pressed': String(isOn()), text: label});
+      b.addEventListener('click', () => { toggle(); changed(); b.closest('.tn-row').querySelectorAll('.tn-chip').forEach(x => x.setAttribute('aria-pressed', String(x._on()))); });
+      b._on = isOn;
+      return b;
+    }
+    function row(label, chips){ return el('div', {class: 'tn-row'}, el('span', {class: 'tn-lab', text: label}), ...chips); }
+  
+    secs.forEach(s => {
+      const d = of(s.id);
+      const text = el('input', {type: 'text', class: 'tn-text', id: 'tn-' + s.id + '-text', placeholder: 'A quick note: what was hard, what to repeat', 'aria-label': 'Note for section ' + s.n, autocomplete: 'off'});
+      text.value = d.text || '';
+      text.addEventListener('input', () => { d.text = text.value; changed(); });
+      s.sec.append(el('div', {class: 'tn', role: 'group', 'aria-label': 'Notes for section ' + s.n},
+        row('How it went', MARKS.map(m => chip(m, 'tn-' + s.id + '-m-' + m.toLowerCase(), () => d.mark === m, () => { d.mark = d.mark === m ? '' : m; }))),
+        row('What was hard', TAGS.map(g => chip(g, 'tn-' + s.id + '-t-' + g.toLowerCase().replace(/\s+/g, '-'), () => d.tags.includes(g), () => { d.tags = d.tags.includes(g) ? d.tags.filter(x => x !== g) : d.tags.concat(g); }))),
+        text));
+    });
+  
+    function summary(){
+      sumBody.replaceChildren(...secs.map(s => {
+        const d = of(s.id);
+        return el('tr', {}, el('td', {text: String(s.n)}), el('td', {text: s.title}), el('td', {text: d.mark || '–'}), el('td', {text: d.tags.join(', ') || '–'}), el('td', {text: d.text || '–'}));
+      }));
+    }
+    function area(id, label, key, hint){
+      const ta = el('textarea', {id, placeholder: hint});
+      ta.value = st[key] || '';
+      ta.addEventListener('input', () => { st[key] = ta.value; changed(); });
+      return el('div', {class: 'tn-field'}, el('label', {for: id, text: label}), ta);
+    }
+    const cell = v => String(v || '–').replace(/\|/g, '/').replace(/\s*\n\s*/g, ' ');
+    function markdown(){
+      const now = new Date(), two = n => String(n).padStart(2, '0');
+      const stamp = now.getFullYear() + '-' + two(now.getMonth() + 1) + '-' + two(now.getDate()) + ' ' + two(now.getHours()) + ':' + two(now.getMinutes());
+      const lines = ['# Lesson notes: ' + document.title, '',
+        'Lesson folder: ' + where.join('/') + '. Notes saved ' + stamp + '.', '',
+        '## Section by section', '',
+        '| # | Section | How it went | What was hard | Note |', '|---|---|---|---|---|'];
+      secs.forEach(s => { const d = of(s.id); lines.push('| ' + [s.n, cell(s.title), cell(d.mark), cell(d.tags.join(', ')), cell(d.text)].join(' | ') + ' |'); });
+      lines.push('', '## Homework brought to this lesson', '', st.hw || 'Not marked.', '',
+        '## How the lesson went', '', (st.went || '').trim() || 'No notes.', '',
+        '## Practise next time', '', (st.next || '').trim() || 'No notes.', '');
+      return lines.join('\n');
+    }
+    const out = el('textarea', {class: 'tn-out', id: 'tn-out', readonly: '', 'aria-label': 'Your notes as text'});
+    out.hidden = true;
+    const save = el('button', {type: 'button', class: 'btn primary', id: 'tn-save', text: 'Save notes'});
+    save.addEventListener('click', () => {
+      try {
+        const a = el('a', {href: URL.createObjectURL(new Blob([markdown()], {type: 'text/markdown;charset=utf-8'})), download: FILE});
+        document.body.append(a); a.click(); a.remove();
+        setTimeout(() => { try { URL.revokeObjectURL(a.href); } catch (e) {} }, 4000);
+        status.textContent = 'Saved as “' + FILE + '” in your Downloads folder. Tell Claude the lesson is done and it goes into the lesson folder.';
+      } catch (e) {
+        out.hidden = false; out.value = markdown(); out.focus(); out.select();
+        status.textContent = 'The file could not be saved here. Copy this text and send it to Claude.';
+      }
+    });
+    const copy = el('button', {type: 'button', class: 'btn', id: 'tn-copy', text: 'Copy notes'});
+    copy.addEventListener('click', () => {
+      const text = markdown();
+      const show = () => { out.hidden = false; out.value = text; out.focus(); out.select(); status.textContent = 'Press ⌘C to copy the notes.'; };
+      try { navigator.clipboard.writeText(text).then(() => { status.textContent = 'Notes copied.'; }, show); } catch (e) { show(); }
+    });
+    let armed = null;
+    const clear = el('button', {type: 'button', class: 'btn quiet', id: 'tn-clear', text: 'Clear notes'});
+    clear.addEventListener('click', () => {
+      if (!armed) { clear.textContent = 'Press again to clear everything'; armed = setTimeout(() => { armed = null; clear.textContent = 'Clear notes'; }, 4000); return; }
+      clearTimeout(armed);
+      try { localStorage.removeItem(KEY); } catch (e) {}
+      location.reload();
+    });
+  
+    const fin = el('section', {class: 'tn-final', id: 'lesson-notes', 'aria-label': 'Lesson notes'},
+      el('h2', {text: 'Lesson notes'}),
+      el('div', {class: 'tn'}, row('Her homework', HW.map(h => chip(h, 'tn-hw-' + h.toLowerCase().replace(/\s+/g, '-'), () => st.hw === h, () => { st.hw = st.hw === h ? '' : h; })))),
+      area('tn-went', 'How the lesson went', 'went', 'Your thoughts about the lesson'),
+      area('tn-next', 'Practise next time', 'next', 'What to come back to in the next lessons'),
+      el('div', {class: 'tn-sum scroll'}, el('table', {}, el('thead', {}, el('tr', {}, ...['#', 'Section', 'How it went', 'What was hard', 'Note'].map(h => el('th', {text: h})))), sumBody)),
+      el('div', {class: 'tools'}, save, copy, clear),
+      status, out);
+    const last = secs[secs.length - 1];
+    ($('#summary') || last.sec).after(fin);
+    summary();
+    status.textContent = 'Notes are kept in this browser while you work. Press “Save notes” at the end of the lesson.';
+  })();
+
+  function el(tag, props, ...kids){
+    const e = document.createElement(tag);
+    if (props) for (const k of Object.keys(props)){
+      const v = props[k];
+      if (v == null) continue;
+      if (k === 'class') e.className = v;
+      else if (k === 'text') e.textContent = v;
+      else e.setAttribute(k, v);
+    }
+    for (const k of kids) if (k != null) e.append(k);
+    return e;
+  }
+  function shuffle(a){ a = a.slice(); for (let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); const t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+  function nudge(e){ e.classList.remove('shake'); void e.offsetWidth; e.classList.add('shake'); setTimeout(() => e.classList.remove('shake'), 400); }
+
+  // Rich text: ___ becomes a blank, *word* becomes highlighted.
+  function rich(str){
+    const f = document.createDocumentFragment();
+    let blank = null;
+    str.split(/(___|\*[^*]+\*)/).forEach(part => {
+      if (!part) return;
+      if (part === '___'){ blank = el('span', {class: 'blank', 'aria-label': 'gap'}, ' '); f.append(blank); }
+      else if (part[0] === '*' && part.length > 2 && part[part.length - 1] === '*') f.append(el('strong', {text: part.slice(1, -1)}));
+      else f.append(document.createTextNode(part));
+    });
+    return {frag: f, blank};
+  }
+
+  // ---------- speech ----------
+  const synth = window.speechSynthesis;
+  let voice = null;
+  function pickVoice(){
+    try {
+      const vs = synth ? synth.getVoices() : [];
+      voice = vs.find(v => v.lang === 'en-GB') || vs.find(v => /^en[-_]GB/i.test(v.lang)) || vs.find(v => /^en[-_]/i.test(v.lang)) || null;
+    } catch (e) { voice = null; }
+  }
+  if (synth){ pickVoice(); try { synth.addEventListener('voiceschanged', pickVoice); } catch (e) {} }
+  function speak(text){
+    try {
+      if (!synth) return;
+      synth.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = 'en-GB'; if (voice) u.voice = voice; u.rate = 0.93;
+      synth.speak(u);
+    } catch (e) {}
+  }
+  const SPEAKER = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>';
+  // add a listen button to every reference example
+  $$('.ex li').forEach((li, i) => {
+    const text = li.textContent.replace(/\([^)]*\)/g, '').replace(/=.*$/, '').replace(/\s+/g, ' ').trim();
+    const b = el('button', {type: 'button', class: 'say', id: 'say-' + (i + 1), 'aria-label': 'Listen: ' + text});
+    b.innerHTML = SPEAKER;
+    b.addEventListener('click', () => speak(text));
+    li.prepend(b);
+  });
+
+  // ---------- answer normalising (forgiving) ----------
+  function norm(s){
+    s = String(s).toLowerCase()
+      .replace(/[‘’ʼ`´]/g, "'")
+      .replace(/[–—-]/g, ' ')
+      .replace(/[.,!?;:"“”()]/g, ' ')
+      .replace(/\s+/g, ' ').trim();
+    s = s.replace(/\bcan't\b/g, 'can not').replace(/\bcannot\b/g, 'can not')
+         .replace(/\bwon't\b/g, 'will not').replace(/\bshan't\b/g, 'shall not')
+         .replace(/n't\b/g, ' not')
+         .replace(/'m\b/g, ' am').replace(/'re\b/g, ' are').replace(/'ve\b/g, ' have').replace(/'ll\b/g, ' will')
+         .replace(/'d better\b/g, ' had better').replace(/'d\b/g, ' would')
+         .replace(/\b(he|she|it|that|there|what|who|where|here)'s\b/g, '$1 is');
+    return s.replace(/\s+/g, ' ').trim();
+  }
+  function matches(value, answers){ const v = norm(value); return !!v && answers.some(a => norm(a) === v); }
+
+  // ---------- scores ----------
+  const SCORE = {};
+  const SECTIONS = [];
+  $$('.sec').forEach((sec, i) => {
+    const sc = $('.score', sec);
+    SECTIONS.push({id: sec.id, no: i + 1, title: sec.dataset.title, parts: sc ? sc.dataset.score.split(' ') : []});
+  });
+  function partsTotal(parts){
+    let got = 0, total = 0;
+    parts.forEach(p => { if (SCORE[p]){ got += SCORE[p].got; total += SCORE[p].total; } });
+    return {got, total};
+  }
+  function setScore(key, got, total){ SCORE[key] = {got, total}; renderScores(); }
+  let tocBuilt = false;
+  function renderScores(){
+    $$('.score[data-score]').forEach(s => {
+      const t = partsTotal(s.dataset.score.split(' '));
+      s.textContent = t.got + ' / ' + t.total + ' correct';
+      s.classList.toggle('full', t.total > 0 && t.got === t.total);
+    });
+    // contents
+    const toc = $('#toc');
+    if (!tocBuilt){
+      SECTIONS.filter(s => s.id !== 'summary').forEach(s => {
+        toc.append(el('li', null, el('a', {href: '#' + s.id, text: s.title}), s.parts.length ? el('span', {class: 'sc', 'data-toc': s.id}) : null));
+      });
+      tocBuilt = true;
+    }
+    $$('[data-toc]').forEach(x => { const s = SECTIONS.find(q => q.id === x.dataset.toc); const t = partsTotal(s.parts); x.textContent = t.got + ' / ' + t.total; });
+    // summary table
+    const body = $('#sum-table tbody'), foot = $('#sum-table tfoot');
+    body.replaceChildren(); foot.replaceChildren();
+    let G = 0, T = 0;
+    SECTIONS.filter(s => s.parts.length).forEach(s => {
+      const t = partsTotal(s.parts); G += t.got; T += t.total;
+      const bar = el('span', {class: 'bar', 'aria-hidden': 'true'}, el('i'));
+      bar.firstChild.style.width = (t.total ? Math.round(100 * t.got / t.total) : 0) + '%';
+      body.append(el('tr', null, el('td', {text: String(s.no)}), el('td', null, el('a', {href: '#' + s.id, text: s.title})), el('td', null, bar, t.got + ' / ' + t.total + ' correct')));
+    });
+    foot.append(el('tr', null, el('th', null), el('th', {text: 'Total'}), el('th', {text: G + ' / ' + T + ' correct'})));
+  }
+
+  const RESETS = [];
+
+  // ---------- multiple choice engine ----------
+  // item: {q, o:[options], a:index, why, ipa?}
+  function buildMC(listId, items, key, opt){
+    opt = opt || {};
+    const list = $('#' + listId);
+    let state = [];
+    function score(){ setScore(key, state.filter(s => s.done && !s.missed).length, items.length); }
+    function render(){
+      list.replaceChildren();
+      state = items.map((it, i) => {
+        const st = {done: false, missed: false};
+        const r = rich(it.q);
+        const li = el('li', {class: 'item'});
+        const q = el('p', {class: 'q'}); q.append(r.frag);
+        const opts = el('div', {class: 'opts' + (opt.stack ? ' stack' : ''), role: 'group', 'aria-label': 'Options for sentence ' + (i + 1)});
+        const why = el('p', {class: 'why', 'aria-live': 'polite'});
+        it.o.forEach((o, j) => {
+          const b = el('button', {type: 'button', class: 'opt' + (opt.ipa ? ' ipa' : ''), id: listId + '-' + i + '-' + j, text: o});
+          b.addEventListener('click', () => {
+            if (st.done || b.classList.contains('no')) return;
+            if (j === it.a){
+              st.done = true;
+              b.classList.add('yes');
+              $$('.opt', opts).forEach(x => { x.setAttribute('aria-disabled', 'true'); });
+              if (r.blank){ r.blank.textContent = o; r.blank.classList.add('filled'); }
+              why.replaceChildren(el('span', {class: 'ok', text: st.missed ? 'Got it. ' : 'Correct. '}), it.why || '');
+            } else {
+              st.missed = true;
+              b.classList.add('no'); b.setAttribute('aria-label', o + ' (wrong)');
+              nudge(b);
+              why.textContent = 'Not this one. Try again.';
+            }
+            score();
+          });
+          opts.append(b);
+        });
+        li.append(q, opts, why);
+        if (TEACHER) li.append(el('p', {class: 'ans', text: 'Answer: ' + it.o[it.a]}));
+        list.append(li);
+        return st;
+      });
+      score();
+    }
+    render();
+    return render;
+  }
+
+  // ---------- typed answer engine ----------
+  function typedItem(input, answers, fb, opts){
+    opts = opts || {};
+    const st = {state: 'idle', input, answers};
+    function mark(cls){ input.classList.remove('right', 'wrong', 'shown'); if (cls) input.classList.add(cls); }
+    st.check = function(){
+      if (st.state === 'shown') return;
+      const v = input.value;
+      if (!v.trim()){ st.state = 'idle'; mark(''); fb.replaceChildren(); return; }
+      if (opts.unchanged && norm(v) === norm(opts.unchanged)){
+        st.state = 'wrong'; mark('wrong');
+        fb.replaceChildren(el('span', {class: 'bad', text: 'The mistake is still there.'}), showLink());
+        return;
+      }
+      if (matches(v, answers)){
+        st.state = 'right'; mark('right');
+        fb.replaceChildren(el('span', {class: 'ok', text: 'Correct.'}));
+        if (opts.note) fb.append(opts.note);
+      } else {
+        st.state = 'wrong'; mark('wrong');
+        fb.replaceChildren(el('span', {class: 'bad', text: 'Not quite.'}), showLink());
+        nudge(input);
+      }
+    };
+    st.reveal = function(){
+      if (st.state === 'right' || st.state === 'shown') return;
+      st.state = 'shown'; mark('shown');
+      input.value = answers[0]; input.readOnly = true;
+      fb.replaceChildren(el('span', {text: 'Answer shown' + (answers.length > 1 ? '. Also accepted: ' + answers.slice(1).join(' / ') : '') + '.'}));
+      if (opts.note) fb.append(opts.note);
+    };
+    st.reset = function(){
+      st.state = 'idle'; mark(''); input.readOnly = false;
+      input.value = opts.initial || ''; fb.replaceChildren();
+    };
+    function showLink(){
+      const b = el('button', {type: 'button', class: 'link', id: input.id + '-show', text: 'Show answer'});
+      b.addEventListener('click', () => { st.reveal(); st.onchange(); input.focus(); });
+      return b;
+    }
+    input.addEventListener('input', () => {
+      if (st.state === 'right' || st.state === 'wrong'){ st.state = 'idle'; mark(''); fb.replaceChildren(); st.onchange(); }
+    });
+    st.onchange = () => {};
+    return st;
+  }
+  function typedSection(key, rows, ids){
+    const upd = () => setScore(key, rows.filter(r => r.state === 'right').length, rows.length);
+    rows.forEach((r, i) => {
+      r.onchange = upd;
+      r.input.addEventListener('keydown', e => {
+        if (e.key === 'Enter'){ e.preventDefault(); r.check(); upd(); const nx = rows[i + 1]; if (nx && r.state === 'right') nx.input.focus(); }
+      });
+    });
+    $('#' + ids.check).addEventListener('click', () => { rows.forEach(r => r.check()); upd(); });
+    $('#' + ids.show).addEventListener('click', () => { rows.forEach(r => r.reveal()); upd(); });
+    const reset = () => { rows.forEach(r => r.reset()); upd(); };
+    $('#' + ids.reset).addEventListener('click', reset);
+    upd();
+    return reset;
+  }
+  function gapInput(id, answers, label){
+    const w = Math.max(6, ...answers.map(a => a.length)) + 2;
+    return el('input', {class: 'gap', id, type: 'text', autocomplete: 'off', autocapitalize: 'off', autocorrect: 'off', spellcheck: 'false', 'aria-label': label, style: 'width:' + w + 'ch'});
+  }
+
+  // ===== 2. QUICK ROUND (verb patterns) =====
+  const recapReset = buildMC('recap-list', [
+    {q: 'My doctor made me ___ less coffee.', o: ['drink', 'to drink', 'drinking'], a: 0, why: 'make + person + verb (no to)'},
+    {q: "I'd rather ___ to a yoga class than to the gym.", o: ['to go', 'go', 'going'], a: 1, why: 'would rather + verb (no to)'},
+    {q: "The spa café gets busy at weekends, so you'd better ___ a table.", o: ['booking', 'to book', 'book'], a: 2, why: 'had better + verb (no to)'},
+    {q: "After this week I'd love ___ a massage.", o: ['having', 'to have'], a: 1, why: 'would love + to (never -ing)'},
+    {q: 'Are you interested in ___ a Pilates class with me?', o: ['join', 'to join', 'joining'], a: 2, why: 'preposition (in) + -ing'},
+    {q: 'She went to bed early instead of ___ out.', o: ['going', 'to go', 'go'], a: 0, why: 'preposition (instead of) + -ing'},
+    {q: "The hotel doesn't let children ___ in the pool after 6 pm.", o: ['to swim', 'swim', 'swimming'], a: 1, why: 'let + person + verb (no to)'},
+    {q: "I must remember ___ an appointment at the hairdresser's.", o: ['to book', 'booking'], a: 0, why: 'remember + to: something I still need to do'}
+  ], 'recap');
+  RESETS.push(recapReset);
+  $('#recap-reset').addEventListener('click', recapReset);
+
+  // ===== 3. TREAT =====
+  const MEAN = ['give medical care', 'behave towards someone in a certain way', 'do or buy something nice for someone (or yourself)', 'something special that you enjoy'];
+  const treatReset = buildMC('treat-list', [
+    {q: 'A hot drink with honey and lemon can help to *treat* a sore throat.', o: MEAN, a: 0, why: 'treat (verb) = give medical care. The noun is treatment.'},
+    {q: "Please don't *treat* me like a child.", o: MEAN, a: 1, why: 'treat someone like / as … = behave towards them in this way.'},
+    {q: 'For my birthday, my sister *treated* me to lunch at a lovely café.', o: MEAN, a: 2, why: 'treat someone to something = pay for something nice for them.'},
+    {q: 'A whole day at the spa was a real *treat*.', o: MEAN, a: 3, why: 'a treat (noun) = something special that gives you pleasure.'},
+    {q: 'After a hard week I *treat myself* to a long bath and a good film.', o: MEAN, a: 2, why: 'treat yourself (to something) = do something nice for yourself.'}
+  ], 'treat', {stack: true});
+  RESETS.push(treatReset);
+  $('#treat-reset').addEventListener('click', treatReset);
+
+  // ===== 4. HAVE SOMETHING DONE =====
+  (function(){
+    const H = [
+      ['I ', 'my eyes / test', ' last month. My new glasses are much better.', ['had my eyes tested', 'got my eyes tested']],
+      ["We're going to ", 'the walls / paint', ' before we move into the new flat.', ['have the walls painted', 'get the walls painted']],
+      ["Can she call you back? She's ", 'her nails / do', ' at the moment.', ['having her nails done', 'getting her nails done']],
+      ['Have you ever ', 'your photo / take', ' by a professional photographer?', ['had your photo taken', 'got your photo taken', 'had your picture taken', 'got your picture taken']],
+      ["We didn't fit the new kitchen ourselves. We ", 'it / fit', '.', ['had it fitted', 'got it fitted']],
+      ['My passport runs out in May, so I need to ', 'it / renew', '.', ['have it renewed', 'get it renewed']]
+    ];
+    const list = $('#hsd-list');
+    const rows = H.map(([pre, cue, post, ans], i) => {
+      const id = 'hsd-' + (i + 1);
+      const input = gapInput(id, ans.slice(0, 1), 'Sentence ' + (i + 1) + ': ' + cue);
+      const fb = el('p', {class: 'fb', 'aria-live': 'polite'});
+      const q = el('p', {class: 'q'}, pre, input, ' ', el('span', {class: 'hint', text: '(' + cue + ')'}), post);
+      list.append(el('li', {class: 'item'}, q, fb, TEACHER ? el('p', {class: 'ans', text: 'Answer: ' + ans.join(' / ')}) : null));
+      return typedItem(input, ans, fb);
+    });
+    RESETS.push(typedSection('hsd', rows, {check: 'hsd-check', show: 'hsd-show', reset: 'hsd-reset'}));
+  })();
+
+
+  // ===== 5. WORDS: picture cards + spa menu =====
+  (function(){
+    const svg = body => '<svg viewBox="0 0 100 80" aria-hidden="true" focusable="false">' + body + '</svg>';
+    const FACE = '<ellipse class="sk" cx="50" cy="44" rx="15" ry="18"/><circle class="fl" cx="44.5" cy="45" r="1.6"/><circle class="fl" cx="55.5" cy="45" r="1.6"/><path class="ln" d="M46 53 Q50 56 54 53"/>';
+    const head = (back, front, shoulders) => svg((shoulders || '<path class="ac2" d="M24 80 Q26 64 50 63 Q74 64 76 80 Z"/>') + back + FACE + front);
+    const CAP = '<path class="hr" d="M35 40 Q34 23 50 23 Q66 23 65 40 Q60 30 50 30 Q40 30 35 40 Z"/><path class="gap-line" d="M50 23.5 L50 29.5"/>';
+    const FLOOR = '<path class="floor" d="M8 73 L92 73"/>';
+    const braid = x => [50, 57, 64, 71].map(y => '<ellipse class="hr" cx="' + x + '" cy="' + y + '" rx="4.2" ry="4.6"/>').join('') + '<rect class="ac" x="' + (x - 2.5) + '" y="74.5" width="5" height="3" rx="1"/>';
+    const circles = (list, r, cls) => list.map(([x, y]) => '<circle class="' + cls + '" cx="' + x + '" cy="' + y + '" r="' + r + '"/>').join('');
+    const BOTTLE = '<rect class="ac" x="80" y="50" width="12" height="20" rx="3"/><rect class="fl" x="83" y="38" width="6" height="12" rx="1.5"/>';
+
+    const ART = {
+      fringe: head('<path class="hr" d="M32 47 Q30 21 50 20 Q70 21 68 47 L68 58 Q62 60 61 52 L39 52 Q38 60 32 58 Z"/>',
+                   '<path class="hr" d="M34.5 39 Q34 24 50 23.5 Q66 24 65.5 39 Z"/>'),
+      parting: head('<path class="hr" d="M33 46 Q31 21 50 20.5 Q69 21 67 46 L64 47 L64 38 L36 38 L36 47 Z"/>',
+                    '<path class="hr" d="M35 40 Q34 24 50 23 Q66 24 65 40 Q63 32 56 30 Q48 29 42 31 Q37 34 35 40 Z"/><path class="gap-line" d="M43 23.5 Q42 27 42 30.5"/>'),
+      ponytail: head('<path class="hr" d="M64 27 Q86 26 82 46 Q80 58 86 66 Q72 62 71 48 Q70 38 63 33 Z"/>',
+                     '<path class="hr" d="M35 38 Q34 23 50 22.5 Q66 23 65 38 Q60 30 50 29.5 Q40 30 35 38 Z"/><circle class="ac" cx="65" cy="30" r="3.2"/>'),
+      plaits: head('<path class="hr" d="M33 48 Q31 21 50 20.5 Q69 21 67 48 Z"/>' + braid(33) + braid(67), CAP),
+      bunches: head('<path class="hr" d="M34 44 Q32 21 50 20.5 Q68 21 66 44 Z"/><path class="hr" d="M35 33 Q22 24 16 33 Q22 34 19 42 Q25 38 27 44 Q30 37 35 37 Z"/><path class="hr" d="M65 33 Q78 24 84 33 Q78 34 81 42 Q75 38 73 44 Q70 37 65 37 Z"/>',
+                    CAP + '<circle class="ac" cx="35" cy="35" r="2.6"/><circle class="ac" cx="65" cy="35" r="2.6"/>'),
+      buzz: head('<ellipse class="sk" cx="34.5" cy="46" rx="2.6" ry="4.2"/><ellipse class="sk" cx="65.5" cy="46" rx="2.6" ry="4.2"/>',
+                 '<path class="hr" style="opacity:.55" d="M35.2 37 Q35 25 50 25 Q65 25 64.8 37 Q58 31.5 50 31.5 Q42 31.5 35.2 37 Z"/>'),
+      highlights: head('<path class="hr" d="M31 48 Q28 19 50 19 Q72 19 69 48 L72 72 Q60 70 60 60 L40 60 Q40 70 28 72 Z"/>',
+                       '<path class="hr" d="M35 40 Q34 23 50 23 Q66 23 65 40 Q58 28 46 29.5 Q39 31 35 40 Z"/><path class="hl" d="M33 31 Q30 50 31 68"/><path class="hl" d="M67 31 Q70 50 69 68"/><path class="hl" d="M45 24.5 Q40 27 37 34"/><path class="hl" d="M56 24.5 Q62 27 64 33"/>'),
+      perm: head(circles([[36, 29], [43, 23], [50, 21], [57, 23], [64, 29], [68, 37], [32, 37], [69, 46], [31, 46], [67, 55], [33, 55]], 6.5, 'hr'),
+                 circles([[41, 28], [50, 26], [59, 28]], 5, 'hr')),
+      pressups: svg(FLOOR + '<circle class="sk" cx="22" cy="45" r="5.5"/><path class="fig" d="M29 49 L84 66 M33 50 L32 71 M84 66 L86 71"/>'),
+      situps: svg(FLOOR + '<circle class="sk" cx="33" cy="38" r="5.5"/><path class="fig" d="M37 44 L50 69 L63 51 L76 70 M40 50 L55 47"/>'),
+      stretches: svg(FLOOR + '<circle class="sk" cx="58" cy="20" r="5.5"/><path class="fig" d="M55 26 Q50 38 50 50 M50 50 L42 71 M50 50 L58 71 M54 31 Q46 20 64 9 M52 38 L44 48"/>'),
+      weights: svg(FLOOR + '<rect class="fl" x="30" y="45" width="40" height="6" rx="2"/><rect class="ac" x="21" y="33" width="10" height="30" rx="2.5"/><rect class="ac" x="69" y="33" width="10" height="30" rx="2.5"/><rect class="ac" x="14" y="38" width="7" height="20" rx="2"/><rect class="ac" x="79" y="38" width="7" height="20" rx="2"/>'),
+      bike: svg(FLOOR + '<path class="fig" d="M22 71 L78 71 M32 71 L42 44 M42 47 L64 58 M66 71 L68 30 M60 28 L76 28"/><circle class="ac2" cx="64" cy="58" r="9"/><circle class="fl" cx="64" cy="58" r="2.5"/><rect class="ac" x="33" y="40" width="17" height="5" rx="2.5"/><rect class="ac" x="63" y="18" width="11" height="7" rx="1.5"/>'),
+      rowing: svg(FLOOR + '<path class="fig" d="M10 64 L80 64 M16 64 L16 72 M76 64 L76 72"/><path class="ln" d="M60 50 L76 54"/><circle class="ac2" cx="84" cy="56" r="10"/><rect class="ac" x="34" y="57" width="14" height="5" rx="2.5"/><circle class="sk" cx="30" cy="33" r="5.5"/><path class="fig" d="M41 57 L33 39 M35 44 L60 50 M44 57 L58 44 L70 58 M70 52 L72 62"/>'),
+      treadmill: svg(FLOOR + '<rect class="ac2" x="12" y="62" width="64" height="7" rx="3.5"/><path class="fig" d="M72 62 L82 26 M82 32 L64 38"/><rect class="ac" x="76" y="17" width="16" height="9" rx="2"/><circle class="sk" cx="40" cy="18" r="5.5"/><path class="fig" d="M41 24 L44 42 M44 42 L35 52 L30 60 M44 42 L54 50 L50 61 M42 29 L34 36 L38 42 M42 29 L52 33 L56 27"/>'),
+      mat: svg(FLOOR + '<rect class="ac" x="28" y="40" width="52" height="24" rx="3"/><path class="ln" d="M46 40 L46 64 M64 40 L64 64"/><ellipse class="ac" cx="28" cy="52" rx="8.5" ry="12"/><path class="ln" d="M28 52 m-2.5 0 a2.5 2.5 0 1 0 5 0 a2.5 2.5 0 1 0 -5 0 M28 46 a5 6 0 1 1 -0.1 0"/>'),
+      manicure: svg('<rect class="sk" x="29" y="18" width="9" height="30" rx="4.5"/><rect class="sk" x="39" y="12" width="9" height="34" rx="4.5"/><rect class="sk" x="49" y="14" width="9" height="32" rx="4.5"/><rect class="sk" x="59" y="20" width="8" height="28" rx="4"/><rect class="ac" x="30.5" y="19.5" width="6" height="8" rx="3"/><rect class="ac" x="40.5" y="13.5" width="6" height="8" rx="3"/><rect class="ac" x="50.5" y="15.5" width="6" height="8" rx="3"/><rect class="ac" x="60.3" y="21.5" width="5.4" height="7" rx="2.7"/><rect class="sk" x="28" y="40" width="40" height="36" rx="9"/><rect class="sk" x="64" y="44" width="9" height="22" rx="4.5" transform="rotate(-40 68 55)"/>' + BOTTLE),
+      pedicure: svg('<path class="sk" d="M35 36 Q33 74 50 77 Q66 74 68 38 Q60 30 50 31 Q40 30 35 36 Z"/>' + circles([[39, 29]], 6, 'sk') + circles([[49, 25]], 4.6, 'sk') + circles([[56.5, 25.5]], 4.2, 'sk') + circles([[62.5, 28]], 3.8, 'sk') + circles([[67, 32.5]], 3.2, 'sk') + circles([[39, 27.5]], 2.8, 'ac') + circles([[49, 24]], 2.1, 'ac') + circles([[56.5, 24.5]], 1.9, 'ac') + circles([[62.5, 27]], 1.7, 'ac') + circles([[67, 31.5]], 1.4, 'ac') + BOTTLE),
+      facial: svg('<path class="towel" d="M24 80 Q26 64 50 63 Q74 64 76 80 Z"/><ellipse class="mask" cx="50" cy="44" rx="15" ry="18"/><path class="towel" d="M33 38 Q31 18 50 17 Q69 18 67 38 Q58 31 50 31 Q42 31 33 38 Z"/><path class="ln" d="M42 22 Q48 27 58 21"/><circle class="cuke" cx="44" cy="44" r="5.2"/><circle class="cuke-in" cx="44" cy="44" r="3.4"/><circle class="cuke" cx="56" cy="44" r="5.2"/><circle class="cuke-in" cx="56" cy="44" r="3.4"/><path class="ln" d="M46 54 Q50 57 54 54"/>'),
+      massage: svg(FLOOR + '<rect class="fl" x="8" y="58" width="84" height="4" rx="2"/><path class="fig" d="M14 62 L14 72 M86 62 L86 72"/><rect class="sk" x="25" y="47" width="60" height="11" rx="5.5"/><rect class="towel" x="56" y="45" width="30" height="13" rx="4"/><circle class="sk" cx="18" cy="51" r="6"/><path class="hr" d="M12.5 49 Q14 43 19 44.5 Q23 45.5 24 50 Q18 47 12.5 49 Z"/><ellipse class="fl" cx="34" cy="46" rx="4.5" ry="2.6"/><ellipse class="fl" cx="43" cy="45.6" rx="4.5" ry="2.6"/><ellipse class="fl" cx="52" cy="46" rx="4.5" ry="2.6"/>')
+    };
+    const HAIR = 'Hair', FIT = 'Keeping fit', BEAUTY = 'Beauty';
+    const P = [
+      ['fringe', HAIR, 'a fringe', ['a parting', 'a buzz cut']],
+      ['ponytail', HAIR, 'a ponytail', ['bunches', 'a perm']],
+      ['pressups', FIT, 'press-ups', ['sit-ups', 'stretches']],
+      ['manicure', BEAUTY, 'a manicure', ['a pedicure', 'waxing']],
+      ['plaits', HAIR, 'plaits', ['bunches', 'a ponytail']],
+      ['rowing', FIT, 'a rowing machine', ['a running machine', 'an exercise bike']],
+      ['highlights', HAIR, 'highlights', ['a perm', 'a blow-dry']],
+      ['facial', BEAUTY, 'a facial', ['a massage', 'fake tan']],
+      ['situps', FIT, 'sit-ups', ['press-ups', 'Pilates']],
+      ['parting', HAIR, 'a parting', ['a fringe', 'plaits']],
+      ['weights', FIT, 'weights', ['a cross-trainer', 'a yoga mat']],
+      ['massage', BEAUTY, 'a massage', ['a facial', 'waxing']],
+      ['buzz', HAIR, 'a buzz cut', ['a trim', 'a parting']],
+      ['treadmill', FIT, 'a running machine', ['a cross-trainer', 'a rowing machine']],
+      ['bunches', HAIR, 'bunches', ['plaits', 'highlights']],
+      ['pedicure', BEAUTY, 'a pedicure', ['a manicure', 'fake tan']],
+      ['stretches', FIT, 'stretches', ['weights', 'sit-ups']],
+      ['perm', HAIR, 'a perm', ['highlights', 'a fringe']],
+      ['bike', FIT, 'an exercise bike', ['a rowing machine', 'a cross-trainer']],
+      ['mat', FIT, 'a yoga mat', ['weights', 'a running machine']]
+    ];
+    const grid = $('#pics');
+    let st = [];
+    const upd = () => setScore('pics', st.filter(s => s.done && !s.missed).length, P.length);
+    function render(){
+      grid.replaceChildren();
+      st = P.map(([key, kind, answer, wrong], i) => {
+        const s = {done: false, missed: false};
+        const art = el('div', {class: 'pic-art'});
+        art.innerHTML = ART[key];
+        art.append(el('span', {class: 'n', text: String(i + 1)}));
+        const card = el('div', {class: 'pic', role: 'group', 'aria-label': 'Picture ' + (i + 1)});
+        const opts = el('div', {class: 'opts stack'});
+        const why = el('p', {class: 'why', 'aria-live': 'polite'});
+        shuffle([answer].concat(wrong)).forEach((o, j) => {
+          const b = el('button', {type: 'button', class: 'opt', id: 'pic-' + (i + 1) + '-' + j, text: o});
+          b.addEventListener('click', () => {
+            if (s.done || b.classList.contains('no')) return;
+            if (o === answer){
+              s.done = true; b.classList.add('yes'); card.classList.add('done');
+              $$('.opt', opts).forEach(x => x.setAttribute('aria-disabled', 'true'));
+              why.replaceChildren(el('span', {class: 'ok', text: s.missed ? 'Got it. ' : 'Correct. '}), 'Say it aloud.');
+            } else {
+              s.missed = true; b.classList.add('no'); b.setAttribute('aria-label', o + ' (wrong)'); nudge(b);
+              why.textContent = 'Not this one.';
+            }
+            upd();
+          });
+          opts.append(b);
+        });
+        card.append(art, el('span', {class: 'pic-kind', text: kind}), opts, why);
+        if (TEACHER) card.append(el('p', {class: 'ans', text: 'Answer: ' + answer}));
+        grid.append(card);
+        return s;
+      });
+      upd();
+    }
+    $('#vocab-reset').addEventListener('click', render);
+    RESETS.push(render);
+    render();
+
+    // B. the menu: not scored, a speaking task
+    const MENU = [
+      ['A haircut and blow-dry', '45 minutes', 45],
+      ['A trim', 'just the ends, 20 minutes', 20],
+      ['Highlights', 'with a blow-dry, 90 minutes', 65],
+      ['A manicure', '30 minutes', 25],
+      ['A pedicure', '40 minutes', 30],
+      ['A facial', '60 minutes', 40],
+      ['A hot-stone massage', '60 minutes', 55],
+      ['A session with a personal trainer', 'in the gym, 45 minutes', 35],
+      ['A Pilates class', '50 minutes', 15],
+      ['A yoga class', '60 minutes', 12]
+    ];
+    const BUDGET = 100;
+    const list = $('#menu-list'), total = $('#menu-total');
+    const btns = MENU.map(([what, sub, price], i) => {
+      const b = el('button', {type: 'button', class: 'menu-item', id: 'menu-' + (i + 1), 'aria-pressed': 'false'},
+        el('span', {class: 'what'}, what, el('small', {text: sub})), el('span', {class: 'price', text: '£' + price}));
+      b._price = price;
+      b.addEventListener('click', () => { b.setAttribute('aria-pressed', String(b.getAttribute('aria-pressed') !== 'true')); sum(); });
+      list.append(el('li', null, b));
+      return b;
+    });
+    function sum(){
+      const t = btns.filter(b => b.getAttribute('aria-pressed') === 'true').reduce((a, b) => a + b._price, 0);
+      total.textContent = '£' + t + ' of £' + BUDGET + (t > BUDGET ? ' · £' + (t - BUDGET) + ' over your budget' : t ? ' · £' + (BUDGET - t) + ' left' : '');
+      total.classList.toggle('over', t > BUDGET);
+    }
+    $('#menu-clear').addEventListener('click', () => { btns.forEach(b => b.setAttribute('aria-pressed', 'false')); sum(); });
+    sum();
+  })();
+  // ===== 7. READING =====
+  const TF = ['True', 'False'];
+  const readReset = buildMC('read-list', [
+    {q: 'Mark often goes to spas.', o: TF, a: 1, why: 'He has never been to a spa in his life.'},
+    {q: 'Olga felt very rested after the massage.', o: TF, a: 0, why: '“I felt as if I’d slept for ten hours.”'},
+    {q: 'Mark found it hard to relax during the whole massage.', o: TF, a: 1, why: 'It was relaxing at first; only after forty minutes did he start thinking about his emails.'},
+    {q: 'Mark liked the result of the facial, but not the experience.', o: TF, a: 0, why: 'His skin had never looked better, but he didn’t enjoy lying still.'},
+    {q: 'Olga enjoyed the yoga class more than Mark did.', o: TF, a: 1, why: 'Mark enjoyed it most; Olga found it too slow.'},
+    {q: 'Mark would like to do more yoga.', o: TF, a: 0, why: '“I’m thinking of joining a class.”'},
+    {q: 'Mark is planning to have another facial.', o: TF, a: 1, why: 'He says he probably won’t have another facial.'}
+  ], 'read');
+  RESETS.push(readReset);
+  $('#read-reset').addEventListener('click', readReset);
+
+  // ===== 8. LISTENING =====
+  const listenReset = buildMC('listen-list', [
+    {q: 'Why did Dino become a hairdresser?', o: ['His father was a barber.', 'He loved the barber’s his dad took him to as a child.', 'He wanted to live in London.'], a: 1},
+    {q: 'What does he think about specialising, for example only in colour?', o: ['A good hairdresser should do everything.', 'It’s the best way to earn more.', 'He only does cutting now.'], a: 0},
+    {q: 'Which quality does he say is important?', o: ['Working fast.', 'Selling hair products.', 'Being sociable and calming people down.'], a: 2},
+    {q: 'What does he say about women clients?', o: ['They are quieter than men.', 'They talk more and worry more about their hair.', 'They are never happy with the result.'], a: 1},
+    {q: 'What was his worst experience?', o: ['He used the wrong colour.', 'A client left without paying.', 'He cut a client’s hair a little too short and she cried.'], a: 2},
+    {q: 'A client wants her head shaved and he thinks it’s a bad idea. What does he do?', o: ['He tries to change her mind, but does it if she insists.', 'He refuses.', 'He sends her to another salon.'], a: 0},
+    {q: 'What is his tip for good hair?', o: ['Wash it every day.', 'Use good products for your hair type.', 'Have a trim every month.'], a: 1}
+  ], 'listen', {stack: true});
+  RESETS.push(listenReset);
+  $('#listen-reset').addEventListener('click', listenReset);
+
+
+  // ===== 10. HOW DID IT GO? (self-assessment, kept in this browser, sent with the homework) =====
+  const SELF = (function(){
+    const ITEMS = [
+      'I can use “have something done” to talk about things other people do for me.',
+      'I can use verb patterns like “would rather”, “let me” and “look forward to”.',
+      'I know the words for hairstyles, keeping fit and beauty treatments.',
+      'I understood the interview with the hairdresser.',
+      'I can talk about how I look after myself.'
+    ];
+    const LEVELS = ['Not yet', 'Getting there', 'Confident'];
+    const KEY = 'anastasia-8a-self';
+    let st = {marks: {}, useful: '', more: ''};
+    try { const s = JSON.parse(localStorage.getItem(KEY) || 'null'); if (s && typeof s === 'object') st = Object.assign(st, s, {marks: s.marks || {}}); } catch (e) {}
+    const save = () => { try { localStorage.setItem(KEY, JSON.stringify(st)); } catch (e) {} };
+    const list = $('#self-list');
+    ITEMS.forEach((text, i) => {
+      const scale = el('div', {class: 'scale', role: 'group', 'aria-label': 'How true is this for you?'});
+      const bs = LEVELS.map((lv, j) => {
+        const b = el('button', {type: 'button', id: 'self-' + (i + 1) + '-' + (j + 1), 'aria-pressed': String(st.marks[i] === lv), text: lv});
+        b.addEventListener('click', () => {
+          st.marks[i] = st.marks[i] === lv ? '' : lv; save();
+          bs.forEach((x, k) => x.setAttribute('aria-pressed', String(st.marks[i] === LEVELS[k])));
+        });
+        return b;
+      });
+      scale.append(...bs);
+      list.append(el('li', {class: 'self-item'}, el('span', {text: text}), scale));
+    });
+    [['#self-useful', 'useful'], ['#self-more', 'more']].forEach(([sel, k]) => {
+      const inp = $(sel);
+      inp.value = st[k] || '';
+      inp.addEventListener('input', () => { st[k] = inp.value; save(); });
+    });
+    return {
+      text(){
+        return ITEMS.map((t, i) => '- ' + t + ' → ' + (st.marks[i] || '(not marked)')).join('\n')
+          + '\nThe most useful thing today: ' + ((st.useful || '').trim() || '–')
+          + '\nNext time I would like to practise: ' + ((st.more || '').trim() || '–');
+      }
+    };
+  })();
+
+  // ===== 9. HOMEWORK: write here, send to Alena by email =====
+  (function(){
+    const MAIL = 'allapteva9@gmail.com';
+    const SUBJECT = 'Homework from Anastasia: Treat yourself (25 October)';
+    const KEY = 'anastasia-8a-review';
+    const ta = $('#hw-draft'), count = $('#hw-count'), send = $('#hw-send'), status = $('#hw-status');
+    const fb = $('#hw-fallback'), out = $('#hw-out'), mail = $('#hw-mail');
+    $('#hw-mail-addr').textContent = MAIL;
+    const words = () => ta.value.trim().split(/\s+/).filter(Boolean).length;
+    function counted(){
+      const n = words();
+      count.textContent = n + (n === 1 ? ' word' : ' words') + (n > 100 ? ': a bit long, try to keep it under 100' : ' (under 100)');
+      count.classList.toggle('over', n > 100);
+    }
+    try { ta.value = localStorage.getItem(KEY) || ''; } catch (e) {}
+    counted();
+    ta.addEventListener('input', () => { try { localStorage.setItem(KEY, ta.value); } catch (e) {} counted(); status.textContent = ''; status.className = 'send-status'; });
+    const letter = () => 'Review (' + words() + ' words):\n\n' + ta.value.trim() + '\n\nHow did it go?\n' + SELF.text();
+    function fallback(){
+      const text = letter();
+      out.value = SUBJECT + '\n\n' + text;
+      mail.href = 'mailto:' + MAIL + '?subject=' + encodeURIComponent(SUBJECT) + '&body=' + encodeURIComponent(text);
+      fb.hidden = false;
+    }
+    send.addEventListener('click', () => {
+      if (!words()){ status.className = 'send-status bad'; status.textContent = 'Write your review in the box first.'; ta.focus(); return; }
+      send.disabled = true; send.textContent = 'Sending…';
+      status.className = 'send-status'; status.textContent = '';
+      fb.hidden = true;
+      const done = (ok, msg) => {
+        send.disabled = false; send.textContent = ok ? 'Send again' : 'Send to Alena';
+        status.className = 'send-status ' + (ok ? 'ok' : 'bad');
+        status.textContent = msg;
+        if (!ok) fallback();
+      };
+      try {
+        fetch('https://formsubmit.co/ajax/' + MAIL, {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+          body: JSON.stringify({_subject: SUBJECT, _template: 'box', _captcha: 'false', Student: 'Anastasia', Lesson: 'Treat yourself, 25 October', Review: ta.value.trim(), Words: String(words()), 'How did it go': SELF.text()})
+        }).then(r => r.json()).then(d => {
+          if (String(d && d.success) === 'true') done(true, 'Sent. Alena will get it by email.');
+          else done(false, 'It could not be sent automatically. Please send it yourself, like this:');
+        }, () => done(false, 'It could not be sent automatically. Please send it yourself, like this:'));
+      } catch (e) { done(false, 'It could not be sent automatically. Please send it yourself, like this:'); }
+    });
+    $('#hw-copy').addEventListener('click', () => {
+      const pick = () => { out.focus(); out.select(); status.textContent = 'Press Ctrl+C (or ⌘C) to copy.'; };
+      try { navigator.clipboard.writeText(out.value).then(() => { status.className = 'send-status ok'; status.textContent = 'Copied. Paste it into an email or a message to Alena.'; }, pick); } catch (e) { pick(); }
+    });
+  })();
+  // ===== reset everything (two-step, no dialogs) =====
+  (function(){
+    const b = $('#reset-all');
+    let armed = false, timer = null;
+    b.addEventListener('click', () => {
+      if (!armed){
+        armed = true; b.textContent = 'Click again to reset every exercise';
+        timer = setTimeout(() => { armed = false; b.textContent = 'Reset all exercises'; }, 4000);
+        return;
+      }
+      clearTimeout(timer); armed = false; b.textContent = 'Reset all exercises';
+      RESETS.forEach(fn => fn());
+    });
+  })();
+
+  renderScores();
+})();
+</script>
+
+</html>
