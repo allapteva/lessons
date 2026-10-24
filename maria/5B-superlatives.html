@@ -1,0 +1,1000 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta charset="utf-8">
+<title>The Best in Town</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,500;0,6..96,700;1,6..96,500;1,6..96,700&family=Jost:wght@400;500;600&family=Noto+Sans:wght@400;500&display=swap">
+<style>
+/* Layout: a style-magazine spread in Dracula (Alucard by day, Dracula by night). Bodoni Moda for the big
+   headlines and italic section numbers, Jost for everything you read and tap. Thin double rules between
+   sections, like the pages of a glossy magazine; pink is the accent, purple the second voice. */
+:root{
+  --bg:#fffbeb; --surface:#fffdf6; --sunk:#f3eedb; --line:#e7e0c9; --line2:#cfcfde;
+  --text:#1f1f1f; --soft:#5a5490;
+  --accent:#a3144d; --on-accent:#ffffff; --violet:#644ac9;
+  --good:#14710a; --bad:#cb3a2a;
+  --good-bg:color-mix(in srgb, #50fa7b 18%, var(--surface));
+  --bad-bg:color-mix(in srgb, #ff5555 12%, var(--surface));
+  --mark:color-mix(in srgb, #f1fa8c 55%, var(--surface));
+  --tint:color-mix(in srgb, #ff79c6 12%, var(--surface));
+  --display:"Bodoni Moda","Didot","Bodoni 72",Georgia,serif;
+  --body:"Jost","Avenir Next","Segoe UI",system-ui,sans-serif;
+  --ipa:"Noto Sans","Charis SIL","DejaVu Sans","Lucida Sans Unicode",sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#282a36; --surface:#2f3142; --sunk:#21222c; --line:#44475a; --line2:#6272a4;
+    --text:#f8f8f2; --soft:#c3c6dd;
+    --accent:#ff79c6; --on-accent:#282a36; --violet:#bd93f9;
+    --good:#50fa7b; --bad:#ff6e6e;
+    --good-bg:color-mix(in srgb, #50fa7b 14%, var(--surface));
+    --bad-bg:color-mix(in srgb, #ff5555 18%, var(--surface));
+    --mark:color-mix(in srgb, #f1fa8c 16%, var(--surface));
+    --tint:color-mix(in srgb, #ff79c6 14%, var(--surface));
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#282a36; --surface:#2f3142; --sunk:#21222c; --line:#44475a; --line2:#6272a4;
+  --text:#f8f8f2; --soft:#c3c6dd;
+  --accent:#ff79c6; --on-accent:#282a36; --violet:#bd93f9;
+  --good:#50fa7b; --bad:#ff6e6e;
+  --good-bg:color-mix(in srgb, #50fa7b 14%, var(--surface));
+  --bad-bg:color-mix(in srgb, #ff5555 18%, var(--surface));
+  --mark:color-mix(in srgb, #f1fa8c 16%, var(--surface));
+  --tint:color-mix(in srgb, #ff79c6 14%, var(--surface));
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--text);font:400 17.5px/1.6 var(--body);-webkit-font-smoothing:antialiased}
+.page{max-width:860px;margin-inline:auto;padding-inline:16px;padding-block:40px 110px;display:flex;flex-direction:column;gap:60px}
+@media (min-width:700px){ .page{padding-inline:28px} }
+h1,h2,h3{font-family:var(--display);font-weight:700;margin:0;text-wrap:balance}
+p{margin:0}
+ol,ul{margin:0;padding:0}
+a{color:var(--accent);text-underline-offset:3px}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer;-webkit-tap-highlight-color:transparent}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
+em.acc{font-style:italic;color:var(--accent)}
+
+/* masthead */
+.mast{display:flex;flex-direction:column;gap:20px}
+.kicker{font:600 12.5px/1.3 var(--body);letter-spacing:.22em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:12px}
+.kicker::after{content:"";flex:1;height:0;border-top:1px solid var(--accent)}
+.eyebrow{font:600 12.5px/1.3 var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--soft)}
+.mast h1{font-size:clamp(46px,10vw,88px);line-height:.98;letter-spacing:-.02em}
+.mast h1 em{color:var(--accent);font-weight:500}
+.dek{font-size:clamp(18px,2.3vw,20.5px);line-height:1.5;max-width:40em}
+.meta{display:flex;flex-wrap:wrap;gap:6px 22px;margin:0;font-size:14.5px;color:var(--soft)}
+.meta div{display:flex;gap:6px}
+.meta dt{font-weight:600;color:var(--text)}
+.meta dd{margin:0}
+.duo{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:14px}
+.duo figure{margin:0;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 20px;display:flex;align-items:center;gap:16px;min-width:0}
+.duo .pic{font-size:44px;line-height:1}
+.duo figcaption{display:flex;flex-direction:column;min-width:0}
+.duo .nm{font:500 italic 22px/1.2 var(--display)}
+.duo .pr{font:600 26px/1.2 var(--body);color:var(--accent);font-variant-numeric:tabular-nums}
+.verdict{font:500 clamp(20px,2.8vw,24px)/1.45 var(--display);border-left:3px solid var(--accent);padding-left:16px}
+.verdict b{color:var(--accent);font-weight:700}
+
+.toc{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:2px 28px;counter-reset:toc;list-style:none;font-size:15.5px}
+.toc li{counter-increment:toc;display:flex;align-items:baseline;gap:10px;padding-block:7px;border-bottom:1px solid var(--line);min-width:0}
+.toc li::before{content:counter(toc);font:700 italic 16px/1 var(--display);color:var(--accent);min-width:1.4em}
+.toc a{color:var(--text);text-decoration:none;flex:1;min-width:0}
+.toc a:hover{color:var(--accent);text-decoration:underline}
+.toc .sc{font-size:13.5px;color:var(--soft);font-variant-numeric:tabular-nums;white-space:nowrap}
+
+details.plan{border:1px solid var(--line2);border-radius:12px;background:var(--surface);padding:0 20px}
+details.plan summary{cursor:pointer;padding-block:14px;font-weight:600;display:flex;justify-content:space-between;gap:12px;list-style:none}
+details.plan summary::-webkit-details-marker{display:none}
+details.plan summary::after{content:"Show";font-weight:500;font-size:14px;color:var(--accent)}
+details.plan[open] summary::after{content:"Hide"}
+.plan-body{padding-bottom:18px;display:flex;flex-direction:column;gap:12px;font-size:15.5px}
+.plan-body .aim{color:var(--soft)}
+.scroll{overflow-x:auto}
+.plan-body table{border-collapse:collapse;width:100%;min-width:520px}
+.plan-body th,.plan-body td{text-align:left;vertical-align:top;padding:8px 10px 8px 0;border-top:1px solid var(--line)}
+.plan-body th{font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);font-weight:600;border-top:0}
+.plan-body td:first-child{font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--soft);width:4.5em}
+.plan-body td:nth-child(2){font-weight:600}
+.plan-body td:nth-child(3){white-space:nowrap;color:var(--violet)}
+
+/* sections */
+.sec{display:flex;flex-direction:column;gap:20px;scroll-margin-top:16px}
+.sec-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 16px;padding-top:18px;border-top:3px double var(--text)}
+.sec-no{font:700 italic 34px/1 var(--display);color:var(--accent);min-width:1.1em}
+.sec-title{flex:1 1 300px;min-width:0;display:flex;flex-direction:column;gap:6px}
+.sec-title h2{font-size:clamp(27px,4.4vw,36px);line-height:1.1}
+.lede{color:var(--soft);max-width:62ch}
+.score{font:600 14px/1 var(--body);font-variant-numeric:tabular-nums;color:var(--soft);border:1px solid var(--line2);border-radius:999px;padding:7px 12px;white-space:nowrap}
+.score.full{color:var(--good);border-color:var(--good)}
+.sub{font:700 21px/1.3 var(--display);margin-top:6px}
+.note{font-size:15.5px;color:var(--soft);max-width:64ch}
+.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.btn{border:1px solid var(--line2);background:var(--surface);border-radius:999px;padding:8px 18px;font-weight:600;font-size:15px;line-height:1.2}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.btn.quiet{border-color:transparent;background:transparent;color:var(--soft)}
+.btn.quiet:hover{color:var(--text);border-color:var(--line2)}
+
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 20px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.panel h3{font-size:21px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:14px}
+.line{display:flex;gap:10px;align-items:flex-start;min-width:0}
+.line > span{flex:1;min-width:0}
+.plain{list-style:none;display:flex;flex-direction:column;gap:9px}
+.say{flex:none;width:30px;height:30px;border-radius:50%;border:1px solid var(--line2);background:transparent;display:inline-grid;place-items:center;color:var(--soft);padding:0}
+.say:hover{color:var(--accent);border-color:var(--accent)}
+.say svg{width:15px;height:15px}
+.ipa{font-family:var(--ipa);color:var(--violet)}
+b.hl{font-weight:600;background:var(--tint);border-radius:3px;padding:0 3px}
+.phrases{display:flex;flex-wrap:wrap;gap:8px;list-style:none}
+.phrases li{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px 14px 4px 4px;font-weight:500}
+
+/* word cards */
+.wcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:10px}
+.wcard{display:flex;gap:12px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px;min-width:0}
+.wc-pic{flex:none;width:52px;height:52px;border-radius:12px;background:var(--tint);display:grid;place-items:center;font-size:30px;line-height:1}
+.wc-pic.txt{font:700 16px/1 var(--body);color:var(--accent)}
+.wc-txt{flex:1;min-width:0;display:flex;flex-direction:column}
+.wc-txt b{font:700 19px/1.25 var(--display)}
+.wc-txt span{font-size:14.5px;color:var(--soft);line-height:1.4}
+
+/* numbers */
+.nums{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,330px),1fr));gap:6px 20px}
+.nums li{padding-block:7px;border-bottom:1px solid var(--line)}
+.nums .line > span{display:grid;grid-template-columns:6.2em minmax(0,1fr);gap:0 10px;align-items:baseline}
+.num{font:700 19px/1.3 var(--body);color:var(--accent);font-variant-numeric:tabular-nums}
+.bignum{font:700 26px/1.3 var(--body);font-variant-numeric:tabular-nums;color:var(--accent)}
+
+/* items */
+.items{list-style:none;counter-reset:it;display:flex;flex-direction:column}
+.item{counter-increment:it;display:grid;grid-template-columns:2rem minmax(0,1fr);gap:4px 10px;padding-block:14px;border-bottom:1px solid var(--line)}
+.item::before{content:counter(it);font:700 italic 17px/1.7 var(--display);color:var(--soft);grid-row:1/span 4}
+.item > *{grid-column:2;min-width:0}
+.q{font-size:18px;line-height:1.8}
+.blank{display:inline-block;min-width:5.5ch;border-bottom:2px solid var(--line2);text-align:center;line-height:1.3;padding-inline:2px}
+.blank.filled{border-color:var(--good);color:var(--good);font-weight:600}
+.opts{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.opt{border:1px solid var(--line2);background:var(--surface);border-radius:999px;padding:6px 16px;font-size:16.5px;text-align:left}
+.opt:hover:not([aria-disabled="true"]){border-color:var(--accent)}
+.opt.no{border-style:dashed;border-color:var(--bad);background:var(--bad-bg);text-decoration:line-through;text-decoration-color:var(--bad)}
+.opt.yes{border-color:var(--good);background:var(--good-bg);font-weight:600}
+.opt[aria-disabled="true"]{cursor:default}
+.why{font-size:15px;color:var(--soft)}
+.why:empty{display:none}
+.ok{color:var(--good);font-weight:600}
+
+/* grammar */
+.rules{border-collapse:collapse;width:100%;min-width:520px;font-size:16px}
+.rules th,.rules td{text-align:left;vertical-align:top;padding:9px 12px 9px 0;border-top:1px solid var(--line)}
+.rules thead th{border-top:0;font:600 12.5px/1.3 var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--soft)}
+.rules td:nth-child(2){color:var(--violet);white-space:nowrap}
+.rules td:nth-child(3){font-weight:600}
+.when{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:10px}
+.when li{background:var(--surface);border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.when li:nth-child(2){border-top-color:var(--violet)}
+.when li:nth-child(3){border-top-color:var(--soft)}
+.when .lab{font:600 12px/1.2 var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--soft)}
+.when .pat{font:700 20px/1.25 var(--display)}
+.when i{font-style:italic}
+.schwa{border-bottom:3px solid var(--accent);padding-bottom:1px}
+.weak{color:var(--soft)}
+.big-lines{font:500 21px/1.7 var(--display)}
+
+/* reading */
+.read{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px clamp(18px,4vw,30px) 26px;display:flex;flex-direction:column;gap:14px}
+.read h3{font-size:clamp(25px,3.6vw,30px);font-style:italic;font-weight:500}
+.read p{max-width:66ch;line-height:1.75}
+.read .by{font-size:13px;color:var(--accent);letter-spacing:.16em;text-transform:uppercase;font-weight:600}
+.read b{font-weight:600;background:var(--tint);border-radius:3px;padding:0 3px}
+
+/* talk */
+.talk{list-style:none;counter-reset:t;display:flex;flex-direction:column;gap:10px}
+.talk li{counter-increment:t;display:grid;grid-template-columns:1.8rem minmax(0,1fr);gap:8px;font-size:18px;line-height:1.5}
+.talk li::before{content:counter(t);font:700 italic 18px/1.5 var(--display);color:var(--accent)}
+.script{list-style:none;display:flex;flex-direction:column;gap:2px;font-size:18px}
+.script li{display:flex;gap:10px;align-items:flex-start;padding-block:7px;border-bottom:1px dashed var(--line)}
+.script li > span{flex:1;min-width:0}
+.script .who{font:600 12px/1 var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--violet);margin-right:6px}
+.cmps{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:10px}
+.cmp{display:flex;flex-direction:column;align-items:flex-start;gap:6px;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px;min-width:0}
+.cmp:hover{border-color:var(--accent)}
+.cmp[aria-expanded="true"]{border-color:var(--accent);background:var(--tint)}
+.cmp-e{font-size:30px;line-height:1.1}
+.cmp-t{font:700 19px/1.3 var(--display)}
+.cmp-hint{font-size:13.5px;color:var(--soft)}
+.cmp[aria-expanded="true"] .cmp-hint{display:none}
+.cmp-ideas{font-size:15.5px;color:var(--text)}
+.cmp-ideas b{color:var(--accent)}
+.extra{border:1px solid var(--line2);border-radius:14px;padding:16px 20px;display:flex;gap:14px;align-items:flex-start;background:var(--surface)}
+.extra .tag{flex:none;font:600 12px/1 var(--body);letter-spacing:.1em;text-transform:uppercase;background:var(--tint);color:var(--accent);border-radius:999px;padding:7px 11px}
+.extra p{min-width:0}
+footer.fin{color:var(--soft);font-size:14.5px;border-top:1px solid var(--line2);padding-top:18px}
+
+/* teacher-only parts: every one sits between a pair of T comment markers, which scripts/student-site.sh cuts out of the student copy */
+.tbadge{align-self:flex-start;font:600 12.5px/1 var(--body);letter-spacing:.1em;text-transform:uppercase;background:var(--mark);border-radius:6px;padding:7px 10px}
+.tnote{border:1px dashed var(--line2);background:var(--mark);border-radius:10px;padding:12px 16px;font-size:15px;line-height:1.5;display:flex;flex-direction:column;gap:6px}
+.tnote b:first-child{font:600 12px/1.2 var(--body);letter-spacing:.1em;text-transform:uppercase}
+.tnote p{max-width:72ch}
+.key{font-size:14.5px;background:var(--mark);border-radius:6px;padding:2px 8px;justify-self:start}
+[data-view="student"] .tnote,[data-view="student"] .key,[data-view="student"] .tbadge{display:none}
+/* lesson notes (teacher's page only): a quick strip under every section and a notes block at the bottom */
+.tn{border:1px dashed var(--line2);background:var(--mark);border-radius:10px;padding:10px 14px 12px;display:flex;flex-direction:column;gap:8px;font-size:14.5px}
+.tn-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.tn-lab{font:600 12px/1.2 var(--body);letter-spacing:.1em;text-transform:uppercase;min-width:9.5em}
+.tn-chip{border:1px solid var(--line2);background:var(--surface);border-radius:999px;padding:4px 12px;font-size:14.5px;line-height:1.3}
+.tn-chip:hover{border-color:var(--accent)}
+.tn-chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-weight:600}
+.tn-text{width:100%;border:1px solid var(--line2);border-radius:8px;background:var(--surface);padding:6px 10px;font-size:15px}
+.tn-final{display:flex;flex-direction:column;gap:16px;border-top:3px double var(--text);padding-top:20px;scroll-margin-top:104px}
+.tn-final h2{font-size:clamp(27px,4.4vw,36px);line-height:1.1}
+.tn-field{display:flex;flex-direction:column;gap:6px}
+.tn-field label{font-weight:600}
+.tn-field textarea{width:100%;min-height:130px;border:1px solid var(--line2);border-radius:8px;background:var(--surface);padding:10px 12px;font-size:16.5px;line-height:1.5;resize:vertical}
+.tn-sum table{border-collapse:collapse;width:100%;min-width:480px;font-size:15px}
+.tn-sum th,.tn-sum td{text-align:left;vertical-align:top;padding:7px 10px 7px 0;border-top:1px solid var(--line)}
+.tn-sum th{font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);font-weight:600;border-top:0}
+.tn-sum td:first-child{color:var(--soft);font-variant-numeric:tabular-nums;width:2em}
+.tn-status{font-size:14.5px;color:var(--soft)}
+.tn-out{width:100%;min-height:160px;border:1px solid var(--line2);border-radius:8px;background:var(--surface);padding:10px 12px;font:14px/1.45 ui-monospace,Menlo,monospace}
+/* lesson timer (teacher's page only) */
+.tmr{position:sticky;top:0;z-index:20;margin-top:-40px;margin-bottom:-36px;background:var(--surface);border:1px solid var(--line2);border-top:0;border-radius:0 0 12px 12px;padding:8px 12px 10px;display:flex;flex-direction:column;gap:8px;box-shadow:0 6px 18px rgb(0 0 0 / .16)}
+.tm-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;min-width:0}
+.tm-go{flex:none;border:0;border-radius:999px;background:var(--accent);color:var(--on-accent);font-weight:600;padding:6px 16px;min-width:5.8em}
+.tm-clock{flex:none;font:600 19px/1 var(--body);font-variant-numeric:tabular-nums}
+.tm-clock small{font-size:13px;font-weight:500;color:var(--soft)}
+.tm-clock.over{color:var(--bad)}
+.tm-now{flex:1;min-width:0;font-size:14.5px;color:var(--soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tm-reset{flex:none;border:1px solid var(--line2);background:none;border-radius:999px;padding:5px 12px;font-size:14px}
+.tm-bar{display:flex;gap:3px;height:24px}
+.tm-seg{position:relative;flex-basis:0;min-width:0;border-radius:5px;overflow:hidden;background:color-mix(in srgb,var(--c) 30%,#f8f8f2);color:#282a36;text-decoration:none;font:600 12px/24px var(--body);text-align:center}
+.tm-seg i{position:absolute;inset:0 auto 0 0;width:0;background:color-mix(in srgb,var(--c) 85%,#fff)}
+.tm-seg b{position:relative}
+.tm-seg.now{box-shadow:inset 0 0 0 2px #282a36}
+[data-view="student"] .sec{scroll-margin-top:104px}
+@media (max-width:520px){ .tm-now{display:none} .tm-row{justify-content:space-between} }
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.shake{animation:shake .28s ease}
+@media (prefers-reduced-motion: reduce){ *{transition:none!important;animation:none!important;scroll-behavior:auto!important} }
+/* pictures for new words: one thing each, on a white card (white in dark mode too) */
+.wpic{flex:none;width:92px;height:92px;border-radius:14px;background:#ffffff;display:grid;place-items:center;overflow:hidden}
+.wpic svg{width:94%;height:94%}
+.dark-ring .wpic{box-shadow:0 0 0 1px var(--line)}
+.wcard .wpic{box-shadow:0 0 0 1px var(--line)}
+.qpic{width:150px;height:150px;box-shadow:0 0 0 1px var(--line);margin-bottom:4px}
+.pairs{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:10px}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.pair .wcard{border:0;border-radius:0;flex-direction:column;align-items:flex-start;gap:8px;padding:14px}
+.cols{grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr))}
+.cols .wcard{flex-direction:column;align-items:flex-start;gap:8px}
+.wc-top{display:flex;align-items:center;justify-content:space-between;width:100%;gap:8px}
+.pair .wc-top{display:flex;align-items:center;justify-content:space-between;width:100%;gap:8px}
+/* stress dots */
+.s{position:relative;font-weight:700}
+.s::before{content:"";position:absolute;left:50%;top:-.3em;width:.32em;height:.32em;margin-left:-.16em;border-radius:50%;background:var(--accent)}
+.dotted{line-height:2.2}
+/* sentence starters */
+.starters{display:flex;flex-wrap:wrap;gap:8px;list-style:none}
+.starters li{background:var(--tint);border-radius:999px;padding:5px 14px;font-weight:500}
+/* wheel of questions */
+.wheel-wrap{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:20px;align-items:center}
+.wheel-box{position:relative;width:min(100%,280px);aspect-ratio:1;margin-inline:auto}
+.wheel-box svg.wheel{width:100%;height:100%;transition:transform 2.6s cubic-bezier(.17,.67,.21,1);transform:rotate(0deg)}
+.wheel-pin{position:absolute;left:50%;top:-6px;width:0;height:0;margin-left:-11px;border-left:11px solid transparent;border-right:11px solid transparent;border-top:20px solid var(--text);z-index:2}
+.wheel-side{display:flex;flex-direction:column;gap:14px;min-width:0}
+.wheel-q{font:500 clamp(21px,3vw,25px)/1.4 var(--display);min-height:3em}
+.wheel-q.empty{color:var(--soft);font-style:italic}
+.talk li.hit{color:var(--accent);font-weight:600}
+.talk li.done{color:var(--soft)}
+</style>
+
+<main class="page" data-view="student">
+
+
+  <header class="mast">
+    <p class="kicker">The city issue</p>
+    <h1>The best <em>in town</em></h1>
+    <p class="dek">Cities, streets and your favourite places. Today you learn words to describe a town, and how to say which place is the biggest, the most beautiful and the best.</p>
+    <p class="verdict">Moscow is <b>bigger than</b> Kazan. Moscow is <b>the biggest</b> city in Russia.</p>
+  </header>
+
+  <nav aria-label="Contents"><ol class="toc" id="toc"></ol></nav>
+
+
+  <!-- 1 -->
+  <section class="sec" id="gossip" data-title="Gossip corner">
+    <header class="sec-head">
+      <span class="sec-no">1</span>
+      <div class="sec-title"><h2>Gossip corner</h2><p class="lede">What&rsquo;s new? Tell your news, and ask questions back.</p></div>
+    </header>
+    <ol class="talk">
+      <li>How was your week? Tell me one good thing and one bad thing.</li>
+      <li>What did you do yesterday evening?</li>
+      <li>How is Lu? Where do you usually walk together?</li>
+      <li>What are your plans for the weekend?</li>
+      <li>Any news from friends or family? Tell me!</li>
+    </ol>
+    <ul class="phrases">
+      <li data-say>Guess what!</li>
+      <li data-say>Really?</li>
+      <li data-say>No way!</li>
+      <li data-say>What happened then?</li>
+      <li data-say>Tell me more!</li>
+    </ul>
+  </section>
+
+  <!-- 2 -->
+  <section class="sec" id="recap" data-title="Last time: comparatives">
+    <header class="sec-head">
+      <span class="sec-no">2</span>
+      <div class="sec-title"><h2>Last time: comparatives</h2><p class="lede">Two things. Which is bigger, faster, better? Choose, then say the whole sentence.</p></div>
+      <span class="score" data-score="recap">0 / 0</span>
+    </header>
+    <ol class="items" id="recap-list"></ol>
+    <div class="tools"><button type="button" class="btn" id="recap-reset">Start again</button></div>
+  </section>
+
+  <!-- 3 -->
+  <section class="sec" id="adj" data-title="What’s it like? Words for a city">
+    <header class="sec-head">
+      <span class="sec-no">3</span>
+      <div class="sec-title"><h2>What&rsquo;s it like?</h2><p class="lede">Twelve words to describe a town or a city, in pairs of opposites. Listen, say each word, then do the quiz.</p></div>
+      <span class="score" data-score="adj">0 / 0</span>
+    </header>
+    <div class="pairs" id="adj-cards"></div>
+    <h3 class="sub">Quiz: which word?</h3>
+    <ol class="items" id="adj-list"></ol>
+    <div class="tools"><button type="button" class="btn" id="adj-reset">Start again</button></div>
+  </section>
+
+  <!-- 4 -->
+  <section class="sec" id="places" data-title="What is there to see?">
+    <header class="sec-head">
+      <span class="sec-no">4</span>
+      <div class="sec-title"><h2>What is there to see?</h2><p class="lede">Eight places in a town. Listen and say them. Then look at each picture and choose the word.</p></div>
+      <span class="score" data-score="places">0 / 0</span>
+    </header>
+    <div class="wcards cols" id="place-cards"></div>
+    <h3 class="sub">Quiz: what is it?</h3>
+    <ol class="items" id="places-list"></ol>
+    <div class="tools"><button type="button" class="btn" id="places-reset">Start again</button></div>
+  </section>
+
+  <!-- 5 -->
+  <section class="sec" id="rules" data-title="The biggest, the most beautiful: the rules">
+    <header class="sec-head">
+      <span class="sec-no">5</span>
+      <div class="sec-title"><h2>The biggest, the most beautiful</h2><p class="lede">Two things: a comparative. Three or more: a superlative, always with <i>the</i>. Listen to the examples and repeat them.</p></div>
+    </header>
+    <ul class="when">
+      <li><span class="lab">Two things</span><span class="pat">-er / more + than</span><span><i>Moscow is <b class="hl">bigger than</b> Kazan.</i></span></li>
+      <li><span class="lab">Three or more</span><span class="pat">the -est / the most</span><span><i>Moscow is <b class="hl">the biggest</b> city in Russia.</i></span></li>
+      <li><span class="lab">A phrase to learn</span><span class="pat">the best … I’ve ever …</span><span><i>It’s <b class="hl">the best</b> pizza <b class="hl">I’ve ever</b> eaten!</i></span></li>
+    </ul>
+    <div class="panel">
+      <h3>How to make it</h3>
+      <div class="scroll">
+        <table class="rules">
+          <thead><tr><th>Adjective</th><th>Rule</th><th>Superlative</th></tr></thead>
+          <tbody>
+            <tr><td>cheap, old, small</td><td>the + est</td><td>the cheapest, the oldest</td></tr>
+            <tr><td>nice, safe</td><td>the + st</td><td>the nicest, the safest</td></tr>
+            <tr><td>big, hot</td><td>one vowel + one consonant: double it</td><td>the biggest, the hottest</td></tr>
+            <tr><td>busy, noisy, pretty</td><td>y &rarr; iest</td><td>the busiest, the noisiest</td></tr>
+            <tr><td>beautiful, crowded, expensive</td><td>the most + adjective</td><td>the most beautiful, the most crowded</td></tr>
+            <tr><td>good, bad, far</td><td>different word</td><td>the best, the worst, the furthest</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="panel">
+      <h3>Listen and repeat</h3>
+      <ul class="plain">
+        <li class="line" data-say><span>Moscow is the biggest city in Russia.</span></li>
+        <li class="line" data-say><span>This is the oldest building in the town.</span></li>
+        <li class="line" data-say><span>Saturday is the busiest day at the market.</span></li>
+        <li class="line" data-say><span>It’s the most beautiful place I’ve ever been to.</span></li>
+        <li class="line" data-say><span>That was the best pizza I’ve ever eaten!</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 6 -->
+  <section class="sec" id="practice" data-title="Practice: choose the right form">
+    <header class="sec-head">
+      <span class="sec-no">6</span>
+      <div class="sec-title"><h2>Practice: choose the right form</h2><p class="lede">Choose, then say the whole sentence aloud. Careful: two things or more?</p></div>
+      <span class="score" data-score="practice">0 / 0</span>
+    </header>
+    <ol class="items" id="practice-list"></ol>
+    <div class="tools"><button type="button" class="btn" id="practice-reset">Start again</button></div>
+  </section>
+
+  <!-- 7 -->
+  <section class="sec" id="reading" data-title="Reading: three cities, one winner">
+    <header class="sec-head">
+      <span class="sec-no">7</span>
+      <div class="sec-title"><h2>Reading: three cities, one winner</h2><p class="lede">Remember Kate and her dog Bella? Read about her trips. Then decide: true or false?</p></div>
+      <span class="score" data-score="tf">0 / 0</span>
+    </header>
+    <article class="read">
+      <p class="by">Kate&rsquo;s travel notes</p>
+      <h3>Three cities, one winner</h3>
+      <p>This year Kate visited three cities: Rome, Prague and Stockholm. Which one was the best?</p>
+      <p>Rome was <b>the hottest</b> and <b>the most crowded</b>. There were tourists everywhere, but the food was fantastic. &ldquo;It was <b>the best</b> pizza I&rsquo;ve ever eaten!&rdquo; says Kate.</p>
+      <p>Prague was <b>the cheapest</b>. Kate loved the old town, with its famous bridge and the castle on the hill. It&rsquo;s <b>the most romantic</b> city of the three.</p>
+      <p>Stockholm was <b>the most expensive</b>, but it was also <b>the cleanest</b> and <b>the quietest</b>. Every evening Kate walked by the harbour and watched the boats.</p>
+      <p>&ldquo;For food, Rome. For a cheap weekend, Prague. But for a relaxing weekend, Stockholm is the best,&rdquo; she says.</p>
+    </article>
+    <ol class="items" id="tf-list"></ol>
+    <div class="tools"><button type="button" class="btn" id="tf-reset">Start again</button></div>
+  </section>
+
+  <!-- 8 -->
+  <section class="sec" id="stress" data-title="Strong words">
+    <header class="sec-head">
+      <span class="sec-no">8</span>
+      <div class="sec-title"><h2>Strong words</h2><p class="lede">In a question, the important words are strong and clear; the small words are quick. A dot marks a strong word. Listen and repeat.</p></div>
+    </header>
+    <ul class="plain panel dotted big-lines">
+      <li class="line" data-say="What’s the best restaurant in your city?"><span>What’s the <span class="s">best</span> <span class="s">res</span>taurant in your <span class="s">ci</span>ty?</span></li>
+      <li class="line" data-say="What’s the biggest shop in your town?"><span>What’s the <span class="s">big</span>gest <span class="s">shop</span> in your <span class="s">town</span>?</span></li>
+      <li class="line" data-say="Who’s the best driver in your family?"><span>Who’s the <span class="s">best</span> <span class="s">dri</span>ver in your <span class="s">fa</span>mily?</span></li>
+      <li class="line" data-say="What’s the most beautiful place you’ve ever been to?"><span>What’s the most <span class="s">beau</span>tiful <span class="s">place</span> you’ve <span class="s">e</span>ver <span class="s">been</span> <span class="s">to</span>?</span></li>
+    </ul>
+  </section>
+
+  <!-- 9 -->
+  <section class="sec" id="listen" data-title="Listening: twelve lost wallets">
+    <header class="sec-head">
+      <span class="sec-no">9</span>
+      <div class="sec-title"><h2>Listening: twelve lost wallets</h2><p class="lede">Journalists &ldquo;lost&rdquo; twelve wallets with money in sixteen cities. Which city was the most honest? Listen and choose. (<i>Honest</i> = you don&rsquo;t take what isn&rsquo;t yours. <i>The least honest</i> = the opposite of the most honest.)</p></div>
+      <span class="score" data-score="listen">0 / 0</span>
+    </header>
+    <ol class="items" id="listen-list"></ol>
+    <div class="tools"><button type="button" class="btn" id="listen-reset">Start again</button></div>
+  </section>
+
+  <!-- 10 -->
+  <section class="sec" id="city" data-title="Your city">
+    <header class="sec-head">
+      <span class="sec-no">10</span>
+      <div class="sec-title"><h2>Your city</h2><p class="lede">Tell your teacher about the place where you live. Use the words from today.</p></div>
+    </header>
+    <ol class="talk">
+      <li>Where do you live? Is it a big city or a small town?</li>
+      <li>What’s it like? Noisy or quiet? Modern or historic? Safe?</li>
+      <li>What is there to see? Is there a castle, a museum, a market?</li>
+      <li>What’s the best place for a walk with Lu?</li>
+      <li>What’s the best thing about your city? And the worst?</li>
+    </ol>
+    <ul class="starters">
+      <li>I live in…</li>
+      <li>It’s a … city.</li>
+      <li>There’s a beautiful…</li>
+      <li>The best … is …</li>
+      <li>It isn’t as … as …</li>
+    </ul>
+  </section>
+
+  <!-- 11 -->
+  <section class="sec" id="wheel" data-title="Wheel of questions">
+    <header class="sec-head">
+      <span class="sec-no">11</span>
+      <div class="sec-title"><h2>Wheel of questions</h2><p class="lede">Spin the wheel and answer the question. Then ask your teacher the same question.</p></div>
+    </header>
+    <div class="wheel-wrap">
+      <div class="wheel-box"><span class="wheel-pin" aria-hidden="true"></span><svg class="wheel" id="wheel-svg" viewBox="0 0 100 100" aria-hidden="true"></svg></div>
+      <div class="wheel-side">
+        <p class="wheel-q empty" id="wheel-q" aria-live="polite">Press Spin.</p>
+        <div class="tools"><button type="button" class="btn primary" id="wheel-spin">Spin</button></div>
+      </div>
+    </div>
+    <ol class="talk" id="wheel-list"></ol>
+    <div class="extra"><span class="tag">Just for fun</span><p>Only if you want: find a photo of the most beautiful place you&rsquo;ve ever been to, and show it to Alena next time.</p></div>
+  </section>
+
+</main>
+
+<script>
+(function(){
+  'use strict';
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+  // the teacher's page shows the answers; scripts/student-site.sh turns data-view into "student"
+  const TEACHER = (($('main.page') || document.body).getAttribute('data-view')) === 'teacher';
+
+  // lesson timer: one coloured segment per section, as long as that section's minutes
+  if (TEACHER && $('#tmr')) (function(){
+    const box = $('#tmr'), go = $('#tm-go'), clock = $('#tm-clock'), now = $('#tm-now'), bar = $('#tm-bar');
+    const COLORS = ['#ff79c6', '#bd93f9', '#8be9fd', '#50fa7b', '#ffb86c', '#f1fa8c', '#ff5555', '#6272a4'];
+    const KEY = 'lesson-timer:' + document.title;
+    const fmt = s => Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0');
+    let from = 0;
+    const segs = box.dataset.segs.split(',').map((part, i) => {
+      const bits = part.split(':'), sec = document.getElementById(bits[0]), len = (+bits[1] || 1) * 60;
+      const a = document.createElement('a'), fill = document.createElement('i'), num = document.createElement('b');
+      const title = (sec && sec.dataset.title) || bits[0];
+      a.className = 'tm-seg'; a.href = '#' + bits[0];
+      a.style.flexGrow = len; a.style.setProperty('--c', COLORS[i % COLORS.length]);
+      a.title = (i + 1) + '. ' + title + ' · ' + (len / 60) + ' min';
+      a.setAttribute('aria-label', a.title);
+      num.textContent = i + 1;
+      a.append(fill, num); bar.append(a);
+      const seg = {a, fill, title, n: i + 1, from, len};
+      from += len;
+      return seg;
+    });
+    const total = from;
+    let base = 0, t0 = null, tick = null;
+    try {
+      const saved = JSON.parse(localStorage.getItem(KEY) || 'null');
+      if (saved && (!saved.t0 || (Date.now() - saved.t0) / 1000 + saved.base < total + 1800)) { base = +saved.base || 0; t0 = saved.t0 || null; }
+    } catch (e) {}
+    const save = () => { try { localStorage.setItem(KEY, JSON.stringify({base, t0})); } catch (e) {} };
+    const elapsed = () => base + (t0 ? (Date.now() - t0) / 1000 : 0);
+    function render(){
+      const s = elapsed();
+      clock.innerHTML = '';
+      const small = document.createElement('small');
+      small.textContent = ' / ' + fmt(total);
+      clock.append(fmt(s), small);
+      clock.classList.toggle('over', s >= total);
+      let cur = null;
+      segs.forEach(g => {
+        const done = Math.max(0, Math.min(1, (s - g.from) / g.len));
+        g.fill.style.width = (done * 100) + '%';
+        const on = s >= g.from && s < g.from + g.len && (t0 || s > 0);
+        g.a.classList.toggle('now', !!on);
+        if (on) cur = g;
+      });
+      now.textContent = cur ? cur.n + '. ' + cur.title + ' · ' + fmt(cur.from + cur.len - s + 0.999) + ' left'
+        : s >= total ? 'Time is up · ' + fmt(s - total) + ' over' : segs.length + ' sections';
+      go.textContent = t0 ? 'Pause' : s > 0 ? 'Continue' : 'Start';
+    }
+    function run(){ clearInterval(tick); if (t0) tick = setInterval(render, 500); render(); }
+    go.addEventListener('click', () => {
+      if (t0) { base = elapsed(); t0 = null; } else { t0 = Date.now(); }
+      save(); run();
+    });
+    $('#tm-reset').addEventListener('click', () => { base = 0; t0 = null; save(); run(); });
+    run();
+  })();
+
+  // lesson notes: a quick strip under every section, a notes block at the bottom, saved as one file
+  if (TEACHER && $('#tmr') && $('#tmr').dataset.notes) (function(){
+    const where = $('#tmr').dataset.notes.split('/');           // student / lesson folder
+    const FILE = where.join('-') + '-notes.md';
+    const KEY = 'lesson-notes:' + where.join('/');
+    const MARKS = ['Easy', 'OK', 'Hard', 'Skipped'];
+    const TAGS = ['Grammar', 'Words', 'Pronunciation', 'Speaking', 'Understanding', 'Too slow'];
+    const HW = ['Done', 'Partly', 'Not done'];
+    let st = {sec: {}, hw: '', went: '', next: ''};
+    try {
+      const saved = JSON.parse(localStorage.getItem(KEY) || 'null');
+      if (saved && typeof saved === 'object') st = Object.assign(st, saved, {sec: saved.sec || {}});
+    } catch (e) {}
+    const secs = $$('main.page > section.sec').map((sec, i) => ({id: sec.id, n: i + 1, title: sec.dataset.title || sec.id, sec}));
+    const of = id => st.sec[id] || (st.sec[id] = {mark: '', tags: [], text: ''});
+    const status = el('p', {class: 'tn-status', id: 'tn-status', role: 'status'});
+    const sumBody = el('tbody');
+    function changed(){
+      try { localStorage.setItem(KEY, JSON.stringify(st)); } catch (e) {}
+      summary();
+      status.textContent = 'Kept in this browser. Press “Save notes” at the end of the lesson to make the file.';
+    }
+    function chip(label, id, isOn, toggle){
+      const b = el('button', {type: 'button', class: 'tn-chip', id, 'aria-pressed': String(isOn()), text: label});
+      b.addEventListener('click', () => { toggle(); changed(); b.closest('.tn-row').querySelectorAll('.tn-chip').forEach(x => x.setAttribute('aria-pressed', String(x._on()))); });
+      b._on = isOn;
+      return b;
+    }
+    function row(label, chips){ return el('div', {class: 'tn-row'}, el('span', {class: 'tn-lab', text: label}), ...chips); }
+
+    secs.forEach(s => {
+      const d = of(s.id);
+      const text = el('input', {type: 'text', class: 'tn-text', id: 'tn-' + s.id + '-text', placeholder: 'A quick note: what was hard, what to repeat', 'aria-label': 'Note for section ' + s.n, autocomplete: 'off'});
+      text.value = d.text || '';
+      text.addEventListener('input', () => { d.text = text.value; changed(); });
+      s.sec.append(el('div', {class: 'tn', role: 'group', 'aria-label': 'Notes for section ' + s.n},
+        row('How it went', MARKS.map(m => chip(m, 'tn-' + s.id + '-m-' + m.toLowerCase(), () => d.mark === m, () => { d.mark = d.mark === m ? '' : m; }))),
+        row('What was hard', TAGS.map(g => chip(g, 'tn-' + s.id + '-t-' + g.toLowerCase().replace(/\s+/g, '-'), () => d.tags.includes(g), () => { d.tags = d.tags.includes(g) ? d.tags.filter(x => x !== g) : d.tags.concat(g); }))),
+        text));
+    });
+
+    function summary(){
+      sumBody.replaceChildren(...secs.map(s => {
+        const d = of(s.id);
+        return el('tr', null, el('td', {text: String(s.n)}), el('td', {text: s.title}), el('td', {text: d.mark || '–'}), el('td', {text: d.tags.join(', ') || '–'}), el('td', {text: d.text || '–'}));
+      }));
+    }
+    function area(id, label, key, hint){
+      const ta = el('textarea', {id, placeholder: hint});
+      ta.value = st[key] || '';
+      ta.addEventListener('input', () => { st[key] = ta.value; changed(); });
+      return el('div', {class: 'tn-field'}, el('label', {for: id, text: label}), ta);
+    }
+    const cell = v => String(v || '–').replace(/\|/g, '/').replace(/\s*\n\s*/g, ' ');
+    function markdown(){
+      const now = new Date(), two = n => String(n).padStart(2, '0');
+      const stamp = now.getFullYear() + '-' + two(now.getMonth() + 1) + '-' + two(now.getDate()) + ' ' + two(now.getHours()) + ':' + two(now.getMinutes());
+      const lines = ['# Lesson notes: ' + document.title, '',
+        'Lesson folder: ' + where.join('/') + '. Notes saved ' + stamp + '.', '',
+        '## Section by section', '',
+        '| # | Section | How it went | What was hard | Note |', '|---|---|---|---|---|'];
+      secs.forEach(s => { const d = of(s.id); lines.push('| ' + [s.n, cell(s.title), cell(d.mark), cell(d.tags.join(', ')), cell(d.text)].join(' | ') + ' |'); });
+      lines.push('', '## Homework brought to this lesson', '', st.hw || 'Not marked.', '',
+        '## How the lesson went', '', (st.went || '').trim() || 'No notes.', '',
+        '## Practise next time', '', (st.next || '').trim() || 'No notes.', '');
+      return lines.join('\n');
+    }
+    const out = el('textarea', {class: 'tn-out', id: 'tn-out', readonly: '', hidden: '', 'aria-label': 'Your notes as text'});
+    const save = el('button', {type: 'button', class: 'btn primary', id: 'tn-save', text: 'Save notes'});
+    save.addEventListener('click', () => {
+      try {
+        const a = el('a', {href: URL.createObjectURL(new Blob([markdown()], {type: 'text/markdown;charset=utf-8'})), download: FILE});
+        document.body.append(a); a.click(); a.remove();
+        setTimeout(() => { try { URL.revokeObjectURL(a.href); } catch (e) {} }, 4000);
+        status.textContent = 'Saved as “' + FILE + '” in your Downloads folder. Tell Claude the lesson is done and it goes into the lesson folder.';
+      } catch (e) {
+        out.hidden = false; out.value = markdown(); out.focus(); out.select();
+        status.textContent = 'The file could not be saved here. Copy this text and send it to Claude.';
+      }
+    });
+    const copy = el('button', {type: 'button', class: 'btn', id: 'tn-copy', text: 'Copy notes'});
+    copy.addEventListener('click', () => {
+      const text = markdown();
+      const show = () => { out.hidden = false; out.value = text; out.focus(); out.select(); status.textContent = 'Press ⌘C to copy the notes.'; };
+      try { navigator.clipboard.writeText(text).then(() => { status.textContent = 'Notes copied.'; }, show); } catch (e) { show(); }
+    });
+    let armed = null;
+    const clear = el('button', {type: 'button', class: 'btn quiet', id: 'tn-clear', text: 'Clear notes'});
+    clear.addEventListener('click', () => {
+      if (!armed) { clear.textContent = 'Press again to clear everything'; armed = setTimeout(() => { armed = null; clear.textContent = 'Clear notes'; }, 4000); return; }
+      clearTimeout(armed);
+      try { localStorage.removeItem(KEY); } catch (e) {}
+      location.reload();
+    });
+
+    const fin = el('section', {class: 'tn-final', id: 'lesson-notes', 'aria-label': 'Lesson notes'},
+      el('h2', {text: 'Lesson notes'}),
+      el('div', {class: 'tn'}, row('Her homework', HW.map(h => chip(h, 'tn-hw-' + h.toLowerCase().replace(/\s+/g, '-'), () => st.hw === h, () => { st.hw = st.hw === h ? '' : h; })))),
+      area('tn-went', 'How the lesson went', 'went', 'Your thoughts about the lesson'),
+      area('tn-next', 'Practise next time', 'next', 'What to come back to in the next lessons'),
+      el('div', {class: 'tn-sum scroll'}, el('table', null, el('thead', null, el('tr', null, ...['#', 'Section', 'How it went', 'What was hard', 'Note'].map(h => el('th', {text: h})))), sumBody)),
+      el('div', {class: 'tools'}, save, copy, clear),
+      status, out);
+    const last = secs[secs.length - 1];
+    if (last) last.sec.after(fin); else $('main.page').append(fin);
+    summary();
+    status.textContent = 'Notes are kept in this browser while you work. Press “Save notes” at the end of the lesson.';
+  })();
+
+  function el(tag, props, ...kids){
+    const e = document.createElement(tag);
+    if (props) for (const k of Object.keys(props)){
+      const v = props[k];
+      if (v == null) continue;
+      if (k === 'class') e.className = v;
+      else if (k === 'text') e.textContent = v;
+      else e.setAttribute(k, v);
+    }
+    for (const k of kids) if (k != null) e.append(k);
+    return e;
+  }
+  // wrong-answer shake clears itself
+  function nudge(e){ e.classList.remove('shake'); void e.offsetWidth; e.classList.add('shake'); setTimeout(() => e.classList.remove('shake'), 400); }
+
+  // ---------- speech ----------
+  const synth = window.speechSynthesis;
+  let voice = null;
+  function pickVoice(){
+    try {
+      const vs = synth ? synth.getVoices() : [];
+      voice = vs.find(v => v.lang === 'en-GB') || vs.find(v => /^en[-_]GB/i.test(v.lang)) || vs.find(v => /^en[-_]/i.test(v.lang)) || null;
+    } catch (e) { voice = null; }
+  }
+  if (synth){ pickVoice(); try { synth.addEventListener('voiceschanged', pickVoice); } catch (e) {} }
+  function speak(text){
+    try {
+      if (!synth) return;
+      synth.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = 'en-GB'; if (voice) u.voice = voice; u.rate = 0.85;
+      synth.speak(u);
+    } catch (e) {}
+  }
+  const SPEAKER = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>';
+  function sayButton(text, id){
+    const b = el('button', {type: 'button', class: 'say', id: id, 'aria-label': 'Listen: ' + text});
+    b.innerHTML = SPEAKER;
+    b.addEventListener('click', () => speak(text));
+    return b;
+  }
+
+  // ---------- scores ----------
+  const SCORE = {};
+  const SECTIONS = [];
+  $$('.sec').forEach((sec, i) => {
+    const sc = $('.score', sec);
+    SECTIONS.push({id: sec.id, no: i + 1, title: sec.dataset.title, parts: sc ? sc.dataset.score.split(' ') : []});
+  });
+  function partsTotal(parts){
+    let got = 0, total = 0;
+    parts.forEach(p => { if (SCORE[p]){ got += SCORE[p].got; total += SCORE[p].total; } });
+    return {got, total};
+  }
+  function setScore(key, got, total){ SCORE[key] = {got, total}; renderScores(); }
+  let tocBuilt = false;
+  function renderScores(){
+    $$('.score[data-score]').forEach(s => {
+      const t = partsTotal(s.dataset.score.split(' '));
+      s.textContent = t.got + ' / ' + t.total + ' correct';
+      s.classList.toggle('full', t.total > 0 && t.got === t.total);
+    });
+    const toc = $('#toc');
+    if (!tocBuilt){
+      SECTIONS.forEach(s => {
+        const li = el('li', null, el('a', {href: '#' + s.id, text: s.title}));
+        if (s.parts.length) li.append(el('span', {class: 'sc', 'data-toc': s.id}));
+        toc.append(li);
+      });
+      tocBuilt = true;
+    }
+    $$('[data-toc]').forEach(x => { const s = SECTIONS.find(q => q.id === x.dataset.toc); const t = partsTotal(s.parts); x.textContent = t.got + ' / ' + t.total; });
+  }
+
+  // sentence with one ___ ; returns {frag, blank}
+  function withBlank(str, make){
+    const f = document.createDocumentFragment();
+    let blank = null;
+    str.split('___').forEach((part, i) => {
+      if (i > 0){ blank = make(); f.append(blank); }
+      if (part) f.append(document.createTextNode(part));
+    });
+    return {frag: f, blank};
+  }
+
+  // ---------- multiple choice: {q, o:[...], a:index, why, big?} ----------
+  function buildMC(listId, items, key){
+    const list = $('#' + listId);
+    let state = [];
+    function score(){ setScore(key, state.filter(s => s.done && !s.missed).length, items.length); }
+    function render(){
+      list.replaceChildren();
+      state = items.map((it, i) => {
+        const st = {done: false, missed: false};
+        const r = withBlank(it.q, () => el('span', {class: 'blank', 'aria-label': 'gap'}, ' '));
+        const li = el('li', {class: 'item'});
+        const q = el('p', {class: it.big ? 'q bignum' : 'q'}); q.append(r.frag);
+        const opts = el('div', {class: 'opts', role: 'group', 'aria-label': 'Options for item ' + (i + 1)});
+        const why = el('p', {class: 'why', 'aria-live': 'polite'});
+        it.o.forEach((o, j) => {
+          const b = el('button', {type: 'button', class: 'opt', id: listId + '-' + i + '-' + j, text: o});
+          b.addEventListener('click', () => {
+            if (st.done || b.classList.contains('no')) return;
+            if (j === it.a){
+              st.done = true;
+              b.classList.add('yes');
+              $$('.opt', opts).forEach(x => x.setAttribute('aria-disabled', 'true'));
+              if (r.blank){ r.blank.textContent = o; r.blank.classList.add('filled'); }
+              why.replaceChildren(el('span', {class: 'ok', text: st.missed ? 'Got it. ' : 'Correct. '}), it.why || '');
+            } else {
+              st.missed = true;
+              b.classList.add('no'); b.setAttribute('aria-label', o + ' (wrong)');
+              nudge(b);
+              why.textContent = 'Not this one. Try again.';
+            }
+            score();
+          });
+          opts.append(b);
+        });
+        if (it.pic) li.append(pic(it.pic, 'qpic'));
+        if (it.q) li.append(q);
+        li.append(opts, why);
+        if (TEACHER) li.append(el('p', {class: 'key', text: 'Answer: ' + it.o[it.a]}));
+        list.append(li);
+        return st;
+      });
+      score();
+    }
+    render();
+    return render;
+  }
+
+  // ================= content =================
+  // pictures for new words: flat soft shapes from the Dracula palette, thin ink lines, on white
+  const K = {ink: '#44475a', pink: '#f6a6d2', purple: '#c6b3f5', cyan: '#a3e2ef', green: '#a3e4b4', orange: '#ffc898', yellow: '#f2ea8e', grey: '#d6d7e2', blue: '#a7c8f2', sage: '#a9d6c4'};
+  const svg = body => '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" fill="none" stroke-linecap="round" stroke-linejoin="round">' + body + '</svg>';
+  const crowd = (() => {
+    const cols = [K.pink, K.purple, K.cyan, K.orange, K.green];
+    let s = '';
+    [[24, 3], [44, 4], [64, 5]].forEach(([y, n], r) => {
+      for (let i = 0; i < n; i++){
+        const x = 50 + (i - (n - 1) / 2) * 15, c = cols[(i + r * 2) % cols.length];
+        s += '<circle cx="' + x + '" cy="' + y + '" r="5" fill="' + c + '"/><path d="M' + (x - 7) + ' ' + (y + 15) + 'a7 7 0 0 1 14 0z" fill="' + c + '"/>';
+      }
+    });
+    return s;
+  })();
+  const burst = (cx, cy, r, c) => {
+    let s = '';
+    for (let i = 0; i < 8; i++){
+      const a = i * Math.PI / 4, x1 = cx + Math.cos(a) * r * .35, y1 = cy + Math.sin(a) * r * .35, x2 = cx + Math.cos(a) * r, y2 = cy + Math.sin(a) * r;
+      s += '<path d="M' + x1.toFixed(1) + ' ' + y1.toFixed(1) + 'L' + x2.toFixed(1) + ' ' + y2.toFixed(1) + '" stroke="' + c + '" stroke-width="3.5"/>';
+    }
+    return s;
+  };
+  const PICS = {
+    noisy: svg('<path d="M20 54l6-12h18l6 12z" fill="' + K.pink + '"/><rect x="12" y="52" width="46" height="18" rx="6" fill="' + K.pink + '"/><circle cx="24" cy="71" r="5" fill="' + K.ink + '"/><circle cx="46" cy="71" r="5" fill="' + K.ink + '"/><path d="M66 50q5 8 0 16M73 44q10 14 0 28M80 38q15 20 0 40" stroke="' + K.ink + '" stroke-width="2.5"/>'),
+    quiet: svg('<path d="M26 54L50 34l24 20v26H26z" fill="' + K.cyan + '"/><rect x="45" y="64" width="10" height="16" rx="2" fill="#fff"/><circle cx="74" cy="24" r="10" fill="' + K.yellow + '"/><circle cx="79" cy="20" r="9" fill="#fff"/>'),
+    crowded: svg(crowd),
+    empty: svg('<path d="M10 74H90" stroke="' + K.grey + '" stroke-width="2"/><rect x="28" y="44" width="44" height="5" rx="2.5" fill="' + K.orange + '"/><rect x="28" y="56" width="44" height="5" rx="2.5" fill="' + K.orange + '"/><path d="M33 61v13M67 61v13M33 49v7M67 49v7" stroke="' + K.ink + '" stroke-width="2.5"/>'),
+    polluted: svg('<path d="M16 80V54l16 10V54l16 10V54l16 10v16z" fill="' + K.purple + '"/><rect x="68" y="38" width="11" height="42" rx="1.5" fill="' + K.purple + '"/><circle cx="74" cy="28" r="7" fill="' + K.grey + '"/><circle cx="64" cy="20" r="8" fill="' + K.grey + '"/><circle cx="80" cy="16" r="6" fill="' + K.grey + '"/><circle cx="50" cy="18" r="6" fill="' + K.grey + '"/>'),
+    clean: svg('<circle cx="46" cy="44" r="20" fill="' + K.green + '"/><rect x="43" y="58" width="6" height="22" rx="2" fill="' + K.orange + '"/><path d="M76 18l2.5 7.5L86 28l-7.5 2.5L76 38l-2.5-7.5L66 28l7.5-2.5z" fill="' + K.yellow + '"/><path d="M80 52l1.5 4.5L86 58l-4.5 1.5L80 64l-1.5-4.5L74 58l4.5-1.5z" fill="' + K.cyan + '"/>'),
+    modern: svg('<rect x="20" y="30" width="20" height="52" rx="2" fill="' + K.cyan + '"/><rect x="44" y="12" width="22" height="70" rx="2" fill="' + K.blue + '"/><rect x="70" y="40" width="12" height="42" rx="2" fill="' + K.cyan + '"/><path d="M20 44H40M20 58H40M20 72H40M44 26H66M44 40H66M44 54H66M44 68H66M70 54H82M70 68H82" stroke="#fff" stroke-width="1.6"/>'),
+    historic: svg('<path d="M34 28L50 8l16 20z" fill="' + K.purple + '"/><rect x="37" y="28" width="26" height="54" fill="' + K.orange + '"/><circle cx="50" cy="44" r="8" fill="#fff"/><path d="M50 44v-5M50 44l4 2" stroke="' + K.ink + '" stroke-width="2"/><path d="M45 82V70a5 5 0 0 1 10 0v12z" fill="#fff"/>'),
+    dangerous: svg('<path d="M50 20L82 76H18z" fill="' + K.orange + '" stroke="' + K.orange + '" stroke-width="8"/><rect x="47" y="38" width="6" height="22" rx="3" fill="' + K.ink + '"/><circle cx="50" cy="68" r="3.5" fill="' + K.ink + '"/>'),
+    safe: svg('<path d="M38 48V37a12 12 0 0 1 24 0v11" stroke="' + K.ink + '" stroke-width="5"/><rect x="28" y="46" width="44" height="36" rx="7" fill="' + K.green + '"/><circle cx="50" cy="61" r="4" fill="' + K.ink + '"/><rect x="48" y="62" width="4" height="9" rx="2" fill="' + K.ink + '"/>'),
+    boring: svg('<circle cx="50" cy="50" r="30" fill="' + K.yellow + '"/><path d="M37 46h9M54 46h9M41 64h18" stroke="' + K.ink + '" stroke-width="2.6"/>'),
+    exciting: svg(burst(34, 36, 20, K.pink) + burst(68, 30, 16, K.cyan) + burst(60, 68, 18, K.orange) + '<circle cx="34" cy="36" r="3" fill="' + K.pink + '"/><circle cx="68" cy="30" r="3" fill="' + K.cyan + '"/><circle cx="60" cy="68" r="3" fill="' + K.orange + '"/>'),
+    cathedral: svg('<rect x="30" y="44" width="40" height="38" fill="' + K.purple + '"/><rect x="42" y="24" width="16" height="22" fill="' + K.purple + '"/><path d="M42 24l8-16 8 16z" fill="' + K.purple + '"/><rect x="20" y="36" width="11" height="46" fill="' + K.purple + '"/><path d="M20 36l5.5-10 5.5 10z" fill="' + K.purple + '"/><rect x="69" y="36" width="11" height="46" fill="' + K.purple + '"/><path d="M69 36l5.5-10 5.5 10z" fill="' + K.purple + '"/><circle cx="50" cy="56" r="5" fill="#fff"/><path d="M45 82V72a5 5 0 0 1 10 0v10z" fill="#fff"/>'),
+    market: svg('<rect x="18" y="26" width="64" height="14" rx="3" fill="' + K.pink + '"/><path d="M31 26v14M44 26v14M57 26v14M70 26v14" stroke="#fff" stroke-width="5"/><path d="M24 40v42M76 40v42" stroke="' + K.ink + '" stroke-width="2.5"/><rect x="20" y="58" width="60" height="8" rx="2" fill="' + K.orange + '"/><circle cx="32" cy="53" r="5" fill="' + K.green + '"/><circle cx="44" cy="53" r="5" fill="' + K.yellow + '"/><circle cx="56" cy="53" r="5" fill="' + K.pink + '"/><circle cx="68" cy="53" r="5" fill="' + K.green + '"/>'),
+    'shopping centre': svg('<rect x="10" y="38" width="80" height="44" rx="3" fill="' + K.cyan + '"/><rect x="10" y="32" width="80" height="8" rx="2" fill="' + K.blue + '"/><path d="M24 46v28M36 46v28M64 46v28M76 46v28" stroke="#fff" stroke-width="1.6"/><rect x="42" y="56" width="16" height="26" fill="#fff"/><path d="M50 56v26" stroke="' + K.cyan + '" stroke-width="1.6"/>'),
+    castle: svg('<rect x="24" y="46" width="52" height="36" fill="' + K.purple + '"/><rect x="14" y="32" width="16" height="50" fill="' + K.purple + '"/><rect x="70" y="32" width="16" height="50" fill="' + K.purple + '"/><rect x="14" y="26" width="4" height="6" fill="' + K.purple + '"/><rect x="26" y="26" width="4" height="6" fill="' + K.purple + '"/><rect x="70" y="26" width="4" height="6" fill="' + K.purple + '"/><rect x="82" y="26" width="4" height="6" fill="' + K.purple + '"/><path d="M42 82V68a8 8 0 0 1 16 0v14z" fill="#fff"/>'),
+    museum: svg('<path d="M18 36L50 16l32 20z" fill="' + K.orange + '"/><rect x="20" y="36" width="60" height="6" fill="' + K.orange + '"/><rect x="26" y="44" width="7" height="28" rx="1" fill="' + K.orange + '"/><rect x="40" y="44" width="7" height="28" rx="1" fill="' + K.orange + '"/><rect x="53" y="44" width="7" height="28" rx="1" fill="' + K.orange + '"/><rect x="67" y="44" width="7" height="28" rx="1" fill="' + K.orange + '"/><rect x="16" y="74" width="68" height="8" rx="1" fill="' + K.orange + '"/>'),
+    bridge: svg('<rect x="8" y="68" width="84" height="16" rx="4" fill="' + K.blue + '"/><path d="M16 70Q50 30 84 70" stroke="' + K.purple + '" stroke-width="6"/><rect x="8" y="44" width="84" height="7" rx="2" fill="' + K.purple + '"/><path d="M33 51v-1M50 51v-1M67 51v-1" stroke="' + K.purple + '" stroke-width="5"/><path d="M22 78h10M62 80h12" stroke="#fff" stroke-width="2"/>'),
+    statue: svg('<circle cx="50" cy="22" r="6" fill="' + K.sage + '"/><path d="M43 30h14l3 30H40z" fill="' + K.sage + '"/><path d="M56 34l10-14" stroke="' + K.sage + '" stroke-width="5"/><rect x="36" y="60" width="28" height="18" rx="1.5" fill="' + K.grey + '"/><rect x="30" y="78" width="40" height="5" rx="1.5" fill="' + K.grey + '"/>'),
+    harbour: svg('<rect x="8" y="66" width="84" height="18" rx="4" fill="' + K.blue + '"/><path d="M26 58h48l-8 12H34z" fill="' + K.orange + '"/><path d="M50 26v32" stroke="' + K.ink + '" stroke-width="2.2"/><path d="M53 28l18 26H53z" fill="' + K.pink + '"/><path d="M47 34L34 54h13z" fill="' + K.cyan + '"/><path d="M16 76h10M64 78h14" stroke="#fff" stroke-width="2"/>')
+  };
+  function pic(name, cls){ const s = el('span', {class: 'wpic' + (cls ? ' ' + cls : ''), 'aria-hidden': 'true'}); s.innerHTML = PICS[name]; return s; }
+
+  // 3: adjectives in pairs of opposites
+  const ADJ = [
+    [['noisy', 'The street is noisy at night.'], ['quiet', 'My village is very quiet.']],
+    [['crowded', 'The metro is crowded in the morning.'], ['empty', 'The park is empty in winter.']],
+    [['polluted', 'Big cities are often polluted.'], ['clean', 'The streets here are very clean.']],
+    [['modern', 'There are lots of modern buildings.'], ['historic', 'I love the historic centre.']],
+    [['dangerous', 'This road is dangerous at night.'], ['safe', 'It’s a safe city for walks.']],
+    [['boring', 'My town is a bit boring.'], ['exciting', 'New York is an exciting city.']]
+  ];
+  const adjBox = $('#adj-cards');
+  ADJ.forEach(pair => adjBox.append(el('div', {class: 'pair'}, ...pair.map(([w, ex]) => el('div', {class: 'wcard'},
+    el('div', {class: 'wc-top'}, pic(w), sayButton(w + '. ' + ex, 'adj-say-' + w)),
+    el('div', {class: 'wc-txt'}, el('b', {text: w}), el('span', {text: ex})))))));
+
+  // 4: places
+  const PLACES = [
+    ['a cathedral', 'cathedral', 'The cathedral is in the old town.'],
+    ['a market', 'market', 'I buy fruit at the market.'],
+    ['a shopping centre', 'shopping centre', 'There’s a big shopping centre near my flat.'],
+    ['a castle', 'castle', 'The castle is on a hill.'],
+    ['a museum', 'museum', 'The museum is free on Sundays.'],
+    ['a bridge', 'bridge', 'There’s an old bridge over the river.'],
+    ['a statue', 'statue', 'Let’s meet by the statue.'],
+    ['a harbour', 'harbour', 'The boats are in the harbour.']
+  ];
+  const placeBox = $('#place-cards');
+  PLACES.forEach(([w, p, ex], i) => placeBox.append(el('div', {class: 'wcard'},
+    el('div', {class: 'wc-top'}, pic(p), sayButton(w + '. ' + ex, 'place-say-' + (i + 1))),
+    el('div', {class: 'wc-txt'}, el('b', {text: w}), el('span', {text: ex})))));
+
+  // any element with data-say gets a speaker button; data-say="…" says that text instead of the visible one
+  $$('[data-say]').forEach((node, i) => {
+    const text = (node.getAttribute('data-say') || node.textContent).replace(/\s+/g, ' ').trim();
+    node.prepend(sayButton(text, 'say-' + (i + 1)));
+  });
+
+  $('#recap-reset').addEventListener('click', buildMC('recap-list', [
+    {q: 'My town is ___ than Moscow.', o: ['smaller', 'more small', 'smallest'], a: 0, why: 'small → smaller.'},
+    {q: 'Moscow is ___ expensive than my town.', o: ['most', 'more', 'much'], a: 1, why: 'A long adjective: more + adjective + than.'},
+    {q: 'The metro is ___ than the bus.', o: ['faster', 'fastest', 'more fast'], a: 0, why: 'fast → faster.'},
+    {q: 'My flat isn’t ___ big as yours.', o: ['than', 'more', 'as'], a: 2, why: 'not as … as.'},
+    {q: 'The weather today is ___ than yesterday.', o: ['better', 'gooder', 'more good'], a: 0, why: 'good → better.'},
+    {q: 'The shop is ___ from my flat than the park.', o: ['farer', 'further', 'more far'], a: 1, why: 'far → further.'}
+  ], 'recap'));
+
+  $('#adj-reset').addEventListener('click', buildMC('adj-list', [
+    {q: 'The opposite of noisy: ___', o: ['quiet', 'empty', 'safe'], a: 0, why: 'noisy ↔ quiet.'},
+    {q: 'Lots and lots of people: ___', o: ['historic', 'crowded', 'polluted'], a: 1, why: 'The metro is crowded in the morning.'},
+    {q: 'The air is dirty because of cars and factories: ___', o: ['boring', 'modern', 'polluted'], a: 2, why: 'polluted ↔ clean.'},
+    {q: 'The opposite of modern: ___', o: ['historic', 'exciting', 'clean'], a: 0, why: 'modern ↔ historic.'},
+    {q: 'The opposite of dangerous: ___', o: ['empty', 'safe', 'quiet'], a: 1, why: 'dangerous ↔ safe.'},
+    {q: 'Nothing to do, nothing interesting: ___', o: ['exciting', 'crowded', 'boring'], a: 2, why: 'boring ↔ exciting.'},
+    {q: 'No people at all: ___', o: ['empty', 'clean', 'historic'], a: 0, why: 'crowded ↔ empty.'},
+    {q: 'Lots of fun things to do, day and night: ___', o: ['safe', 'exciting', 'historic'], a: 1, why: 'An exciting city.'}
+  ], 'adj'));
+
+  $('#places-reset').addEventListener('click', buildMC('places-list', [
+    {pic: 'castle', q: '', o: ['a palace', 'a castle', 'a church'], a: 1, why: 'The t is silent: /ˈkɑːsl/.'},
+    {pic: 'market', q: '', o: ['a market', 'a museum', 'a statue'], a: 0, why: 'I buy fruit at the market.'},
+    {pic: 'bridge', q: '', o: ['a harbour', 'a bridge', 'a river'], a: 1, why: 'An old bridge over the river.'},
+    {pic: 'museum', q: '', o: ['a museum', 'a cathedral', 'a shopping centre'], a: 0, why: 'Stress: muSEum.'},
+    {pic: 'harbour', q: '', o: ['a bridge', 'a castle', 'a harbour'], a: 2, why: 'The boats are in the harbour.'},
+    {pic: 'statue', q: '', o: ['a castle', 'a statue', 'a market'], a: 1, why: 'Let’s meet by the statue.'},
+    {pic: 'cathedral', q: '', o: ['a cathedral', 'a museum', 'a harbour'], a: 0, why: 'Stress: caTHEdral.'},
+    {pic: 'shopping centre', q: '', o: ['a market', 'a museum', 'a shopping centre'], a: 2, why: 'Lots of shops in one big building.'}
+  ], 'places'));
+
+  $('#practice-reset').addEventListener('click', buildMC('practice-list', [
+    {q: 'Moscow is ___ city in Russia.', o: ['the bigger', 'the biggest', 'the most big'], a: 1, why: 'big: double the g, + est.'},
+    {q: 'This is ___ street in the town. There are always lots of cars.', o: ['the noisiest', 'the noisest', 'the more noisy'], a: 0, why: 'noisy: y → iest.'},
+    {q: 'It’s ___ museum in the city.', o: ['the interestingest', 'the more interesting', 'the most interesting'], a: 2, why: 'A long adjective: the most + adjective.'},
+    {q: 'July is ___ month of the year here.', o: ['hotter', 'the hottest', 'the most hot'], a: 1, why: 'hot: double the t, + est.'},
+    {q: 'That was ___ meal I’ve ever eaten!', o: ['the worst', 'the baddest', 'the most bad'], a: 0, why: 'bad → worse → the worst.'},
+    {q: 'My car is ___ than yours.', o: ['older', 'the oldest'], a: 0, why: 'Two things, with than: a comparative.'},
+    {q: 'Which is ___ shop for shoes in your city?', o: ['the better', 'the best', 'the goodest'], a: 1, why: 'good → better → the best.'},
+    {q: 'It’s the most beautiful city I’ve ___ been to.', o: ['ever', 'never'], a: 0, why: 'the most … I’ve ever …'},
+    {q: 'The market is ___ place in town on Saturday morning.', o: ['the crowdedest', 'more crowded', 'the most crowded'], a: 2, why: 'crowded: the most crowded.'},
+    {q: 'Lu is ___ dog in the park!', o: ['the prettiest', 'prettier', 'the most pretty'], a: 0, why: 'pretty: y → iest.'}
+  ], 'practice'));
+
+  $('#tf-reset').addEventListener('click', buildMC('tf-list', [
+    {q: 'Rome was the coldest of the three cities.', o: ['True', 'False'], a: 1, why: 'It was the hottest.'},
+    {q: 'Prague was the cheapest city.', o: ['True', 'False'], a: 0, why: 'Prague was the cheapest.'},
+    {q: 'Prague has a castle on a hill.', o: ['True', 'False'], a: 0, why: 'The old town has a famous bridge and a castle on the hill.'},
+    {q: 'Stockholm was cheaper than Prague.', o: ['True', 'False'], a: 1, why: 'Stockholm was the most expensive.'},
+    {q: 'For a relaxing weekend, Kate thinks Stockholm is the best.', o: ['True', 'False'], a: 0, why: 'It was the cleanest and the quietest.'}
+  ], 'tf'));
+
+  $('#listen-reset').addEventListener('click', buildMC('listen-list', [
+    {q: 'The most honest city was…', o: ['Lisbon', 'Helsinki', 'London'], a: 1, why: 'Helsinki, in Finland, came first.'},
+    {q: 'How many of the twelve wallets came back there?', o: ['five', 'nine', 'eleven'], a: 2, why: 'Eleven out of twelve.'},
+    {q: 'The least honest city was…', o: ['Lisbon', 'Mumbai', 'Moscow'], a: 0, why: 'Lisbon came sixteenth, the last.'},
+    {q: 'Which city came second?', o: ['New York', 'Mumbai', 'Amsterdam'], a: 1, why: 'Mumbai, in India: nine out of twelve.'},
+    {q: 'Moscow came…', o: ['first', 'fifth', 'sixteenth'], a: 1, why: 'Fifth, with Amsterdam: seven wallets.'},
+    {q: 'In all the cities, how many wallets came back?', o: ['about a quarter', 'nearly half', 'nearly all'], a: 1, why: 'Forty-seven per cent: nearly half.'}
+  ], 'listen'));
+
+  // 11: wheel of questions
+  const WQ = [
+    'What’s the best café or restaurant in your city?',
+    'What’s the most beautiful city you’ve ever been to?',
+    'What’s the most expensive thing you’ve ever bought?',
+    'Who’s the best cook in your family?',
+    'What’s the best place for a walk with Lu?',
+    'What’s the most interesting museum in your city?',
+    'What’s the most crowded place in your city on Saturday?',
+    'What’s the furthest you’ve ever driven?'
+  ];
+  const WCOL = ['#ff79c6', '#bd93f9', '#8be9fd', '#50fa7b', '#ffb86c', '#f1fa8c', '#ff9ac8', '#a6b3e8'];
+  const wsvg = $('#wheel-svg'), wq = $('#wheel-q'), wlist = $('#wheel-list');
+  const pt = (deg, r) => { const a = deg * Math.PI / 180; return (50 + r * Math.sin(a)).toFixed(2) + ' ' + (50 - r * Math.cos(a)).toFixed(2); };
+  wsvg.innerHTML = WQ.map((q, i) => {
+    const a0 = i * 45, a1 = a0 + 45, mid = a0 + 22.5, tp = pt(mid, 33).split(' ');
+    return '<path d="M50 50L' + pt(a0, 48) + 'A48 48 0 0 1 ' + pt(a1, 48) + 'Z" fill="' + WCOL[i] + '" stroke="#fff" stroke-width="1"/>' +
+      '<text x="' + tp[0] + '" y="' + tp[1] + '" text-anchor="middle" dominant-baseline="central" font-family="Jost, sans-serif" font-weight="600" font-size="9" fill="#282a36">' + (i + 1) + '</text>';
+  }).join('') + '<circle cx="50" cy="50" r="7" fill="#fff" stroke="#282a36" stroke-width="1.5"/>';
+  const wItems = WQ.map((q, i) => { const li = el('li', {id: 'wheel-q-' + (i + 1), text: q}); wlist.append(li); return li; });
+  let turn = 0, spinning = false;
+  const calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  $('#wheel-spin').addEventListener('click', () => {
+    if (spinning) return;
+    spinning = true;
+    turn += 1080 + Math.floor(Math.random() * 360);
+    wsvg.style.transform = 'rotate(' + turn + 'deg)';
+    wq.classList.add('empty'); wq.textContent = 'Spinning…';
+    wItems.forEach(li => { if (li.classList.contains('hit')){ li.classList.remove('hit'); li.classList.add('done'); } });
+    setTimeout(() => {
+      const at = ((360 - turn % 360) % 360 + 360) % 360, idx = Math.floor(at / 45) % 8;
+      wq.classList.remove('empty'); wq.textContent = (idx + 1) + '. ' + WQ[idx];
+      wItems[idx].classList.remove('done'); wItems[idx].classList.add('hit');
+      spinning = false;
+    }, calm ? 50 : 2700);
+  });
+
+  renderScores();
+})();
+</script>
+
+</html>
