@@ -1,0 +1,1024 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta charset="utf-8">
+<title>Istanbul with Lu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,500;0,6..96,700;1,6..96,500;1,6..96,700&family=Jost:wght@400;500;600&family=Noto+Sans:wght@400;500&display=swap">
+<style>
+/* Layout: a style-magazine spread in Dracula (Alucard by day, Dracula by night). Bodoni Moda for the big
+   headlines and italic section numbers, Jost for everything you read and tap. Thin double rules between
+   sections, like the pages of a glossy magazine; pink is the accent, purple the second voice. */
+:root{
+  --bg:#fffbeb; --surface:#fffdf6; --sunk:#f3eedb; --line:#e7e0c9; --line2:#cfcfde;
+  --text:#1f1f1f; --soft:#5a5490;
+  --accent:#a3144d; --on-accent:#ffffff; --violet:#644ac9;
+  --good:#14710a; --bad:#cb3a2a;
+  --good-bg:color-mix(in srgb, #50fa7b 18%, var(--surface));
+  --bad-bg:color-mix(in srgb, #ff5555 12%, var(--surface));
+  --mark:color-mix(in srgb, #f1fa8c 55%, var(--surface));
+  --tint:color-mix(in srgb, #ff79c6 12%, var(--surface));
+  --display:"Bodoni Moda","Didot","Bodoni 72",Georgia,serif;
+  --body:"Jost","Avenir Next","Segoe UI",system-ui,sans-serif;
+  --ipa:"Noto Sans","Charis SIL","DejaVu Sans","Lucida Sans Unicode",sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#282a36; --surface:#2f3142; --sunk:#21222c; --line:#44475a; --line2:#6272a4;
+    --text:#f8f8f2; --soft:#c3c6dd;
+    --accent:#ff79c6; --on-accent:#282a36; --violet:#bd93f9;
+    --good:#50fa7b; --bad:#ff6e6e;
+    --good-bg:color-mix(in srgb, #50fa7b 14%, var(--surface));
+    --bad-bg:color-mix(in srgb, #ff5555 18%, var(--surface));
+    --mark:color-mix(in srgb, #f1fa8c 16%, var(--surface));
+    --tint:color-mix(in srgb, #ff79c6 14%, var(--surface));
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#282a36; --surface:#2f3142; --sunk:#21222c; --line:#44475a; --line2:#6272a4;
+  --text:#f8f8f2; --soft:#c3c6dd;
+  --accent:#ff79c6; --on-accent:#282a36; --violet:#bd93f9;
+  --good:#50fa7b; --bad:#ff6e6e;
+  --good-bg:color-mix(in srgb, #50fa7b 14%, var(--surface));
+  --bad-bg:color-mix(in srgb, #ff5555 18%, var(--surface));
+  --mark:color-mix(in srgb, #f1fa8c 16%, var(--surface));
+  --tint:color-mix(in srgb, #ff79c6 14%, var(--surface));
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--text);font:400 17.5px/1.6 var(--body);-webkit-font-smoothing:antialiased}
+.page{max-width:860px;margin-inline:auto;padding-inline:16px;padding-block:40px 110px;display:flex;flex-direction:column;gap:60px}
+@media (min-width:700px){ .page{padding-inline:28px} }
+h1,h2,h3{font-family:var(--display);font-weight:700;margin:0;text-wrap:balance}
+p{margin:0}
+ol,ul{margin:0;padding:0}
+a{color:var(--accent);text-underline-offset:3px}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer;-webkit-tap-highlight-color:transparent}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
+em.acc{font-style:italic;color:var(--accent)}
+
+/* masthead */
+.mast{display:flex;flex-direction:column;gap:20px}
+.kicker{font:600 12.5px/1.3 var(--body);letter-spacing:.22em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:12px}
+.kicker::after{content:"";flex:1;height:0;border-top:1px solid var(--accent)}
+.eyebrow{font:600 12.5px/1.3 var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--soft)}
+.mast h1{font-size:clamp(46px,10vw,88px);line-height:.98;letter-spacing:-.02em}
+.mast h1 em{color:var(--accent);font-weight:500}
+.dek{font-size:clamp(18px,2.3vw,20.5px);line-height:1.5;max-width:40em}
+.meta{display:flex;flex-wrap:wrap;gap:6px 22px;margin:0;font-size:14.5px;color:var(--soft)}
+.meta div{display:flex;gap:6px}
+.meta dt{font-weight:600;color:var(--text)}
+.meta dd{margin:0}
+.duo{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:14px}
+.duo figure{margin:0;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 20px;display:flex;align-items:center;gap:16px;min-width:0}
+.duo .pic{font-size:44px;line-height:1}
+.duo figcaption{display:flex;flex-direction:column;min-width:0}
+.duo .nm{font:500 italic 22px/1.2 var(--display)}
+.duo .pr{font:600 26px/1.2 var(--body);color:var(--accent);font-variant-numeric:tabular-nums}
+.verdict{font:500 clamp(20px,2.8vw,24px)/1.45 var(--display);border-left:3px solid var(--accent);padding-left:16px}
+.verdict b{color:var(--accent);font-weight:700}
+
+.toc{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:2px 28px;counter-reset:toc;list-style:none;font-size:15.5px}
+.toc li{counter-increment:toc;display:flex;align-items:baseline;gap:10px;padding-block:7px;border-bottom:1px solid var(--line);min-width:0}
+.toc li::before{content:counter(toc);font:700 italic 16px/1 var(--display);color:var(--accent);min-width:1.4em}
+.toc a{color:var(--text);text-decoration:none;flex:1;min-width:0}
+.toc a:hover{color:var(--accent);text-decoration:underline}
+.toc .sc{font-size:13.5px;color:var(--soft);font-variant-numeric:tabular-nums;white-space:nowrap}
+
+details.plan{border:1px solid var(--line2);border-radius:12px;background:var(--surface);padding:0 20px}
+details.plan summary{cursor:pointer;padding-block:14px;font-weight:600;display:flex;justify-content:space-between;gap:12px;list-style:none}
+details.plan summary::-webkit-details-marker{display:none}
+details.plan summary::after{content:"Show";font-weight:500;font-size:14px;color:var(--accent)}
+details.plan[open] summary::after{content:"Hide"}
+.plan-body{padding-bottom:18px;display:flex;flex-direction:column;gap:12px;font-size:15.5px}
+.plan-body .aim{color:var(--soft)}
+.scroll{overflow-x:auto}
+.plan-body table{border-collapse:collapse;width:100%;min-width:520px}
+.plan-body th,.plan-body td{text-align:left;vertical-align:top;padding:8px 10px 8px 0;border-top:1px solid var(--line)}
+.plan-body th{font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);font-weight:600;border-top:0}
+.plan-body td:first-child{font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--soft);width:4.5em}
+.plan-body td:nth-child(2){font-weight:600}
+.plan-body td:nth-child(3){white-space:nowrap;color:var(--violet)}
+
+/* sections */
+.sec{display:flex;flex-direction:column;gap:20px;scroll-margin-top:16px}
+.sec-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 16px;padding-top:18px;border-top:3px double var(--text)}
+.sec-no{font:700 italic 34px/1 var(--display);color:var(--accent);min-width:1.1em}
+.sec-title{flex:1 1 300px;min-width:0;display:flex;flex-direction:column;gap:6px}
+.sec-title h2{font-size:clamp(27px,4.4vw,36px);line-height:1.1}
+.lede{color:var(--soft);max-width:62ch}
+.score{font:600 14px/1 var(--body);font-variant-numeric:tabular-nums;color:var(--soft);border:1px solid var(--line2);border-radius:999px;padding:7px 12px;white-space:nowrap}
+.score.full{color:var(--good);border-color:var(--good)}
+.sub{font:700 21px/1.3 var(--display);margin-top:6px}
+.note{font-size:15.5px;color:var(--soft);max-width:64ch}
+.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.btn{border:1px solid var(--line2);background:var(--surface);border-radius:999px;padding:8px 18px;font-weight:600;font-size:15px;line-height:1.2}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.btn.quiet{border-color:transparent;background:transparent;color:var(--soft)}
+.btn.quiet:hover{color:var(--text);border-color:var(--line2)}
+
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 20px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.panel h3{font-size:21px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:14px}
+.line{display:flex;gap:10px;align-items:flex-start;min-width:0}
+.line > span{flex:1;min-width:0}
+.plain{list-style:none;display:flex;flex-direction:column;gap:9px}
+.say{flex:none;width:30px;height:30px;border-radius:50%;border:1px solid var(--line2);background:transparent;display:inline-grid;place-items:center;color:var(--soft);padding:0}
+.say:hover{color:var(--accent);border-color:var(--accent)}
+.say svg{width:15px;height:15px}
+.ipa{font-family:var(--ipa);color:var(--violet)}
+b.hl{font-weight:600;background:var(--tint);border-radius:3px;padding:0 3px}
+.phrases{display:flex;flex-wrap:wrap;gap:8px;list-style:none}
+.phrases li{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px 14px 4px 4px;font-weight:500}
+
+/* word cards */
+.wcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:10px}
+.wcard{display:flex;gap:12px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px;min-width:0}
+.wc-pic{flex:none;width:52px;height:52px;border-radius:12px;background:var(--tint);display:grid;place-items:center;font-size:30px;line-height:1}
+.wc-pic.txt{font:700 16px/1 var(--body);color:var(--accent)}
+.wc-txt{flex:1;min-width:0;display:flex;flex-direction:column}
+.wc-txt b{font:700 19px/1.25 var(--display)}
+.wc-txt span{font-size:14.5px;color:var(--soft);line-height:1.4}
+
+/* numbers */
+.nums{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,330px),1fr));gap:6px 20px}
+.nums li{padding-block:7px;border-bottom:1px solid var(--line)}
+.nums .line > span{display:grid;grid-template-columns:6.2em minmax(0,1fr);gap:0 10px;align-items:baseline}
+.num{font:700 19px/1.3 var(--body);color:var(--accent);font-variant-numeric:tabular-nums}
+.bignum{font:700 26px/1.3 var(--body);font-variant-numeric:tabular-nums;color:var(--accent)}
+
+/* items */
+.items{list-style:none;counter-reset:it;display:flex;flex-direction:column}
+.item{counter-increment:it;display:grid;grid-template-columns:2rem minmax(0,1fr);gap:4px 10px;padding-block:14px;border-bottom:1px solid var(--line)}
+.item::before{content:counter(it);font:700 italic 17px/1.7 var(--display);color:var(--soft);grid-row:1/span 4}
+.item > *{grid-column:2;min-width:0}
+.q{font-size:18px;line-height:1.8}
+.blank{display:inline-block;min-width:5.5ch;border-bottom:2px solid var(--line2);text-align:center;line-height:1.3;padding-inline:2px}
+.blank.filled{border-color:var(--good);color:var(--good);font-weight:600}
+.opts{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.opt{border:1px solid var(--line2);background:var(--surface);border-radius:999px;padding:6px 16px;font-size:16.5px;text-align:left}
+.opt:hover:not([aria-disabled="true"]){border-color:var(--accent)}
+.opt.no{border-style:dashed;border-color:var(--bad);background:var(--bad-bg);text-decoration:line-through;text-decoration-color:var(--bad)}
+.opt.yes{border-color:var(--good);background:var(--good-bg);font-weight:600}
+.opt[aria-disabled="true"]{cursor:default}
+.why{font-size:15px;color:var(--soft)}
+.why:empty{display:none}
+.ok{color:var(--good);font-weight:600}
+
+/* grammar */
+.rules{border-collapse:collapse;width:100%;min-width:520px;font-size:16px}
+.rules th,.rules td{text-align:left;vertical-align:top;padding:9px 12px 9px 0;border-top:1px solid var(--line)}
+.rules thead th{border-top:0;font:600 12.5px/1.3 var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--soft)}
+.rules td:nth-child(2){color:var(--violet);white-space:nowrap}
+.rules td:nth-child(3){font-weight:600}
+.when{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:10px}
+.when li{background:var(--surface);border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.when li:nth-child(2){border-top-color:var(--violet)}
+.when li:nth-child(3){border-top-color:var(--soft)}
+.when .lab{font:600 12px/1.2 var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--soft)}
+.when .pat{font:700 20px/1.25 var(--display)}
+.when i{font-style:italic}
+.schwa{border-bottom:3px solid var(--accent);padding-bottom:1px}
+.weak{color:var(--soft)}
+.big-lines{font:500 21px/1.7 var(--display)}
+
+/* reading */
+.read{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px clamp(18px,4vw,30px) 26px;display:flex;flex-direction:column;gap:14px}
+.read h3{font-size:clamp(25px,3.6vw,30px);font-style:italic;font-weight:500}
+.read p{max-width:66ch;line-height:1.75}
+.read .by{font-size:13px;color:var(--accent);letter-spacing:.16em;text-transform:uppercase;font-weight:600}
+.read b{font-weight:600;background:var(--tint);border-radius:3px;padding:0 3px}
+
+/* talk */
+.talk{list-style:none;counter-reset:t;display:flex;flex-direction:column;gap:10px}
+.talk li{counter-increment:t;display:grid;grid-template-columns:1.8rem minmax(0,1fr);gap:8px;font-size:18px;line-height:1.5}
+.talk li::before{content:counter(t);font:700 italic 18px/1.5 var(--display);color:var(--accent)}
+.script{list-style:none;display:flex;flex-direction:column;gap:2px;font-size:18px}
+.script li{display:flex;gap:10px;align-items:flex-start;padding-block:7px;border-bottom:1px dashed var(--line)}
+.script li > span{flex:1;min-width:0}
+.script .who{font:600 12px/1 var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--violet);margin-right:6px}
+.cmps{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:10px}
+.cmp{display:flex;flex-direction:column;align-items:flex-start;gap:6px;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px;min-width:0}
+.cmp:hover{border-color:var(--accent)}
+.cmp[aria-expanded="true"]{border-color:var(--accent);background:var(--tint)}
+.cmp-e{font-size:30px;line-height:1.1}
+.cmp-t{font:700 19px/1.3 var(--display)}
+.cmp-hint{font-size:13.5px;color:var(--soft)}
+.cmp[aria-expanded="true"] .cmp-hint{display:none}
+.cmp-ideas{font-size:15.5px;color:var(--text)}
+.cmp-ideas b{color:var(--accent)}
+.extra{border:1px solid var(--line2);border-radius:14px;padding:16px 20px;display:flex;gap:14px;align-items:flex-start;background:var(--surface)}
+.extra .tag{flex:none;font:600 12px/1 var(--body);letter-spacing:.1em;text-transform:uppercase;background:var(--tint);color:var(--accent);border-radius:999px;padding:7px 11px}
+.extra p{min-width:0}
+footer.fin{color:var(--soft);font-size:14.5px;border-top:1px solid var(--line2);padding-top:18px}
+
+/* teacher-only parts: every one sits between a pair of T comment markers, which scripts/student-site.sh cuts out of the student copy */
+.tbadge{align-self:flex-start;font:600 12.5px/1 var(--body);letter-spacing:.1em;text-transform:uppercase;background:var(--mark);border-radius:6px;padding:7px 10px}
+.tnote{border:1px dashed var(--line2);background:var(--mark);border-radius:10px;padding:12px 16px;font-size:15px;line-height:1.5;display:flex;flex-direction:column;gap:6px}
+.tnote b:first-child{font:600 12px/1.2 var(--body);letter-spacing:.1em;text-transform:uppercase}
+.tnote p{max-width:72ch}
+.key{font-size:14.5px;background:var(--mark);border-radius:6px;padding:2px 8px;justify-self:start}
+[data-view="student"] .tnote,[data-view="student"] .key,[data-view="student"] .tbadge{display:none}
+/* lesson notes (teacher's page only): a quick strip under every section and a notes block at the bottom */
+.tn{border:1px dashed var(--line2);background:var(--mark);border-radius:10px;padding:10px 14px 12px;display:flex;flex-direction:column;gap:8px;font-size:14.5px}
+.tn-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.tn-lab{font:600 12px/1.2 var(--body);letter-spacing:.1em;text-transform:uppercase;min-width:9.5em}
+.tn-chip{border:1px solid var(--line2);background:var(--surface);border-radius:999px;padding:4px 12px;font-size:14.5px;line-height:1.3}
+.tn-chip:hover{border-color:var(--accent)}
+.tn-chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-weight:600}
+.tn-text{width:100%;border:1px solid var(--line2);border-radius:8px;background:var(--surface);padding:6px 10px;font-size:15px}
+.tn-final{display:flex;flex-direction:column;gap:16px;border-top:3px double var(--text);padding-top:20px;scroll-margin-top:104px}
+.tn-final h2{font-size:clamp(27px,4.4vw,36px);line-height:1.1}
+.tn-field{display:flex;flex-direction:column;gap:6px}
+.tn-field label{font-weight:600}
+.tn-field textarea{width:100%;min-height:130px;border:1px solid var(--line2);border-radius:8px;background:var(--surface);padding:10px 12px;font-size:16.5px;line-height:1.5;resize:vertical}
+.tn-sum table{border-collapse:collapse;width:100%;min-width:480px;font-size:15px}
+.tn-sum th,.tn-sum td{text-align:left;vertical-align:top;padding:7px 10px 7px 0;border-top:1px solid var(--line)}
+.tn-sum th{font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);font-weight:600;border-top:0}
+.tn-sum td:first-child{color:var(--soft);font-variant-numeric:tabular-nums;width:2em}
+.tn-status{font-size:14.5px;color:var(--soft)}
+.tn-out{width:100%;min-height:160px;border:1px solid var(--line2);border-radius:8px;background:var(--surface);padding:10px 12px;font:14px/1.45 ui-monospace,Menlo,monospace}
+/* lesson timer (teacher's page only) */
+.tmr{position:sticky;top:0;z-index:20;margin-top:-40px;margin-bottom:-36px;background:var(--surface);border:1px solid var(--line2);border-top:0;border-radius:0 0 12px 12px;padding:8px 12px 10px;display:flex;flex-direction:column;gap:8px;box-shadow:0 6px 18px rgb(0 0 0 / .16)}
+.tm-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;min-width:0}
+.tm-go{flex:none;border:0;border-radius:999px;background:var(--accent);color:var(--on-accent);font-weight:600;padding:6px 16px;min-width:5.8em}
+.tm-clock{flex:none;font:600 19px/1 var(--body);font-variant-numeric:tabular-nums}
+.tm-clock small{font-size:13px;font-weight:500;color:var(--soft)}
+.tm-clock.over{color:var(--bad)}
+.tm-now{flex:1;min-width:0;font-size:14.5px;color:var(--soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tm-reset{flex:none;border:1px solid var(--line2);background:none;border-radius:999px;padding:5px 12px;font-size:14px}
+.tm-bar{display:flex;gap:3px;height:24px}
+.tm-seg{position:relative;flex-basis:0;min-width:0;border-radius:5px;overflow:hidden;background:color-mix(in srgb,var(--c) 30%,#f8f8f2);color:#282a36;text-decoration:none;font:600 12px/24px var(--body);text-align:center}
+.tm-seg i{position:absolute;inset:0 auto 0 0;width:0;background:color-mix(in srgb,var(--c) 85%,#fff)}
+.tm-seg b{position:relative}
+.tm-seg.now{box-shadow:inset 0 0 0 2px #282a36}
+[data-view="student"] .sec{scroll-margin-top:104px}
+@media (max-width:520px){ .tm-now{display:none} .tm-row{justify-content:space-between} }
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.shake{animation:shake .28s ease}
+@media (prefers-reduced-motion: reduce){ *{transition:none!important;animation:none!important;scroll-behavior:auto!important} }
+/* pictures for new words: one thing each, on a white card (white in dark mode too) */
+.wpic{flex:none;width:92px;height:92px;border-radius:14px;background:#ffffff;display:grid;place-items:center;overflow:hidden}
+.wpic svg{width:94%;height:94%}
+.dark-ring .wpic{box-shadow:0 0 0 1px var(--line)}
+.wcard .wpic{box-shadow:0 0 0 1px var(--line)}
+.qpic{width:150px;height:150px;box-shadow:0 0 0 1px var(--line);margin-bottom:4px}
+.pairs{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:10px}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.pair .wcard{border:0;border-radius:0;flex-direction:column;align-items:flex-start;gap:8px;padding:14px}
+.cols{grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr))}
+.cols .wcard{flex-direction:column;align-items:flex-start;gap:8px}
+.wc-top{display:flex;align-items:center;justify-content:space-between;width:100%;gap:8px}
+.pair .wc-top{display:flex;align-items:center;justify-content:space-between;width:100%;gap:8px}
+/* stress dots */
+.s{position:relative;font-weight:700}
+.s::before{content:"";position:absolute;left:50%;top:-.3em;width:.32em;height:.32em;margin-left:-.16em;border-radius:50%;background:var(--accent)}
+.dotted{line-height:2.2}
+/* sentence starters */
+.starters{display:flex;flex-wrap:wrap;gap:8px;list-style:none}
+.starters li{background:var(--tint);border-radius:999px;padding:5px 14px;font-weight:500}
+/* wheel of questions */
+.wheel-wrap{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:20px;align-items:center}
+.wheel-box{position:relative;width:min(100%,280px);aspect-ratio:1;margin-inline:auto}
+.wheel-box svg.wheel{width:100%;height:100%;transition:transform 2.6s cubic-bezier(.17,.67,.21,1);transform:rotate(0deg)}
+.wheel-pin{position:absolute;left:50%;top:-6px;width:0;height:0;margin-left:-11px;border-left:11px solid transparent;border-right:11px solid transparent;border-top:20px solid var(--text);z-index:2}
+.wheel-side{display:flex;flex-direction:column;gap:14px;min-width:0}
+.wheel-q{font:500 clamp(21px,3vw,25px)/1.4 var(--display);min-height:3em}
+.wheel-q.empty{color:var(--soft);font-style:italic}
+.talk li.hit{color:var(--accent);font-weight:600}
+.talk li.done{color:var(--soft)}
+details.trans summary{cursor:pointer;color:var(--accent);font-weight:600;padding-block:4px}
+details.trans .script{margin-top:10px}
+</style>
+
+<main class="page" data-view="student">
+
+
+  <header class="mast">
+    <p class="kicker">The travel issue</p>
+    <h1>Istanbul <em>with Lu</em></h1>
+    <p class="dek">A plane, a small dog and a week by the sea. Today you learn the words for the airport and for Istanbul, and how to say there is too much, too many or not enough.</p>
+    <p class="verdict">My suitcase is <b>too heavy</b>. I have <b>too many</b> shoes. But is the carrier <b>big enough</b> for Lu?</p>
+  </header>
+
+  <nav aria-label="Contents"><ol class="toc" id="toc"></ol></nav>
+
+
+  <!-- 1 -->
+  <section class="sec" id="gossip" data-title="Gossip corner">
+    <header class="sec-head">
+      <span class="sec-no">1</span>
+      <div class="sec-title"><h2>Gossip corner</h2><p class="lede">What&rsquo;s new? Tell your news, and ask questions back.</p></div>
+    </header>
+    <ol class="talk">
+      <li>How was your week? Tell me one good thing and one bad thing.</li>
+      <li>What did you do at the weekend?</li>
+      <li>How is Lu?</li>
+      <li>Any news from friends or family? Tell me!</li>
+      <li>When is your trip? Are you excited?</li>
+    </ol>
+    <ul class="phrases">
+      <li data-say>Guess what!</li>
+      <li data-say>Really?</li>
+      <li data-say>No way!</li>
+      <li data-say>I can’t wait!</li>
+      <li data-say>Tell me more!</li>
+    </ul>
+  </section>
+
+  <!-- 2 -->
+  <section class="sec" id="recap" data-title="Last time: the best">
+    <header class="sec-head">
+      <span class="sec-no">2</span>
+      <div class="sec-title"><h2>Last time: the best</h2><p class="lede">Three or more things: <i>the -est</i> or <i>the most</i>. Choose, then say the whole sentence.</p></div>
+      <span class="score" data-score="recap">0 / 0</span>
+    </header>
+    <ol class="items" id="recap-list"></ol>
+    <div class="tools"><button type="button" class="btn" id="recap-reset">Start again</button></div>
+  </section>
+
+  <!-- 3 -->
+  <section class="sec" id="airport" data-title="At the airport with a dog">
+    <header class="sec-head">
+      <span class="sec-no">3</span>
+      <div class="sec-title"><h2>At the airport with a dog</h2><p class="lede">Twelve words for the journey. Listen, say each word, then do the quiz.</p></div>
+      <span class="score" data-score="airport">0 / 0</span>
+    </header>
+    <div class="wcards cols" id="airport-cards"></div>
+    <h3 class="sub">Quiz: which word?</h3>
+    <ol class="items" id="airport-list"></ol>
+    <div class="tools"><button type="button" class="btn" id="airport-reset">Start again</button></div>
+  </section>
+
+  <!-- 4 -->
+  <section class="sec" id="city" data-title="A week in Istanbul">
+    <header class="sec-head">
+      <span class="sec-no">4</span>
+      <div class="sec-title"><h2>A week in Istanbul</h2><p class="lede">Eight things you are going to see in Istanbul. Listen and say them. Then look at each picture and choose the word.</p></div>
+      <span class="score" data-score="city">0 / 0</span>
+    </header>
+    <div class="wcards cols" id="city-cards"></div>
+    <h3 class="sub">Quiz: what is it?</h3>
+    <ol class="items" id="city-list"></ol>
+    <div class="tools"><button type="button" class="btn" id="city-reset">Start again</button></div>
+  </section>
+
+  <!-- 5 -->
+  <section class="sec" id="rules" data-title="Too much, not enough: the rules">
+    <header class="sec-head">
+      <span class="sec-no">5</span>
+      <div class="sec-title"><h2>Too much, not enough</h2><p class="lede">How much? How many? More than you want, or less than you need? Listen to the examples and repeat them.</p></div>
+    </header>
+    <ul class="when">
+      <li><span class="lab">How many? Things you can count</span><span class="pat">many / a few</span><span><i>How <b class="hl">many</b> bags? Just <b class="hl">a few</b>.</i></span></li>
+      <li><span class="lab">How much? Things you can’t count</span><span class="pat">much / a little</span><span><i>How <b class="hl">much</b> luggage? Only <b class="hl">a little</b>.</i></span></li>
+      <li><span class="lab">Both</span><span class="pat">a lot of</span><span><i>I take <b class="hl">a lot of</b> shoes and <b class="hl">a lot of</b> luggage.</i></span></li>
+    </ul>
+    <div class="panel">
+      <h3>Too and enough</h3>
+      <div class="scroll">
+        <table class="rules">
+          <thead><tr><th>Meaning</th><th>Pattern</th><th>Example</th></tr></thead>
+          <tbody>
+            <tr><td>more than you want</td><td>too much + can’t count</td><td>I have too much luggage.</td></tr>
+            <tr><td>more than you want</td><td>too many + can count</td><td>There are too many people at the gate.</td></tr>
+            <tr><td>more than you want</td><td>too + adjective</td><td>My suitcase is too heavy.</td></tr>
+            <tr><td>the right amount</td><td>enough + noun</td><td>Do we have enough water for Lu?</td></tr>
+            <tr><td>the right amount</td><td>adjective + enough</td><td>Is the carrier big enough?</td></tr>
+            <tr><td>less than you need</td><td>not enough</td><td>There isn’t enough time. The bag isn’t big enough.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="grid2">
+      <div class="panel">
+        <h3>Very or too?</h3>
+        <ul class="plain">
+          <li><i>Istanbul is <b class="hl">very</b> beautiful.</i> Good! Just a fact.</li>
+          <li><i>The hotel is <b class="hl">too</b> expensive.</i> A problem: we can’t pay.</li>
+          <li>Not <s>too much big</s>. Just <i>too big</i>.</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h3>Listen and repeat</h3>
+        <ul class="plain">
+          <li class="line" data-say><span>My suitcase is too heavy.</span></li>
+          <li class="line" data-say><span>I have too many shoes!</span></li>
+          <li class="line" data-say><span>Is the carrier big enough for Lu?</span></li>
+          <li class="line" data-say><span>We don’t have enough time.</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 -->
+  <section class="sec" id="practice" data-title="Practice: choose the right words">
+    <header class="sec-head">
+      <span class="sec-no">6</span>
+      <div class="sec-title"><h2>Practice: choose the right words</h2><p class="lede">Choose, then say the whole sentence aloud.</p></div>
+      <span class="score" data-score="practice">0 / 0</span>
+    </header>
+    <ol class="items" id="practice-list"></ol>
+    <div class="tools"><button type="button" class="btn" id="practice-reset">Start again</button></div>
+  </section>
+
+  <!-- 7 -->
+  <section class="sec" id="reading" data-title="Reading: flying with a small dog">
+    <header class="sec-head">
+      <span class="sec-no">7</span>
+      <div class="sec-title"><h2>Reading: flying with a small dog</h2><p class="lede">Read the tips. Then decide: true or false?</p></div>
+      <span class="score" data-score="tf">0 / 0</span>
+    </header>
+    <article class="read">
+      <p class="by">Travel tips</p>
+      <h3>Flying with a small dog</h3>
+      <p>On many airlines, a small dog can fly in the cabin with you. It travels in a soft carrier under the seat in front of you. The dog and the carrier together usually can&rsquo;t weigh more than eight kilos.</p>
+      <p><b>Book early.</b> There are only a few places for pets on every flight, and sometimes there <b>aren&rsquo;t enough</b>.</p>
+      <p><b>Visit the vet</b> a few weeks before the trip. You need the dog&rsquo;s documents, and you can&rsquo;t fly without them.</p>
+      <p><b>Choose the right carrier.</b> It can&rsquo;t be <b>too small</b>: your dog needs to stand up and turn around. But it can&rsquo;t be <b>too big</b> for the space under the seat.</p>
+      <p><b>On the day,</b> don&rsquo;t give your dog <b>too much</b> food before the flight, but bring <b>enough</b> water. And bring a few treats for a good dog!</p>
+    </article>
+    <ol class="items" id="tf-list"></ol>
+    <div class="tools"><button type="button" class="btn" id="tf-reset">Start again</button></div>
+  </section>
+
+  <!-- 8 -->
+  <section class="sec" id="sound" data-title="The sound /ʌ/">
+    <header class="sec-head">
+      <span class="sec-no">8</span>
+      <div class="sec-title"><h2>The sound <span class="ipa">/ʌ/</span></h2><p class="lede">A short, open sound, like in <i>up</i>. You hear it in <i>much</i>, <i>enough</i> and <i>luggage</i>. Listen and repeat.</p></div>
+    </header>
+    <ul class="phrases">
+      <li data-say="much">m<span class="schwa">u</span>ch</li>
+      <li data-say="enough">en<span class="schwa">ou</span>gh</li>
+      <li data-say="luggage">l<span class="schwa">u</span>ggage</li>
+      <li data-say="money">m<span class="schwa">o</span>ney</li>
+      <li data-say="lunch">l<span class="schwa">u</span>nch</li>
+      <li data-say="sunny">s<span class="schwa">u</span>nny</li>
+    </ul>
+    <ul class="plain panel big-lines">
+      <li class="line" data-say><span>How m<span class="schwa">u</span>ch m<span class="schwa">o</span>ney do I need?</span></li>
+      <li class="line" data-say><span>Is there en<span class="schwa">ou</span>gh room for my l<span class="schwa">u</span>ggage?</span></li>
+      <li class="line" data-say><span>Let’s have l<span class="schwa">u</span>nch on the ferry.</span></li>
+      <li class="line" data-say><span>I hope it’s going to be s<span class="schwa">u</span>nny!</span></li>
+    </ul>
+  </section>
+
+  <!-- 9 -->
+  <section class="sec" id="listen" data-title="Listening: at the check-in desk">
+    <header class="sec-head">
+      <span class="sec-no">9</span>
+      <div class="sec-title"><h2>Listening: at the check-in desk</h2><p class="lede">A woman and her dog are at the airport. Press Play and listen. Don&rsquo;t read the text yet! Then answer the questions.</p></div>
+      <span class="score" data-score="listen">0 / 0</span>
+    </header>
+    <div class="panel">
+      <div class="tools"><button type="button" class="btn primary" id="dlg-play">Play</button><button type="button" class="btn" id="dlg-stop">Stop</button></div>
+      <details class="trans" id="dlg-text"><summary>Show the text</summary><ol class="script" id="dlg-lines"></ol></details>
+    </div>
+    <ol class="items" id="listen-list"></ol>
+    <div class="tools"><button type="button" class="btn" id="listen-reset">Start again</button></div>
+  </section>
+
+  <!-- 10 -->
+  <section class="sec" id="trip" data-title="My trip">
+    <header class="sec-head">
+      <span class="sec-no">10</span>
+      <div class="sec-title"><h2>My trip</h2><p class="lede">Tell your teacher about your plans. Use <i>I&rsquo;m going to&hellip;</i> and the words from today.</p></div>
+    </header>
+    <ol class="talk">
+      <li>When are you going? How long are you going to stay?</li>
+      <li>How are you going to get to the airport? Is Lu going to travel in a carrier?</li>
+      <li>What are you going to take? Do you always take too many clothes?</li>
+      <li>Where are you going to stay? Is it a good place for a dog?</li>
+      <li>What are you going to see and do in Istanbul? What food do you want to try?</li>
+      <li>What is the most exciting thing about this trip? Is there anything you’re worried about?</li>
+    </ol>
+    <ul class="starters">
+      <li>I’m going to…</li>
+      <li>We’re going to stay…</li>
+      <li>I want to see…</li>
+      <li>I always take too many…</li>
+      <li>I hope there’s enough…</li>
+    </ul>
+  </section>
+
+  <!-- 11 -->
+  <section class="sec" id="roleplay" data-title="Role-plays">
+    <header class="sec-head">
+      <span class="sec-no">11</span>
+      <div class="sec-title"><h2>Role-plays</h2><p class="lede">Listen to each line and say it. Then play the scenes with your teacher.</p></div>
+    </header>
+    <div class="panel">
+      <ol class="script">
+        <li data-say="Excuse me, is the carrier small enough for the cabin?"><span><span class="who">You</span>Excuse me, is the carrier small enough for the cabin?</span></li>
+        <li data-say="Oh no, my suitcase is too heavy. How much is it?"><span><span class="who">You</span>Oh no, my suitcase is too heavy. How much is it?</span></li>
+        <li data-say="Can I have a window seat, please?"><span><span class="who">You</span>Can I have a window seat, please?</span></li>
+        <li data-say="Are dogs OK in the hotel?"><span><span class="who">You</span>Are dogs OK in the hotel?</span></li>
+        <li data-say="The room is too small. Have you got a bigger one?"><span><span class="who">You</span>The room is too small. Have you got a bigger one?</span></li>
+        <li data-say="Why don’t you take out some shoes?"><span><span class="who">Teacher</span>Why don’t you take out some shoes?</span></li>
+      </ol>
+    </div>
+    <div class="grid2">
+      <div class="panel">
+        <h3>Scene 1: check-in</h3>
+        <p>You are at the airport with Lu. Your teacher is the check-in agent. Show your passport and Lu&rsquo;s documents, ask about the carrier, your seat and your luggage, and get your boarding pass.</p>
+      </div>
+      <div class="panel">
+        <h3>Scene 2: at the hotel</h3>
+        <p>You arrive at your hotel in Istanbul. Your teacher is the receptionist. Ask about the room, a place to walk Lu, and the best café nearby.</p>
+      </div>
+    </div>
+    <div class="extra"><span class="tag">Just for fun</span><p>Only if you want: take a photo of Lu in Istanbul and show it to Alena after the trip!</p></div>
+  </section>
+
+</main>
+
+<script>
+(function(){
+  'use strict';
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+  // the teacher's page shows the answers; scripts/student-site.sh turns data-view into "student"
+  const TEACHER = (($('main.page') || document.body).getAttribute('data-view')) === 'teacher';
+
+  // lesson timer: one coloured segment per section, as long as that section's minutes
+  if (TEACHER && $('#tmr')) (function(){
+    const box = $('#tmr'), go = $('#tm-go'), clock = $('#tm-clock'), now = $('#tm-now'), bar = $('#tm-bar');
+    const COLORS = ['#ff79c6', '#bd93f9', '#8be9fd', '#50fa7b', '#ffb86c', '#f1fa8c', '#ff5555', '#6272a4'];
+    const KEY = 'lesson-timer:' + document.title;
+    const fmt = s => Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0');
+    let from = 0;
+    const segs = box.dataset.segs.split(',').map((part, i) => {
+      const bits = part.split(':'), sec = document.getElementById(bits[0]), len = (+bits[1] || 1) * 60;
+      const a = document.createElement('a'), fill = document.createElement('i'), num = document.createElement('b');
+      const title = (sec && sec.dataset.title) || bits[0];
+      a.className = 'tm-seg'; a.href = '#' + bits[0];
+      a.style.flexGrow = len; a.style.setProperty('--c', COLORS[i % COLORS.length]);
+      a.title = (i + 1) + '. ' + title + ' · ' + (len / 60) + ' min';
+      a.setAttribute('aria-label', a.title);
+      num.textContent = i + 1;
+      a.append(fill, num); bar.append(a);
+      const seg = {a, fill, title, n: i + 1, from, len};
+      from += len;
+      return seg;
+    });
+    const total = from;
+    let base = 0, t0 = null, tick = null;
+    try {
+      const saved = JSON.parse(localStorage.getItem(KEY) || 'null');
+      if (saved && (!saved.t0 || (Date.now() - saved.t0) / 1000 + saved.base < total + 1800)) { base = +saved.base || 0; t0 = saved.t0 || null; }
+    } catch (e) {}
+    const save = () => { try { localStorage.setItem(KEY, JSON.stringify({base, t0})); } catch (e) {} };
+    const elapsed = () => base + (t0 ? (Date.now() - t0) / 1000 : 0);
+    function render(){
+      const s = elapsed();
+      clock.innerHTML = '';
+      const small = document.createElement('small');
+      small.textContent = ' / ' + fmt(total);
+      clock.append(fmt(s), small);
+      clock.classList.toggle('over', s >= total);
+      let cur = null;
+      segs.forEach(g => {
+        const done = Math.max(0, Math.min(1, (s - g.from) / g.len));
+        g.fill.style.width = (done * 100) + '%';
+        const on = s >= g.from && s < g.from + g.len && (t0 || s > 0);
+        g.a.classList.toggle('now', !!on);
+        if (on) cur = g;
+      });
+      now.textContent = cur ? cur.n + '. ' + cur.title + ' · ' + fmt(cur.from + cur.len - s + 0.999) + ' left'
+        : s >= total ? 'Time is up · ' + fmt(s - total) + ' over' : segs.length + ' sections';
+      go.textContent = t0 ? 'Pause' : s > 0 ? 'Continue' : 'Start';
+    }
+    function run(){ clearInterval(tick); if (t0) tick = setInterval(render, 500); render(); }
+    go.addEventListener('click', () => {
+      if (t0) { base = elapsed(); t0 = null; } else { t0 = Date.now(); }
+      save(); run();
+    });
+    $('#tm-reset').addEventListener('click', () => { base = 0; t0 = null; save(); run(); });
+    run();
+  })();
+
+  // lesson notes: a quick strip under every section, a notes block at the bottom, saved as one file
+  if (TEACHER && $('#tmr') && $('#tmr').dataset.notes) (function(){
+    const where = $('#tmr').dataset.notes.split('/');           // student / lesson folder
+    const FILE = where.join('-') + '-notes.md';
+    const KEY = 'lesson-notes:' + where.join('/');
+    const MARKS = ['Easy', 'OK', 'Hard', 'Skipped'];
+    const TAGS = ['Grammar', 'Words', 'Pronunciation', 'Speaking', 'Understanding', 'Too slow'];
+    const HW = ['Done', 'Partly', 'Not done'];
+    let st = {sec: {}, hw: '', went: '', next: ''};
+    try {
+      const saved = JSON.parse(localStorage.getItem(KEY) || 'null');
+      if (saved && typeof saved === 'object') st = Object.assign(st, saved, {sec: saved.sec || {}});
+    } catch (e) {}
+    const secs = $$('main.page > section.sec').map((sec, i) => ({id: sec.id, n: i + 1, title: sec.dataset.title || sec.id, sec}));
+    const of = id => st.sec[id] || (st.sec[id] = {mark: '', tags: [], text: ''});
+    const status = el('p', {class: 'tn-status', id: 'tn-status', role: 'status'});
+    const sumBody = el('tbody');
+    function changed(){
+      try { localStorage.setItem(KEY, JSON.stringify(st)); } catch (e) {}
+      summary();
+      status.textContent = 'Kept in this browser. Press “Save notes” at the end of the lesson to make the file.';
+    }
+    function chip(label, id, isOn, toggle){
+      const b = el('button', {type: 'button', class: 'tn-chip', id, 'aria-pressed': String(isOn()), text: label});
+      b.addEventListener('click', () => { toggle(); changed(); b.closest('.tn-row').querySelectorAll('.tn-chip').forEach(x => x.setAttribute('aria-pressed', String(x._on()))); });
+      b._on = isOn;
+      return b;
+    }
+    function row(label, chips){ return el('div', {class: 'tn-row'}, el('span', {class: 'tn-lab', text: label}), ...chips); }
+
+    secs.forEach(s => {
+      const d = of(s.id);
+      const text = el('input', {type: 'text', class: 'tn-text', id: 'tn-' + s.id + '-text', placeholder: 'A quick note: what was hard, what to repeat', 'aria-label': 'Note for section ' + s.n, autocomplete: 'off'});
+      text.value = d.text || '';
+      text.addEventListener('input', () => { d.text = text.value; changed(); });
+      s.sec.append(el('div', {class: 'tn', role: 'group', 'aria-label': 'Notes for section ' + s.n},
+        row('How it went', MARKS.map(m => chip(m, 'tn-' + s.id + '-m-' + m.toLowerCase(), () => d.mark === m, () => { d.mark = d.mark === m ? '' : m; }))),
+        row('What was hard', TAGS.map(g => chip(g, 'tn-' + s.id + '-t-' + g.toLowerCase().replace(/\s+/g, '-'), () => d.tags.includes(g), () => { d.tags = d.tags.includes(g) ? d.tags.filter(x => x !== g) : d.tags.concat(g); }))),
+        text));
+    });
+
+    function summary(){
+      sumBody.replaceChildren(...secs.map(s => {
+        const d = of(s.id);
+        return el('tr', null, el('td', {text: String(s.n)}), el('td', {text: s.title}), el('td', {text: d.mark || '–'}), el('td', {text: d.tags.join(', ') || '–'}), el('td', {text: d.text || '–'}));
+      }));
+    }
+    function area(id, label, key, hint){
+      const ta = el('textarea', {id, placeholder: hint});
+      ta.value = st[key] || '';
+      ta.addEventListener('input', () => { st[key] = ta.value; changed(); });
+      return el('div', {class: 'tn-field'}, el('label', {for: id, text: label}), ta);
+    }
+    const cell = v => String(v || '–').replace(/\|/g, '/').replace(/\s*\n\s*/g, ' ');
+    function markdown(){
+      const now = new Date(), two = n => String(n).padStart(2, '0');
+      const stamp = now.getFullYear() + '-' + two(now.getMonth() + 1) + '-' + two(now.getDate()) + ' ' + two(now.getHours()) + ':' + two(now.getMinutes());
+      const lines = ['# Lesson notes: ' + document.title, '',
+        'Lesson folder: ' + where.join('/') + '. Notes saved ' + stamp + '.', '',
+        '## Section by section', '',
+        '| # | Section | How it went | What was hard | Note |', '|---|---|---|---|---|'];
+      secs.forEach(s => { const d = of(s.id); lines.push('| ' + [s.n, cell(s.title), cell(d.mark), cell(d.tags.join(', ')), cell(d.text)].join(' | ') + ' |'); });
+      lines.push('', '## Homework brought to this lesson', '', st.hw || 'Not marked.', '',
+        '## How the lesson went', '', (st.went || '').trim() || 'No notes.', '',
+        '## Practise next time', '', (st.next || '').trim() || 'No notes.', '');
+      return lines.join('\n');
+    }
+    const out = el('textarea', {class: 'tn-out', id: 'tn-out', readonly: '', hidden: '', 'aria-label': 'Your notes as text'});
+    const save = el('button', {type: 'button', class: 'btn primary', id: 'tn-save', text: 'Save notes'});
+    save.addEventListener('click', () => {
+      try {
+        const a = el('a', {href: URL.createObjectURL(new Blob([markdown()], {type: 'text/markdown;charset=utf-8'})), download: FILE});
+        document.body.append(a); a.click(); a.remove();
+        setTimeout(() => { try { URL.revokeObjectURL(a.href); } catch (e) {} }, 4000);
+        status.textContent = 'Saved as “' + FILE + '” in your Downloads folder. Tell Claude the lesson is done and it goes into the lesson folder.';
+      } catch (e) {
+        out.hidden = false; out.value = markdown(); out.focus(); out.select();
+        status.textContent = 'The file could not be saved here. Copy this text and send it to Claude.';
+      }
+    });
+    const copy = el('button', {type: 'button', class: 'btn', id: 'tn-copy', text: 'Copy notes'});
+    copy.addEventListener('click', () => {
+      const text = markdown();
+      const show = () => { out.hidden = false; out.value = text; out.focus(); out.select(); status.textContent = 'Press ⌘C to copy the notes.'; };
+      try { navigator.clipboard.writeText(text).then(() => { status.textContent = 'Notes copied.'; }, show); } catch (e) { show(); }
+    });
+    let armed = null;
+    const clear = el('button', {type: 'button', class: 'btn quiet', id: 'tn-clear', text: 'Clear notes'});
+    clear.addEventListener('click', () => {
+      if (!armed) { clear.textContent = 'Press again to clear everything'; armed = setTimeout(() => { armed = null; clear.textContent = 'Clear notes'; }, 4000); return; }
+      clearTimeout(armed);
+      try { localStorage.removeItem(KEY); } catch (e) {}
+      location.reload();
+    });
+
+    const fin = el('section', {class: 'tn-final', id: 'lesson-notes', 'aria-label': 'Lesson notes'},
+      el('h2', {text: 'Lesson notes'}),
+      el('div', {class: 'tn'}, row('Her homework', HW.map(h => chip(h, 'tn-hw-' + h.toLowerCase().replace(/\s+/g, '-'), () => st.hw === h, () => { st.hw = st.hw === h ? '' : h; })))),
+      area('tn-went', 'How the lesson went', 'went', 'Your thoughts about the lesson'),
+      area('tn-next', 'Practise next time', 'next', 'What to come back to in the next lessons'),
+      el('div', {class: 'tn-sum scroll'}, el('table', null, el('thead', null, el('tr', null, ...['#', 'Section', 'How it went', 'What was hard', 'Note'].map(h => el('th', {text: h})))), sumBody)),
+      el('div', {class: 'tools'}, save, copy, clear),
+      status, out);
+    const last = secs[secs.length - 1];
+    if (last) last.sec.after(fin); else $('main.page').append(fin);
+    summary();
+    status.textContent = 'Notes are kept in this browser while you work. Press “Save notes” at the end of the lesson.';
+  })();
+
+  function el(tag, props, ...kids){
+    const e = document.createElement(tag);
+    if (props) for (const k of Object.keys(props)){
+      const v = props[k];
+      if (v == null) continue;
+      if (k === 'class') e.className = v;
+      else if (k === 'text') e.textContent = v;
+      else e.setAttribute(k, v);
+    }
+    for (const k of kids) if (k != null) e.append(k);
+    return e;
+  }
+  // wrong-answer shake clears itself
+  function nudge(e){ e.classList.remove('shake'); void e.offsetWidth; e.classList.add('shake'); setTimeout(() => e.classList.remove('shake'), 400); }
+
+  // ---------- speech ----------
+  const synth = window.speechSynthesis;
+  let voice = null;
+  function pickVoice(){
+    try {
+      const vs = synth ? synth.getVoices() : [];
+      voice = vs.find(v => v.lang === 'en-GB') || vs.find(v => /^en[-_]GB/i.test(v.lang)) || vs.find(v => /^en[-_]/i.test(v.lang)) || null;
+    } catch (e) { voice = null; }
+  }
+  if (synth){ pickVoice(); try { synth.addEventListener('voiceschanged', pickVoice); } catch (e) {} }
+  function speak(text){
+    try {
+      if (!synth) return;
+      synth.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = 'en-GB'; if (voice) u.voice = voice; u.rate = 0.85;
+      synth.speak(u);
+    } catch (e) {}
+  }
+  const SPEAKER = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>';
+  function sayButton(text, id){
+    const b = el('button', {type: 'button', class: 'say', id: id, 'aria-label': 'Listen: ' + text});
+    b.innerHTML = SPEAKER;
+    b.addEventListener('click', () => speak(text));
+    return b;
+  }
+
+  // ---------- scores ----------
+  const SCORE = {};
+  const SECTIONS = [];
+  $$('.sec').forEach((sec, i) => {
+    const sc = $('.score', sec);
+    SECTIONS.push({id: sec.id, no: i + 1, title: sec.dataset.title, parts: sc ? sc.dataset.score.split(' ') : []});
+  });
+  function partsTotal(parts){
+    let got = 0, total = 0;
+    parts.forEach(p => { if (SCORE[p]){ got += SCORE[p].got; total += SCORE[p].total; } });
+    return {got, total};
+  }
+  function setScore(key, got, total){ SCORE[key] = {got, total}; renderScores(); }
+  let tocBuilt = false;
+  function renderScores(){
+    $$('.score[data-score]').forEach(s => {
+      const t = partsTotal(s.dataset.score.split(' '));
+      s.textContent = t.got + ' / ' + t.total + ' correct';
+      s.classList.toggle('full', t.total > 0 && t.got === t.total);
+    });
+    const toc = $('#toc');
+    if (!tocBuilt){
+      SECTIONS.forEach(s => {
+        const li = el('li', null, el('a', {href: '#' + s.id, text: s.title}));
+        if (s.parts.length) li.append(el('span', {class: 'sc', 'data-toc': s.id}));
+        toc.append(li);
+      });
+      tocBuilt = true;
+    }
+    $$('[data-toc]').forEach(x => { const s = SECTIONS.find(q => q.id === x.dataset.toc); const t = partsTotal(s.parts); x.textContent = t.got + ' / ' + t.total; });
+  }
+
+  // sentence with one ___ ; returns {frag, blank}
+  function withBlank(str, make){
+    const f = document.createDocumentFragment();
+    let blank = null;
+    str.split('___').forEach((part, i) => {
+      if (i > 0){ blank = make(); f.append(blank); }
+      if (part) f.append(document.createTextNode(part));
+    });
+    return {frag: f, blank};
+  }
+
+  // ---------- multiple choice: {q, o:[...], a:index, why, big?} ----------
+  function buildMC(listId, items, key){
+    const list = $('#' + listId);
+    let state = [];
+    function score(){ setScore(key, state.filter(s => s.done && !s.missed).length, items.length); }
+    function render(){
+      list.replaceChildren();
+      state = items.map((it, i) => {
+        const st = {done: false, missed: false};
+        const r = withBlank(it.q, () => el('span', {class: 'blank', 'aria-label': 'gap'}, ' '));
+        const li = el('li', {class: 'item'});
+        const q = el('p', {class: it.big ? 'q bignum' : 'q'}); q.append(r.frag);
+        const opts = el('div', {class: 'opts', role: 'group', 'aria-label': 'Options for item ' + (i + 1)});
+        const why = el('p', {class: 'why', 'aria-live': 'polite'});
+        it.o.forEach((o, j) => {
+          const b = el('button', {type: 'button', class: 'opt', id: listId + '-' + i + '-' + j, text: o});
+          b.addEventListener('click', () => {
+            if (st.done || b.classList.contains('no')) return;
+            if (j === it.a){
+              st.done = true;
+              b.classList.add('yes');
+              $$('.opt', opts).forEach(x => x.setAttribute('aria-disabled', 'true'));
+              if (r.blank){ r.blank.textContent = o; r.blank.classList.add('filled'); }
+              why.replaceChildren(el('span', {class: 'ok', text: st.missed ? 'Got it. ' : 'Correct. '}), it.why || '');
+            } else {
+              st.missed = true;
+              b.classList.add('no'); b.setAttribute('aria-label', o + ' (wrong)');
+              nudge(b);
+              why.textContent = 'Not this one. Try again.';
+            }
+            score();
+          });
+          opts.append(b);
+        });
+        if (it.pic) li.append(pic(it.pic, 'qpic'));
+        if (it.q) li.append(q);
+        li.append(opts, why);
+        if (TEACHER) li.append(el('p', {class: 'key', text: 'Answer: ' + it.o[it.a]}));
+        list.append(li);
+        return st;
+      });
+      score();
+    }
+    render();
+    return render;
+  }
+
+  // ================= content =================
+  // pictures for new words: flat soft shapes from the Dracula palette, thin ink lines, on white
+  const K = {ink: '#44475a', pink: '#f6a6d2', purple: '#c6b3f5', cyan: '#a3e2ef', green: '#a3e4b4', orange: '#ffc898', yellow: '#f2ea8e', grey: '#d6d7e2', blue: '#a7c8f2', sage: '#a9d6c4', amber: '#f2a65a', paper: '#fbf6e4'};
+  const svg = body => '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" fill="none" stroke-linecap="round" stroke-linejoin="round">' + body + '</svg>';
+  const sesame = (() => { let s = ''; for (let i = 0; i < 10; i++){ const a = i * Math.PI / 5; s += '<ellipse cx="' + (50 + Math.cos(a) * 21).toFixed(1) + '" cy="' + (50 + Math.sin(a) * 21).toFixed(1) + '" rx="1.6" ry="1" fill="' + K.paper + '"/>'; } return s; })();
+  const PICS = {
+    passport: svg('<rect x="30" y="14" width="40" height="66" rx="5" fill="' + K.purple + '"/><circle cx="50" cy="42" r="10" stroke="#fff" stroke-width="2"/><path d="M40 42h20M50 32c-5 6-5 14 0 20M50 32c5 6 5 14 0 20" stroke="#fff" stroke-width="1.6"/><path d="M41 66h18" stroke="#fff" stroke-width="2"/>'),
+    'boarding pass': svg('<rect x="12" y="32" width="76" height="36" rx="5" fill="' + K.cyan + '"/><path d="M64 34v32" stroke="#fff" stroke-width="2" stroke-dasharray="3 3"/><path d="M20 44h32M20 52h22M20 60h28" stroke="#fff" stroke-width="2.4"/><path d="M71 42v18M75 42v18M78 42v18M82 42v18" stroke="' + K.ink + '" stroke-width="1.6"/>'),
+    suitcase: svg('<path d="M40 30v-6h20v6" stroke="' + K.ink + '" stroke-width="3"/><rect x="24" y="30" width="52" height="48" rx="7" fill="' + K.orange + '"/><path d="M38 34v40M62 34v40" stroke="#fff" stroke-width="2.4"/><circle cx="34" cy="82" r="3.5" fill="' + K.ink + '"/><circle cx="66" cy="82" r="3.5" fill="' + K.ink + '"/>'),
+    'hand luggage': svg('<path d="M43 46V20h14v26" stroke="' + K.ink + '" stroke-width="2.6"/><rect x="34" y="44" width="32" height="36" rx="6" fill="' + K.pink + '"/><path d="M42 52v20M58 52v20" stroke="#fff" stroke-width="2.2"/><circle cx="40" cy="84" r="3" fill="' + K.ink + '"/><circle cx="60" cy="84" r="3" fill="' + K.ink + '"/>'),
+    'pet carrier': svg('<path d="M38 38q12-16 24 0" stroke="' + K.ink + '" stroke-width="3"/><rect x="16" y="36" width="68" height="42" rx="12" fill="' + K.purple + '"/><rect x="26" y="45" width="28" height="24" rx="5" fill="#fff"/><path d="M33 45v24M40 45v24M47 45v24M26 57h28" stroke="' + K.purple + '" stroke-width="1.4"/><circle cx="70" cy="57" r="3" fill="#fff"/>'),
+    lead: svg('<path d="M30 20c-12 0-12 18 0 18s12-18 0-18z" stroke="' + K.pink + '" stroke-width="4"/><path d="M33 37c10 14 30 6 34 30" stroke="' + K.pink + '" stroke-width="4"/><rect x="63" y="66" width="8" height="12" rx="3" fill="' + K.ink + '"/>'),
+    bowl: svg('<circle cx="40" cy="48" r="4" fill="' + K.amber + '"/><circle cx="50" cy="46" r="4" fill="' + K.orange + '"/><circle cx="60" cy="48" r="4" fill="' + K.amber + '"/><circle cx="45" cy="44" r="3.5" fill="' + K.orange + '"/><circle cx="55" cy="43" r="3.5" fill="' + K.amber + '"/><path d="M20 52h60l-6 22H26z" fill="' + K.cyan + '"/><rect x="16" y="50" width="68" height="6" rx="3" fill="' + K.blue + '"/>'),
+    treats: svg('<g transform="rotate(-20 50 50)"><circle cx="28" cy="43" r="8" fill="' + K.orange + '"/><circle cx="28" cy="57" r="8" fill="' + K.orange + '"/><circle cx="72" cy="43" r="8" fill="' + K.orange + '"/><circle cx="72" cy="57" r="8" fill="' + K.orange + '"/><rect x="28" y="43" width="44" height="14" fill="' + K.orange + '"/></g>'),
+    plane: svg('<path d="M46 52L32 76h9l19-24z" fill="' + K.purple + '"/><path d="M48 50L40 34h8l12 16z" fill="' + K.purple + '"/><path d="M20 48L12 32h8l10 14z" fill="' + K.purple + '"/><rect x="12" y="45" width="76" height="12" rx="6" fill="' + K.blue + '"/><circle cx="62" cy="51" r="1.8" fill="#fff"/><circle cx="68" cy="51" r="1.8" fill="#fff"/><circle cx="74" cy="51" r="1.8" fill="#fff"/><circle cx="56" cy="51" r="1.8" fill="#fff"/>'),
+    seat: svg('<rect x="58" y="16" width="26" height="34" rx="12" fill="' + K.blue + '"/><rect x="63" y="21" width="16" height="24" rx="8" fill="#fff"/><path d="M67 36q4-6 8-2" stroke="' + K.cyan + '" stroke-width="2.4"/><rect x="18" y="20" width="24" height="52" rx="9" fill="' + K.pink + '"/><rect x="22" y="62" width="40" height="12" rx="6" fill="' + K.pink + '"/><path d="M34 74v10M56 74v10M28 84h34" stroke="' + K.ink + '" stroke-width="2.4"/>'),
+    'vet certificate': svg('<rect x="26" y="12" width="48" height="74" rx="4" fill="' + K.paper + '"/><path d="M34 26h32M34 34h32M34 42h24M34 50h28" stroke="' + K.grey + '" stroke-width="2.4"/><circle cx="58" cy="70" r="6" fill="' + K.pink + '"/><circle cx="50" cy="61" r="2.6" fill="' + K.pink + '"/><circle cx="55" cy="57" r="2.6" fill="' + K.pink + '"/><circle cx="62" cy="57" r="2.6" fill="' + K.pink + '"/><circle cx="67" cy="61" r="2.6" fill="' + K.pink + '"/>'),
+    map: svg('<path d="M16 26l22-6v60l-22 6z" fill="' + K.green + '"/><path d="M38 20l24 6v60l-24-6z" fill="' + K.yellow + '"/><path d="M62 26l22-6v60l-22 6z" fill="' + K.green + '"/><path d="M50 60c-8-9-11-14-11-19a11 11 0 0 1 22 0c0 5-3 10-11 19z" fill="' + K.pink + '"/><circle cx="50" cy="41" r="4" fill="#fff"/>'),
+    mosque: svg('<rect x="14" y="24" width="6" height="58" fill="' + K.purple + '"/><path d="M14 24l3-12 3 12z" fill="' + K.purple + '"/><rect x="80" y="24" width="6" height="58" fill="' + K.purple + '"/><path d="M80 24l3-12 3 12z" fill="' + K.purple + '"/><rect x="26" y="54" width="48" height="28" fill="' + K.purple + '"/><path d="M30 55a20 20 0 0 1 40 0z" fill="' + K.purple + '"/><path d="M50 35v-6" stroke="' + K.purple + '" stroke-width="2.4"/><path d="M44 82V70a6 6 0 0 1 12 0v12z" fill="#fff"/>'),
+    bazaar: svg('<rect x="10" y="26" width="80" height="56" rx="2" fill="' + K.orange + '"/><path d="M16 82V52a10 10 0 0 1 20 0v30zM40 82V52a10 10 0 0 1 20 0v30zM64 82V52a10 10 0 0 1 20 0v30z" fill="#fff"/><path d="M26 42v10M50 42v10M74 42v10" stroke="' + K.ink + '" stroke-width="1.4"/><circle cx="26" cy="56" r="4.5" fill="' + K.pink + '"/><circle cx="50" cy="56" r="4.5" fill="' + K.cyan + '"/><circle cx="74" cy="56" r="4.5" fill="' + K.green + '"/>'),
+    ferry: svg('<rect x="8" y="68" width="84" height="16" rx="4" fill="' + K.blue + '"/><path d="M14 56h72l-8 14H22z" fill="' + K.ink + '"/><rect x="26" y="40" width="44" height="16" rx="3" fill="' + K.cyan + '"/><rect x="31" y="45" width="7" height="6" rx="1" fill="#fff"/><rect x="44" y="45" width="7" height="6" rx="1" fill="#fff"/><rect x="57" y="45" width="7" height="6" rx="1" fill="#fff"/><rect x="44" y="26" width="9" height="14" rx="1.5" fill="' + K.pink + '"/><path d="M18 78h10M60 80h14" stroke="#fff" stroke-width="2"/>'),
+    tram: svg('<path d="M10 14h80" stroke="' + K.grey + '" stroke-width="2"/><path d="M50 14l-8 16M50 14l8 16" stroke="' + K.ink + '" stroke-width="1.8"/><rect x="18" y="30" width="64" height="42" rx="9" fill="#f08a8a"/><rect x="25" y="38" width="13" height="14" rx="2" fill="#fff"/><rect x="44" y="38" width="13" height="14" rx="2" fill="#fff"/><rect x="63" y="38" width="12" height="14" rx="2" fill="#fff"/><circle cx="32" cy="76" r="4.5" fill="' + K.ink + '"/><circle cx="68" cy="76" r="4.5" fill="' + K.ink + '"/><path d="M10 82h80" stroke="' + K.grey + '" stroke-width="2"/>'),
+    'Turkish tea': svg('<path d="M37 26h26c-7 11-7 19 0 27-6 9-7 17-1 25H38c6-8 5-16-1-25 7-8 7-16 0-27z" fill="' + K.amber + '"/><path d="M37 26h26" stroke="' + K.ink + '" stroke-width="1.6"/><ellipse cx="50" cy="81" rx="22" ry="4.5" fill="' + K.purple + '"/>'),
+    simit: svg('<circle cx="50" cy="50" r="21" stroke="' + K.amber + '" stroke-width="13"/>' + sesame),
+    'street cat': svg('<path d="M64 76c14 0 18-14 8-20" stroke="' + K.grey + '" stroke-width="5"/><ellipse cx="50" cy="62" rx="16" ry="18" fill="' + K.grey + '"/><circle cx="50" cy="36" r="12" fill="' + K.grey + '"/><path d="M40 30l-2-12 9 7zM60 30l2-12-9 7z" fill="' + K.grey + '"/><circle cx="45.5" cy="36" r="1.8" fill="' + K.ink + '"/><circle cx="54.5" cy="36" r="1.8" fill="' + K.ink + '"/>'),
+    carpet: svg('<path d="M24 18v-6M32 18v-6M40 18v-6M48 18v-6M56 18v-6M64 18v-6M72 18v-6M24 82v6M32 82v6M40 82v6M48 82v6M56 82v6M64 82v6M72 82v6" stroke="' + K.ink + '" stroke-width="1.4"/><rect x="20" y="18" width="60" height="64" rx="2" fill="' + K.pink + '"/><rect x="27" y="25" width="46" height="50" rx="1" stroke="' + K.purple + '" stroke-width="3"/><path d="M50 34l12 16-12 16-12-16z" fill="' + K.cyan + '"/>')
+  };
+  function pic(name, cls){ const s = el('span', {class: 'wpic' + (cls ? ' ' + cls : ''), 'aria-hidden': 'true'}); s.innerHTML = PICS[name]; return s; }
+  function cards(boxId, list, prefix){
+    const box = $('#' + boxId);
+    list.forEach(([w, p, ex], i) => box.append(el('div', {class: 'wcard'},
+      el('div', {class: 'wc-top'}, pic(p), sayButton(w + '. ' + ex, prefix + '-say-' + (i + 1))),
+      el('div', {class: 'wc-txt'}, el('b', {text: w}), el('span', {text: ex})))));
+  }
+
+  cards('airport-cards', [
+    ['a passport', 'passport', 'Don’t forget your passport!'],
+    ['a boarding pass', 'boarding pass', 'Here’s your boarding pass.'],
+    ['a suitcase', 'suitcase', 'My suitcase is very big.'],
+    ['hand luggage', 'hand luggage', 'I only have hand luggage.'],
+    ['a pet carrier', 'pet carrier', 'Lu travels in a pet carrier.'],
+    ['a lead', 'lead', 'Keep your dog on a lead.'],
+    ['a bowl', 'bowl', 'Lu needs a bowl for water.'],
+    ['treats', 'treats', 'Good dog! Here’s a treat.'],
+    ['a plane', 'plane', 'The plane leaves at eleven.'],
+    ['a window seat', 'seat', 'Can I have a window seat?'],
+    ['a vet certificate', 'vet certificate', 'The vet gives you a certificate.'],
+    ['a map', 'map', 'Let’s look at the map.']
+  ], 'airport');
+
+  cards('city-cards', [
+    ['a mosque', 'mosque', 'The Blue Mosque is very beautiful.'],
+    ['a bazaar', 'bazaar', 'The Grand Bazaar has thousands of shops.'],
+    ['a ferry', 'ferry', 'Let’s take the ferry across the sea.'],
+    ['a tram', 'tram', 'The old red tram is in the centre.'],
+    ['Turkish tea', 'Turkish tea', 'Turkish tea comes in a small glass.'],
+    ['a simit', 'simit', 'A simit is bread with sesame.'],
+    ['a street cat', 'street cat', 'There are a lot of street cats in Istanbul.'],
+    ['a carpet', 'carpet', 'Do you want to buy a carpet?']
+  ], 'city');
+
+  // any element with data-say gets a speaker button; data-say="…" says that text instead of the visible one
+  $$('[data-say]').forEach((node, i) => {
+    const text = (node.getAttribute('data-say') || node.textContent).replace(/\s+/g, ' ').trim();
+    node.prepend(sayButton(text, 'say-' + (i + 1)));
+  });
+
+  $('#recap-reset').addEventListener('click', buildMC('recap-list', [
+    {q: 'Istanbul is ___ city in Turkey.', o: ['the biggest', 'bigger', 'the most big'], a: 0, why: 'big: the biggest.'},
+    {q: 'Summer is ___ time to visit. It’s very hot!', o: ['the busiest', 'the most busy', 'busier'], a: 0, why: 'busy: y → iest.'},
+    {q: 'It’s ___ city I’ve ever been to.', o: ['the more beautiful', 'the most beautiful', 'the beautifulest'], a: 1, why: 'A long adjective: the most + adjective.'},
+    {q: 'That was ___ coffee I’ve ever had!', o: ['the best', 'the goodest', 'the better'], a: 0, why: 'good → better → the best.'},
+    {q: 'The plane is faster ___ the train.', o: ['as', 'than', 'that'], a: 1, why: 'Two things: comparative + than.'}
+  ], 'recap'));
+
+  $('#airport-reset').addEventListener('click', buildMC('airport-list', [
+    {q: 'You need it to fly to another country: a ___', o: ['map', 'passport', 'bowl'], a: 1, why: 'Don’t forget your passport!'},
+    {q: 'They give it to you at check-in. It has your seat and gate on it: a ___', o: ['boarding pass', 'vet certificate', 'lead'], a: 0, why: 'Here’s your boarding pass.'},
+    {q: 'A small dog travels in it on the plane: a ___', o: ['suitcase', 'pet carrier', 'bowl'], a: 1, why: 'Lu travels in a pet carrier.'},
+    {q: 'You hold it when you walk your dog: a ___', o: ['lead', 'treat', 'seat'], a: 0, why: 'Keep your dog on a lead.'},
+    {q: 'A small bag you take with you on the plane: ___', o: ['a suitcase', 'hand luggage', 'a carrier'], a: 1, why: 'Luggage is uncountable: no -s.'},
+    {q: 'A paper from the vet that says your dog is healthy: a ___', o: ['vet certificate', 'boarding pass', 'passport'], a: 0, why: 'You can’t fly without the dog’s documents.'},
+    {q: 'Small snacks for a good dog: ___', o: ['bowls', 'treats', 'leads'], a: 1, why: 'Good dog! Here’s a treat.'},
+    {q: 'You can see the clouds from it: a ___', o: ['window seat', 'boarding pass', 'map'], a: 0, why: 'Can I have a window seat?'}
+  ], 'airport'));
+
+  $('#city-reset').addEventListener('click', buildMC('city-list', [
+    {pic: 'ferry', q: '', o: ['a tram', 'a ferry', 'a plane'], a: 1, why: 'Let’s take the ferry.'},
+    {pic: 'mosque', q: '', o: ['a mosque', 'a castle', 'a bazaar'], a: 0, why: 'The Blue Mosque.'},
+    {pic: 'simit', q: '', o: ['a carpet', 'Turkish tea', 'a simit'], a: 2, why: 'Bread with sesame.'},
+    {pic: 'tram', q: '', o: ['a tram', 'a ferry', 'a bus'], a: 0, why: 'The old red tram.'},
+    {pic: 'bazaar', q: '', o: ['a mosque', 'a bazaar', 'a museum'], a: 1, why: 'Stress on the end: baZAAR.'},
+    {pic: 'Turkish tea', q: '', o: ['Turkish coffee', 'a simit', 'Turkish tea'], a: 2, why: 'In a small glass.'},
+    {pic: 'street cat', q: '', o: ['a street cat', 'a dog', 'a carpet'], a: 0, why: 'Istanbul is famous for its cats.'},
+    {pic: 'carpet', q: '', o: ['a map', 'a carpet', 'a bazaar'], a: 1, why: 'Do you want to buy a carpet?'}
+  ], 'city'));
+
+  $('#practice-reset').addEventListener('click', buildMC('practice-list', [
+    {q: 'My suitcase is 25 kilos. It’s ___ heavy.', o: ['too', 'too much', 'enough'], a: 0, why: 'too + adjective. Not too much heavy.'},
+    {q: 'I have ___ shoes in my suitcase!', o: ['too much', 'too many', 'enough'], a: 1, why: 'Shoes: you can count them. too many.'},
+    {q: 'I have ___ luggage. I can’t carry it.', o: ['too many', 'too much', 'too'], a: 1, why: 'Luggage: you can’t count it. too much.'},
+    {q: 'Is the carrier ___ for Lu?', o: ['enough big', 'big enough', 'too much big'], a: 1, why: 'Adjective + enough.'},
+    {q: 'Do we have ___ for the taxi?', o: ['money enough', 'enough money', 'too money'], a: 1, why: 'enough + noun.'},
+    {q: 'How ___ bags are you taking?', o: ['much', 'many'], a: 1, why: 'Bags: you can count them.'},
+    {q: 'How ___ water does Lu need?', o: ['many', 'much'], a: 1, why: 'Water: you can’t count it.'},
+    {q: 'I don’t need much. Just ___ milk in my tea, please.', o: ['a few', 'a little'], a: 1, why: 'Milk: can’t count. a little.'},
+    {q: 'We’re going to stay ___ days in the old town.', o: ['a few', 'a little'], a: 0, why: 'Days: can count. a few.'},
+    {q: 'Istanbul is ___ beautiful! I love it.', o: ['too', 'very'], a: 1, why: 'Something good: very. too means a problem.'}
+  ], 'practice'));
+
+  $('#tf-reset').addEventListener('click', buildMC('tf-list', [
+    {q: 'On many airlines, a small dog can travel in the cabin.', o: ['True', 'False'], a: 0, why: 'In a soft carrier under the seat.'},
+    {q: 'The dog and the carrier can weigh twelve kilos.', o: ['True', 'False'], a: 1, why: 'Usually not more than eight kilos.'},
+    {q: 'Every flight has a lot of places for pets.', o: ['True', 'False'], a: 1, why: 'Only a few. Book early!'},
+    {q: 'The carrier must be big enough for the dog to turn around.', o: ['True', 'False'], a: 0, why: 'It can’t be too small.'},
+    {q: 'Give your dog a lot of food before the flight.', o: ['True', 'False'], a: 1, why: 'Not too much food, but enough water.'}
+  ], 'tf'));
+
+  // 9: the check-in dialogue, read by the page with two voices
+  const DLG = [
+    ['Agent', 'Good morning. Where are you flying today?'],
+    ['Passenger', 'To Istanbul. And this is my dog. She’s flying with me.'],
+    ['Agent', 'Hello, little dog! Can I see your passport and the dog’s documents, please?'],
+    ['Passenger', 'Here you are. And here’s the vet certificate.'],
+    ['Agent', 'Thank you. Now I need to weigh the dog in the carrier. Seven kilos. That’s fine. The limit is eight.'],
+    ['Passenger', 'Great! And is the carrier small enough for the cabin?'],
+    ['Agent', 'Yes, it’s OK. But the dog stays in the carrier, under the seat in front of you.'],
+    ['Passenger', 'No problem. And my suitcase?'],
+    ['Agent', 'Hmm. It’s twenty-five kilos. You can take twenty-three. It’s too heavy.'],
+    ['Passenger', 'Oh no! What can I do?'],
+    ['Agent', 'You can pay forty euros, or you can take some things out.'],
+    ['Passenger', 'OK, I’m going to take out some shoes. I always take too many!'],
+    ['Agent', 'Here’s your boarding pass. Gate twelve. Boarding is at ten forty. Have a good flight!']
+  ];
+  const dl = $('#dlg-lines');
+  DLG.forEach(([who, line]) => dl.append(el('li', null, el('span', null, el('span', {class: 'who', text: who}), line))));
+  function voicesFor(){
+    let vs = [];
+    try { vs = synth ? synth.getVoices() : []; } catch (e) {}
+    const gb = vs.filter(v => /^en[-_]GB/i.test(v.lang)), en = vs.filter(v => /^en[-_]/i.test(v.lang));
+    const pool = gb.length ? gb : en;
+    return [pool[0] || null, pool[1] || pool[0] || null];
+  }
+  $('#dlg-play').addEventListener('click', () => {
+    try {
+      if (!synth) return;
+      synth.cancel();
+      const [a, b] = voicesFor();
+      DLG.forEach(([who, line]) => {
+        const u = new SpeechSynthesisUtterance(line);
+        u.lang = 'en-GB'; u.rate = 0.85;
+        const v = who === 'Agent' ? a : b;
+        if (v) u.voice = v;
+        if (who === 'Agent' && a === b) u.pitch = 0.8;
+        synth.speak(u);
+      });
+    } catch (e) {}
+  });
+  $('#dlg-stop').addEventListener('click', () => { try { if (synth) synth.cancel(); } catch (e) {} });
+
+  $('#listen-reset').addEventListener('click', buildMC('listen-list', [
+    {q: 'Where is the woman flying?', o: ['to Ankara', 'to Istanbul', 'to Antalya'], a: 1, why: 'To Istanbul.'},
+    {q: 'How heavy is the dog in the carrier?', o: ['seven kilos', 'eight kilos', 'twenty-five kilos'], a: 0, why: 'Seven kilos. The limit is eight.'},
+    {q: 'Where does the dog travel?', o: ['on the seat', 'with the suitcases', 'under the seat in front'], a: 2, why: 'In the carrier, under the seat in front of her.'},
+    {q: 'What’s the problem with the suitcase?', o: ['It’s too big.', 'It’s too heavy.', 'It isn’t big enough.'], a: 1, why: 'Twenty-five kilos, but she can take twenty-three.'},
+    {q: 'What does she decide to do?', o: ['pay forty euros', 'take out some shoes', 'buy a new suitcase'], a: 1, why: 'She always takes too many!'},
+    {q: 'What gate is it?', o: ['ten', 'twelve', 'forty'], a: 1, why: 'Gate twelve. Boarding at ten forty.'}
+  ], 'listen'));
+
+  renderScores();
+})();
+</script>
+
+</html>
