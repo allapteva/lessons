@@ -1,0 +1,1089 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta charset="utf-8">
+<title>David's Lesson 11</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Comfortaa:wght@500;700&display=swap">
+<style>
+/* Layout: a squared copybook page (Catppuccin Latte) with rounded worksheet cards, one per activity. Single light theme on purpose: a child's page. */
+:root{
+  --base:#eff1f5; --mantle:#e6e9ef; --crust:#dce0e8; --surface0:#ccd0da; --surface1:#bcc0cc; --overlay:#9ca0b0;
+  --subtext:#5c5f77; --text:#4c4f69; --card:#fafbfc; --white:#ffffff;
+  --rosewater:#dc8a78; --flamingo:#dd7878; --pink:#ea76cb; --mauve:#8839ef; --red:#d20f39; --maroon:#e64553;
+  --peach:#fe640b; --yellow:#df8e1d; --green:#40a02b; --teal:#179299; --sky:#04a5e5; --sapphire:#209fb5;
+  --blue:#1e66f5; --lavender:#7287fd;
+  /* lighter tints for tiles */
+  --t-yellow:#f4d7b0; --t-sky:#b4e4f7; --t-mauve:#dbc4fa; --t-peach:#fed0b6; --t-pink:#f9d6ef; --t-green:#c6e2bf;
+  --t-teal:#b9dee0; --t-lav:#d5dbfe; --t-flamingo:#f5d7d7; --t-sea:#d9f1fb;
+  /* the colour code from Lesson 9: have = lavender, has = pink, got = yellow */
+  --have:#d5dbfe; --have2:#7287fd; --has:#f9d6ef; --has2:#ea76cb; --got:#f4d7b0; --got2:#df8e1d;
+  --th:#179299;
+  --ok:#40a02b; --ok-bg:#e2f1df; --bad:#d20f39;
+  --shadow:rgba(76,79,105,.18); --shadow-lift:rgba(76,79,105,.6);
+  --display:"Comfortaa","Arial Rounded MT Bold",system-ui,sans-serif;
+  --body:"Andika","Segoe UI",system-ui,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+body{margin:0;background-color:var(--base);background-image:linear-gradient(var(--mantle) 1px,transparent 1px),linear-gradient(90deg,var(--mantle) 1px,transparent 1px);background-size:26px 26px;color:var(--text);font-family:var(--body);font-size:18px;line-height:1.5}
+.wrap{max-width:980px;margin:0 auto;padding-inline:16px;padding-block:24px 104px;display:flex;flex-direction:column;gap:24px}
+button{font:inherit;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+h1,h2,h3{font-family:var(--display);font-weight:700;margin:0;text-wrap:balance}
+p{margin:0}
+[hidden]{display:none!important}
+.ipa{font-family:var(--body)}
+
+/* hero */
+.hero{position:relative;overflow:hidden;background:var(--t-teal);border:2px solid var(--surface0);border-radius:28px;padding:clamp(20px,4vw,40px) clamp(16px,4vw,40px);display:grid;grid-template-columns:minmax(0,1fr) auto;gap:18px 24px;align-items:center}
+.hero-text{display:flex;flex-direction:column;gap:14px;min-width:0}
+.kicker{font:700 15px/1.2 var(--display);letter-spacing:.08em;text-transform:uppercase;color:var(--subtext)}
+.hero h1{font-size:clamp(38px,8.5vw,74px);line-height:1.02;letter-spacing:-.01em}
+.hero h1 .n{color:var(--th)}
+.targets{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.targets li{background:var(--c);border-radius:999px;padding:4px 14px;font-weight:700;font-size:16px}
+.hero-pic{display:flex;gap:8px}
+.hero-pic span{width:86px;height:86px;background:var(--white);border-radius:22px;display:grid;place-items:center}
+.hero-pic svg{width:62px;height:62px}
+.hero nav{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px}
+.hero nav a{color:var(--text);text-decoration:none;background:var(--card);border:2px solid var(--surface0);border-radius:999px;padding:3px 12px;font-weight:700;font-size:15px}
+.hero nav a:hover{border-color:var(--blue)}
+
+/* plan */
+details.plan{background:var(--card);border:2px dashed var(--surface1);border-radius:18px;padding:14px 20px}
+details.plan summary{font:700 17px/1.3 var(--display);cursor:pointer}
+.plan p{color:var(--subtext);font-size:16px;margin-top:8px}
+
+/* worksheet cards */
+.frame{--acc:var(--blue);--acc-t:var(--t-lav);background:var(--card);border:2px solid var(--surface0);border-radius:24px;padding:clamp(18px,3.2vw,32px);box-shadow:0 5px 0 var(--crust);display:flex;flex-direction:column;gap:18px;scroll-margin-top:16px;min-width:0}
+.a-peach{--acc:var(--peach);--acc-t:var(--t-peach)}
+.a-mauve{--acc:var(--mauve);--acc-t:var(--t-mauve)}
+.a-green{--acc:var(--green);--acc-t:var(--t-green)}
+.a-sky{--acc:var(--sky);--acc-t:var(--t-sky)}
+.a-pink{--acc:var(--pink);--acc-t:var(--t-pink)}
+.a-yellow{--acc:var(--yellow);--acc-t:var(--t-yellow)}
+.a-teal{--acc:var(--teal);--acc-t:var(--t-teal)}
+.frame-head{display:flex;gap:14px;align-items:flex-start}
+.badge{flex:none;display:grid;place-items:center;width:46px;height:46px;border-radius:50%;background:var(--acc-t);border:2.5px solid var(--acc);font:700 20px/1 var(--display)}
+.head-txt{display:flex;flex-direction:column;gap:4px;min-width:0}
+.eyebrow{font:700 13px/1.2 var(--display);letter-spacing:.1em;text-transform:uppercase;color:var(--subtext)}
+h2{font-size:clamp(24px,4vw,32px);line-height:1.15}
+.hint{color:var(--subtext);font-size:16px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.btn{border:2px solid var(--text);background:var(--card);border-radius:999px;padding:5px 16px;font-weight:700;font-size:16px}
+.btn:hover{background:var(--t-yellow)}
+.btn.main{background:var(--acc-t);border-color:var(--acc)}
+.status{font-weight:700;font-variant-numeric:tabular-nums}
+.say{display:inline-grid;place-items:center;width:36px;height:36px;flex:none;border-radius:50%;border:2px solid var(--blue);background:var(--card);color:var(--blue);padding:0}
+.say svg{width:18px;height:18px}
+.say:hover{background:var(--blue);color:var(--card)}
+.well{background:var(--mantle);border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.now{font:700 20px/1.35 var(--display)}
+.hv{background:var(--have);border-radius:8px;padding:0 6px}
+.hs{background:var(--has);border-radius:8px;padding:0 6px}
+.gt{background:var(--got);border-radius:8px;padding:0 6px}
+.thl{color:var(--th);text-decoration:underline;text-decoration-thickness:3px;text-underline-offset:5px}
+.thb{color:var(--mauve);text-decoration:underline;text-decoration-thickness:3px;text-underline-offset:5px}
+
+/* picture cards: one thing on white, the same flat style for every new word */
+.pic{display:grid;place-items:center;background:var(--white);border-radius:16px}
+.pic svg{width:72%;height:72%}
+.pic.num{font:700 52px/1 var(--display);color:var(--text)}
+
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+.shake{animation:shake .35s;border-color:var(--bad)!important}
+@keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.22)}100%{transform:scale(1)}}
+.pop{animation:pop .4s}
+
+/* 1 listen and tap */
+.lt-head{display:flex;flex-wrap:wrap;gap:12px 18px;align-items:center}
+.lt-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:10px}
+.lt{aspect-ratio:1;border:2.5px solid var(--surface0);background:var(--white);border-radius:18px;display:grid;place-items:center;padding:0}
+.lt svg{width:70%;height:70%}
+.lt:hover{border-color:var(--acc)}
+.lt.got{background:var(--ok-bg);border-color:var(--ok);cursor:default}
+.dots{display:flex;gap:6px}
+.dots i{width:14px;height:14px;border-radius:50%;background:var(--surface0)}
+.dots i.on{background:var(--ok)}
+
+/* 2 new sound */
+.word-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px}
+.word{display:flex;flex-direction:column;align-items:center;gap:6px;background:var(--card);border:2.5px solid var(--surface0);border-radius:18px;padding:10px 8px}
+.word:hover{border-color:var(--acc)}
+.word .pic{width:100%;aspect-ratio:1}
+.word .w{font:700 23px/1.2 var(--display)}
+.word .ru{font-size:15px;color:var(--subtext)}
+.pairs{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:12px}
+.pair{background:var(--mantle);border-radius:16px;padding:12px 16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.pair h3{font-size:20px}
+.pair .row{gap:8px}
+.pbtn{border:2px solid var(--surface1);background:var(--card);border-radius:12px;padding:6px 14px;font:700 22px/1.2 var(--display);text-align:left}
+.pbtn:hover{border-color:var(--acc)}
+.textbook{background:var(--card);border:1.5px solid var(--overlay);padding:16px 20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:12px 28px;font-family:Georgia,"Times New Roman",serif}
+.textbook h3{font:700 14px/1.2 var(--display);letter-spacing:.14em;text-transform:uppercase;text-align:center;color:var(--subtext);margin-bottom:6px}
+.textbook ol{margin:0;padding-left:22px}
+.textbook .snd{text-align:center;font-size:22px}
+
+/* 3 sort */
+.pool{display:flex;flex-wrap:wrap;gap:10px;min-height:52px}
+.chip{border:none;background:var(--c);padding:10px 16px;font:700 22px/1 var(--display);box-shadow:0 3px 0 var(--shadow);border-radius:6px}
+.chip.sel{outline:3px solid var(--text);transform:translateY(-3px) rotate(-2deg)}
+.chip.placed{cursor:default;box-shadow:none;font-size:18px;padding:6px 12px}
+.bins{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:14px}
+.bin{display:flex;flex-direction:column;gap:10px;background:var(--card);border-radius:18px;padding:12px;border:2.5px dashed var(--c2);min-width:0}
+.bin-drop{display:flex;align-items:center;gap:12px;border:none;background:var(--c);border-radius:12px;padding:10px 14px;text-align:left}
+.bin-drop .basket{font-size:30px}
+.bin-drop b{font:700 24px/1.1 var(--display)}
+.bin-drop small{display:block;font:400 15px/1.2 var(--body);color:var(--subtext)}
+.bin-words{display:flex;flex-wrap:wrap;gap:8px;min-height:36px}
+
+/* 4 read and match */
+.mt{display:flex;flex-direction:column;gap:14px}
+.mt-row{display:flex;flex-wrap:wrap;gap:10px}
+.mt-word{border:2.5px solid var(--text);background:var(--card);border-radius:12px;padding:8px 14px;font:700 22px/1.2 var(--display)}
+.mt-word.sel{background:var(--t-yellow);transform:translateY(-3px)}
+.mt-pic{width:86px;height:86px;border:2.5px dashed var(--surface1);background:var(--white);border-radius:18px;padding:0;display:grid;place-items:center}
+.mt-pic svg{width:70%;height:70%}
+.mt-word.matched{background:var(--c);border-color:transparent;cursor:default;transform:none}
+.mt-pic.matched{border-style:solid;border-color:var(--c2);cursor:default}
+
+/* 5 spell */
+.spell-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:14px}
+.spell{display:flex;gap:14px;align-items:center;background:var(--card);border-radius:18px;padding:12px 14px;border:2.5px solid var(--surface0);min-width:0}
+.spell.solved{border-color:var(--ok);background:var(--ok-bg)}
+.spell-pic{flex:none;width:80px;height:80px;border:none;border-radius:16px;background:var(--white);display:grid;place-items:center;padding:0}
+.spell-pic svg{width:72%;height:72%}
+.spell-pic.num{font:700 52px/1 var(--display);color:var(--text)}
+.spell-right{display:flex;flex-direction:column;gap:10px;min-width:0;flex:1 1 auto}
+.spell-boxes{display:flex;flex-wrap:nowrap;gap:6px;min-width:0}
+.box{width:auto;flex:1 1 0;max-width:40px;min-width:0;height:44px;border:2.5px solid var(--c2);border-radius:6px;display:grid;place-items:center;font:700 24px/1 var(--display);background:var(--card)}
+.box.filled{background:var(--c)}
+.spell-tiles{display:flex;flex-wrap:wrap;gap:6px;min-height:38px}
+.tile{width:40px;height:40px;border:none;background:var(--c);font:700 20px/1 var(--display);box-shadow:0 2px 0 var(--shadow);border-radius:6px;padding:0}
+.tile.used{visibility:hidden}
+
+/* 6 this or that */
+.rule{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:12px}
+.rule div{background:var(--c);border-radius:16px;padding:12px 16px;font:700 22px/1.3 var(--display)}
+.rule small{display:block;font:400 15px/1.3 var(--body);color:var(--subtext);margin-top:2px}
+.tt{display:flex;flex-direction:column;gap:12px}
+.tt-item{display:flex;flex-direction:column;gap:10px;background:var(--card);border:2.5px solid var(--surface0);border-radius:18px;padding:12px 14px;min-width:0}
+.tt-item.done{background:var(--ok-bg);border-color:var(--ok)}
+.scene{display:flex;align-items:flex-end;gap:6px;min-height:96px;min-width:0}
+.scene .me{font-size:40px;line-height:1;flex:none}
+.scene .road{flex:1 1 auto;min-width:20px;border-bottom:4px dotted var(--surface1);margin-bottom:12px}
+.scene .pic.big{width:92px;height:92px;flex:none}
+.scene .pic.small{width:54px;height:54px;flex:none;border-radius:12px}
+.tt-line{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
+.tt-line .s{font:700 21px/1.3 var(--display)}
+.blank{display:inline-block;min-width:4.4em;border-bottom:3px solid var(--text);text-align:center}
+.tt-opts{display:flex;gap:8px}
+.tt-opts button{border:2.5px solid var(--text);background:var(--card);border-radius:12px;padding:7px 14px;font:700 19px/1 var(--display)}
+.tt-opts button:hover{background:var(--t-teal)}
+.tt-item.done .tt-opts{display:none}
+
+/* 7 monster */
+.listen-row{display:flex;flex-wrap:wrap;gap:8px}
+.lsn{display:flex;align-items:center;gap:8px;border:2.5px solid var(--surface0);background:var(--card);border-radius:14px;padding:6px 12px 6px 6px;font:700 18px/1.3 var(--display);text-align:left;min-width:0}
+.lsn .num{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--t-pink);flex:none}
+.lsn.heard{border-color:var(--pink)}
+.lsn .txt{min-width:0}
+.prompts{display:flex;flex-wrap:wrap;gap:8px}
+.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.swatch{width:36px;height:36px;border-radius:50%;border:3px solid var(--card);box-shadow:0 0 0 2px var(--surface1);padding:0}
+.swatch.on{box-shadow:0 0 0 3px var(--text)}
+.size{width:40px;height:36px;border:2px solid var(--surface1);border-radius:10px;background:var(--card);display:grid;place-items:center;padding:0}
+.size.on{border-color:var(--text)}
+.size i{display:block;border-radius:50%;background:var(--text)}
+.pad-wrap{background:var(--white);border-radius:18px;overflow:hidden;border:2.5px solid var(--surface0)}
+#pad{display:block;width:100%;height:clamp(260px,48vw,420px);touch-action:none;cursor:crosshair}
+.ask{display:flex;flex-wrap:wrap;gap:8px}
+.ask button{border:none;background:var(--c);padding:10px 14px;font-weight:700;box-shadow:0 3px 0 var(--shadow);border-radius:6px;text-align:left}
+
+/* 8 talk cards */
+.qs{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:12px}
+.q{background:var(--card);border:2.5px solid var(--surface0);border-radius:16px;padding:12px 14px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.q .qt{display:flex;align-items:center;gap:10px;font:700 20px/1.3 var(--display)}
+.q .qt span{min-width:0}
+.q .row button{border:2.5px solid var(--text);background:var(--card);border-radius:12px;padding:7px 12px;font-weight:700;font-size:17px}
+.q .row button.yes:hover{background:var(--t-green)}
+.q .row button.no:hover{background:var(--t-flamingo)}
+.q.done{background:var(--ok-bg);border-color:var(--ok)}
+.q .a{font:700 19px/1.4 var(--display)}
+
+.extra h3{font-size:19px}
+.extra ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+.extra a{color:var(--blue);font-weight:700}
+
+/* stars */
+.stars{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:10;display:flex;align-items:center;gap:8px;background:var(--text);color:var(--base);border-radius:999px;padding:8px 18px 8px 14px;font:700 20px/1 var(--display);box-shadow:0 6px 18px -6px var(--shadow-lift)}
+.stars .star{color:var(--t-yellow);font-size:24px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* teacher-only parts: every one sits between a pair of T comment markers, which scripts/student-site.sh cuts out of the student copy */
+.scroll{overflow-x:auto}
+.tstrip{display:flex;flex-wrap:wrap;align-items:center;gap:8px 18px;background:var(--card);border:2px dashed var(--yellow);border-radius:18px;padding:10px 16px}
+.tbadge{background:var(--t-yellow);border-radius:999px;padding:4px 14px;font:700 14px/1.3 var(--display);letter-spacing:.06em;text-transform:uppercase}
+.tfacts{display:flex;flex-wrap:wrap;gap:4px 18px;margin:0;font-size:15.5px;color:var(--subtext)}
+.tfacts div{display:flex;gap:6px}
+.tfacts dt{font-weight:700;color:var(--text)}
+.tfacts dd{margin:0}
+.plan table{border-collapse:collapse;width:100%;min-width:560px;margin-top:10px;font-size:16px}
+.plan th,.plan td{text-align:left;vertical-align:top;padding:6px 12px 6px 0;border-top:1px solid var(--surface0)}
+.plan th{border-top:0;font:700 13px/1.2 var(--display);letter-spacing:.08em;text-transform:uppercase;color:var(--subtext)}
+.plan td:first-child{white-space:nowrap;font-variant-numeric:tabular-nums;color:var(--subtext)}
+.plan td:nth-child(2){font-weight:700;white-space:nowrap}
+.tnote{background:#fbefd5;border:2px dashed var(--yellow);border-radius:16px;padding:10px 16px;font-size:16px;line-height:1.45;display:flex;flex-direction:column;gap:6px}
+.tnote > b:first-child{font:700 13px/1.2 var(--display);letter-spacing:.1em;text-transform:uppercase}
+.key{display:inline-block;justify-self:start;align-self:flex-start;margin:0;font-size:15px;font-weight:700;line-height:1.4;background:#fbefd5;color:var(--text);border:1.5px dashed var(--yellow);border-radius:8px;padding:1px 8px}
+footer.fin{color:var(--subtext);font-size:15.5px;border-top:2px dashed var(--surface1);padding-top:14px}
+/* lesson notes (teacher's page only): a quick strip under every section and a notes block at the bottom */
+.tn{border:2px dashed var(--yellow);background:#fbefd5;border-radius:16px;padding:10px 14px 12px;display:flex;flex-direction:column;gap:8px;font-size:15px}
+.tn-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.tn-lab{font:700 12.5px/1.2 var(--display);letter-spacing:.1em;text-transform:uppercase;min-width:10em}
+.tn-chip{border:2px solid var(--surface1);background:var(--card);border-radius:999px;padding:3px 12px;font-size:15px;line-height:1.3}
+.tn-chip:hover{border-color:var(--blue)}
+.tn-chip[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:var(--card);font-weight:700}
+.tn-text{width:100%;border:2px solid var(--surface1);border-radius:10px;background:var(--card);color:var(--text);padding:5px 10px;font:inherit;font-size:16px}
+.tn-final{background:var(--card);border:2px dashed var(--yellow);border-radius:24px;padding:clamp(18px,3.2vw,32px);display:flex;flex-direction:column;gap:16px;scroll-margin-top:104px;min-width:0}
+.tn-field{display:flex;flex-direction:column;gap:6px}
+.tn-field label{font-weight:700}
+.tn-field textarea,.tn-out{width:100%;min-height:120px;border:2px solid var(--surface1);border-radius:12px;background:var(--card);color:var(--text);padding:10px 12px;font:inherit;resize:vertical}
+.tn-out{font:14px/1.45 ui-monospace,Menlo,monospace}
+.tn-sum table{border-collapse:collapse;width:100%;min-width:480px;font-size:16px}
+.tn-sum th,.tn-sum td{text-align:left;vertical-align:top;padding:6px 10px 6px 0;border-top:1px solid var(--surface0)}
+.tn-sum th{border-top:0;font:700 12.5px/1.2 var(--display);letter-spacing:.08em;text-transform:uppercase;color:var(--subtext)}
+.tn-status{font-size:15px;color:var(--subtext)}
+/* lesson timer (teacher's page only) */
+.tmr{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;margin-top:-24px;margin-bottom:-8px;background:var(--card);border:2px solid var(--surface1);border-top:0;border-radius:0 0 16px 16px;padding:8px 12px 10px;display:flex;flex-direction:column;gap:8px;box-shadow:0 6px 18px -6px var(--shadow-lift)}
+.tm-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;min-width:0}
+.tm-go{flex:none;border:0;border-radius:999px;background:var(--blue);color:var(--card);font-weight:700;padding:5px 16px;min-width:5.8em}
+.tm-clock{flex:none;font:700 19px/1 var(--display);font-variant-numeric:tabular-nums}
+.tm-clock small{font-size:13px;font-weight:500;color:var(--subtext)}
+.tm-clock.over{color:var(--red)}
+.tm-now{flex:1;min-width:0;font-size:15px;color:var(--subtext);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tm-reset{flex:none;border:2px solid var(--surface1);background:none;border-radius:999px;padding:3px 12px;font-size:15px}
+.tm-bar{display:flex;gap:3px;height:24px}
+.tm-seg{position:relative;flex-basis:0;min-width:0;border-radius:6px;overflow:hidden;background:color-mix(in srgb,var(--c) 18%,#eff1f5);color:#2a2c3d;text-decoration:none;font:700 12px/24px var(--body);text-align:center}
+.tm-seg i{position:absolute;inset:0 auto 0 0;width:0;background:color-mix(in srgb,var(--c) 55%,#fff)}
+.tm-seg b{position:relative}
+.tm-seg.now{box-shadow:inset 0 0 0 2px var(--text)}
+[data-view="student"] .frame{scroll-margin-top:104px}
+@media (max-width:520px){ .tm-now{display:none} .tm-row{justify-content:space-between} }
+
+@media (max-width:620px){
+  .hero{grid-template-columns:minmax(0,1fr)}
+  .hero-pic span{width:66px;height:66px;border-radius:18px}
+  .hero-pic svg{width:48px;height:48px}
+}
+@media (max-width:520px){
+  body{font-size:17px}
+  .spell-pic{width:62px;height:62px}
+  .spell-pic.num{font-size:40px}
+  .scene .pic.big{width:76px;height:76px}
+  .scene .me{font-size:34px}
+}
+@media (prefers-reduced-motion:reduce){.shake,.pop{animation:none}.chip.sel,.mt-word.sel{transform:none}}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-say" viewBox="0 0 24 24"><path fill="currentColor" d="M3 9v6h4l5 4V5L7 9H3z"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></symbol>
+</svg>
+
+<main class="wrap page" data-view="student">
+
+
+
+  <header class="hero">
+    <div class="hero-text">
+      <p class="kicker">David · English with Alena</p>
+      <h1>Lesson Eleven <span class="n">(11)</span></h1>
+      <ul class="targets" aria-label="New today">
+        <li style="--c:var(--card)">th <span class="ipa">[θ]</span> · th <span class="ipa">[ð]</span></li>
+        <li style="--c:var(--t-yellow)">this · that</li>
+        <li style="--c:var(--t-lav)">a thumb · a mouth · a tooth</li>
+        <li style="--c:var(--has)">It has got …</li>
+      </ul>
+    </div>
+    <div class="hero-pic" aria-hidden="true"><span data-pic="tooth"></span><span data-pic="toothbrush"></span></div>
+    <nav aria-label="Lesson parts">
+      <a href="#listen">Listen</a><a href="#sound">th</a><a href="#sort">Quiet or buzzy?</a><a href="#match">Match</a><a href="#spell">Spell</a><a href="#thisthat">This or that?</a><a href="#monster">Monster</a><a href="#talk">Have you got?</a>
+    </nav>
+  </header>
+
+
+  <!-- 1 -->
+  <section class="frame a-sky" id="listen" data-title="Listen and tap">
+    <div class="frame-head">
+      <span class="badge" aria-hidden="true">1</span>
+      <div class="head-txt">
+        <span class="eyebrow">Warm-up</span>
+        <h2>Listen and tap the picture</h2>
+        <p class="hint">Нажми «Listen», послушай слово и найди картинку. Потом скажи слово сам!</p>
+      </div>
+    </div>
+    <div class="lt-head">
+      <button class="btn main" id="lt-play" type="button">Listen</button>
+      <span class="dots" id="lt-dots" aria-hidden="true"></span>
+      <span class="status" id="lt-msg" aria-live="polite"></span>
+      <button class="btn" id="lt-again" type="button">Again</button>
+    </div>
+    <div class="lt-grid" id="lt-grid"></div>
+  </section>
+
+  <!-- 2 -->
+  <section class="frame a-teal" id="sound" data-title="New sound: th">
+    <div class="frame-head">
+      <span class="badge" aria-hidden="true">2</span>
+      <div class="head-txt">
+        <span class="eyebrow">New sound</span>
+        <h2>th: tongue out! 😛</h2>
+        <p class="hint">Две буквы <b>t</b> + <b>h</b>: кончик языка между зубами! Тихий звук <b class="thl">th</b> [θ] — просто дуем. Звонкий <b class="thb">th</b> [ð] — дуем и жужжим.</p>
+      </div>
+    </div>
+    <div class="word-grid" id="th-grid"></div>
+    <div class="pairs">
+      <div class="pair">
+        <h3>th or t?</h3>
+        <p class="hint">Послушай пары и повтори. Слышишь разницу?</p>
+        <div class="row">
+          <button class="pbtn" type="button" id="pair-three" data-say="three"><span class="thl">th</span>ree</button>
+          <button class="pbtn" type="button" id="pair-tree" data-say="a tree">a tree</button>
+        </div>
+        <div class="row">
+          <button class="pbtn" type="button" id="pair-bath" data-say="a bath">a ba<span class="thl">th</span></button>
+          <button class="pbtn" type="button" id="pair-bat" data-say="a bat">a bat</button>
+        </div>
+      </div>
+      <div class="pair">
+        <h3>Buzzy th</h3>
+        <p class="hint">Нажми и повтори. Язык между зубами — и жужжи!</p>
+        <div class="row">
+          <button class="pbtn" type="button" id="buzz-this" data-say="this"><span class="thb">th</span>is</button>
+          <button class="pbtn" type="button" id="buzz-that" data-say="that"><span class="thb">th</span>at</button>
+          <button class="pbtn" type="button" id="buzz-brother" data-say="a brother">a bro<span class="thb">th</span>er</button>
+        </div>
+      </div>
+      <div class="pair">
+        <h3>Say it fast!</h3>
+        <p class="hint">Прочитай медленно, потом быстро.</p>
+        <div class="row">
+          <button class="pbtn" type="button" id="fast-1" data-say="Three thumbs and a tooth!"><span class="thl">Th</span>ree <span class="thl">th</span>umbs and a too<span class="thl">th</span>!</button>
+          <button class="pbtn" type="button" id="fast-2" data-say="This is my brother."><span class="thb">Th</span>is is my bro<span class="thb">th</span>er.</button>
+        </div>
+      </div>
+    </div>
+    <div class="textbook">
+      <div>
+        <h3>Буквы и звуки</h3>
+        <p class="snd"><b>th</b> [θ] (тихий) &nbsp;·&nbsp; <b>th</b> [ð] (звонкий)</p>
+      </div>
+      <div>
+        <h3>Слова</h3>
+        <ol>
+          <li><b>a thumb</b> [ə θʌm] — большой палец</li>
+          <li><b>a mouth</b> [ə maʊθ] — рот</li>
+          <li><b>a tooth</b> [ə tuːθ] — зуб</li>
+          <li><b>a bath</b> [ə bɑːθ] — ванна</li>
+          <li><b>a toothbrush</b> [ə ˈtuːθbrʌʃ] — зубная щётка</li>
+          <li><b>three</b> [θriː] — три</li>
+          <li><b>this</b> [ðɪs] — этот (рядом) · <b>that</b> [ðæt] — тот (далеко)</li>
+          <li><b>a brother</b> [ə ˈbrʌðə] — брат · <b>my</b> — мой</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section class="frame a-yellow" id="sort" data-title="Quiet or buzzy?">
+    <div class="frame-head">
+      <span class="badge" aria-hidden="true">3</span>
+      <div class="head-txt">
+        <span class="eyebrow">Listen and sort</span>
+        <h2>Quiet th or buzzy th?</h2>
+        <p class="hint">Нажми на слово (оно прозвучит), скажи его, потом нажми на нужную корзину.</p>
+      </div>
+    </div>
+    <div class="pool" id="sort-pool"></div>
+    <div class="bins">
+      <div class="bin" style="--c:var(--t-teal);--c2:var(--teal)">
+        <button class="bin-drop" type="button" id="bin-q-btn" data-k="q"><span class="basket" aria-hidden="true">🤫</span><span><b>quiet th</b><small><span class="ipa">[θ]</span> просто дуем</small></span></button>
+        <div class="bin-words" id="bin-q"></div>
+      </div>
+      <div class="bin" style="--c:var(--t-mauve);--c2:var(--mauve)">
+        <button class="bin-drop" type="button" id="bin-b-btn" data-k="b"><span class="basket" aria-hidden="true">🐝</span><span><b>buzzy th</b><small><span class="ipa">[ð]</span> дуем и жужжим</small></span></button>
+        <div class="bin-words" id="bin-b"></div>
+      </div>
+    </div>
+    <div class="row"><button class="btn" id="sort-again" type="button">Again</button></div>
+  </section>
+
+  <!-- 4 -->
+  <section class="frame a-green" id="match" data-title="Read and match">
+    <div class="frame-head">
+      <span class="badge" aria-hidden="true">4</span>
+      <div class="head-txt">
+        <span class="eyebrow">Read and match</span>
+        <h2>Read the word, find the picture</h2>
+        <p class="hint">Сначала прочитай слово сам и нажми на него, потом нажми на картинку.</p>
+      </div>
+    </div>
+    <div class="mt">
+      <div class="mt-row" id="mt-words"></div>
+      <div class="mt-row" id="mt-pics"></div>
+    </div>
+    <div class="row"><button class="btn" id="mt-again" type="button">Again</button></div>
+  </section>
+
+  <!-- 5 -->
+  <section class="frame a-mauve" id="spell" data-title="Spell it">
+    <div class="frame-head">
+      <span class="badge" aria-hidden="true">5</span>
+      <div class="head-txt">
+        <span class="eyebrow">Spell it</span>
+        <h2>Put the letters in the boxes</h2>
+        <p class="hint">Нажимай на буквы по порядку, чтобы собрать слово. Картинка скажет слово вслух.</p>
+      </div>
+    </div>
+    <div class="spell-list" id="spell-words"></div>
+    <div class="row"><button class="btn" id="spell-again" type="button">Again</button></div>
+  </section>
+
+  <!-- 6 -->
+  <section class="frame a-peach" id="thisthat" data-title="This or that?">
+    <div class="frame-head">
+      <span class="badge" aria-hidden="true">6</span>
+      <div class="head-txt">
+        <span class="eyebrow">Grammar</span>
+        <h2>This is … That is …</h2>
+        <p class="hint"><b>This</b> — это (рядом со мной). <b>That</b> — то (далеко). Посмотри: рядом или далеко?</p>
+      </div>
+    </div>
+    <div class="rule">
+      <div style="--c:var(--t-yellow)">this = near<small>This is a chair. (рядом)</small></div>
+      <div style="--c:var(--t-peach)">that = far<small>That is a chick. (далеко)</small></div>
+    </div>
+    <div class="tt" id="tt"></div>
+  </section>
+
+  <!-- 7 -->
+  <section class="frame a-pink" id="monster" data-title="Monster">
+    <div class="frame-head">
+      <span class="badge" aria-hidden="true">7</span>
+      <div class="head-txt">
+        <span class="eyebrow">Listen and draw</span>
+        <h2>Draw the monster!</h2>
+        <p class="hint">Нажимай на номера по порядку, слушай и рисуй. Потом нарисуй своего монстра и расскажи о нём.</p>
+      </div>
+    </div>
+    <div class="listen-row" id="mon-list"></div>
+    <div class="row"><button class="btn" id="mon-show" type="button">show</button></div>
+    <div class="tools" id="tools">
+      <button class="swatch" type="button" id="draw-red" style="background:#d20f39" data-c="#d20f39" aria-label="Red"></button>
+      <button class="swatch" type="button" id="draw-orange" style="background:#fe640b" data-c="#fe640b" aria-label="Orange"></button>
+      <button class="swatch" type="button" id="draw-yellow" style="background:#f5d020" data-c="#f5d020" aria-label="Yellow"></button>
+      <button class="swatch on" type="button" id="draw-green" style="background:#40a02b" data-c="#40a02b" aria-label="Green"></button>
+      <button class="swatch" type="button" id="draw-blue" style="background:#1e66f5" data-c="#1e66f5" aria-label="Blue"></button>
+      <button class="swatch" type="button" id="draw-purple" style="background:#8839ef" data-c="#8839ef" aria-label="Purple"></button>
+      <button class="swatch" type="button" id="draw-pink" style="background:#ea76cb" data-c="#ea76cb" aria-label="Pink"></button>
+      <button class="swatch" type="button" id="draw-black" style="background:#4c4f69" data-c="#4c4f69" aria-label="Black"></button>
+      <button class="size" type="button" id="brush-thin" data-s="4" aria-label="Thin brush"><i style="width:6px;height:6px"></i></button>
+      <button class="size on" type="button" id="brush-medium" data-s="9" aria-label="Medium brush"><i style="width:11px;height:11px"></i></button>
+      <button class="size" type="button" id="brush-thick" data-s="18" aria-label="Thick brush"><i style="width:18px;height:18px"></i></button>
+      <button class="btn" type="button" id="pad-clear">Clear</button>
+    </div>
+    <div class="pad-wrap"><canvas id="pad" aria-label="Drawing area"></canvas></div>
+    <div class="well">
+      <p class="now">Tell Alena about your monster!</p>
+      <p class="hint">Нажми, послушай начало и закончи предложение сам.</p>
+      <div class="ask" id="mon-say">
+        <button type="button" id="mon-say-1" data-say="It is">It is …</button>
+        <button type="button" id="mon-say-2" data-say="It has got">It has got …</button>
+        <button type="button" id="mon-say-3" data-say="It has got three thumbs.">It has got three thumbs.</button>
+        <button type="button" id="mon-say-4" data-say="It has got a big mouth.">It has got a big mouth.</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 -->
+  <section class="frame a-sky" id="talk" data-title="Have you got …?">
+    <div class="frame-head">
+      <span class="badge" aria-hidden="true">8</span>
+      <div class="head-txt">
+        <span class="eyebrow">Talk</span>
+        <h2>Have you got …?</h2>
+        <p class="hint">Ответь правду: <b>Yes, I have.</b> или <b>No, I haven't.</b> Скажи вслух, потом нажми.</p>
+      </div>
+    </div>
+    <div class="qs" id="qs"></div>
+    <div class="well">
+      <p class="now">Tell Alena about Aron!</p>
+      <div class="ask" id="aron-say">
+        <button type="button" id="aron-1" data-say="This is my brother. He has got">This is my brother. He has got …</button>
+        <button type="button" id="aron-2" data-say="Aron has got a toothbrush.">Aron has got a toothbrush.</button>
+      </div>
+      <p class="now">Now ask Alena!</p>
+      <div class="ask" id="ask">
+        <button type="button" id="ask-1" data-say="Have you got a brother?">Have you got a brother?</button>
+        <button type="button" id="ask-2" data-say="Have you got a bath?">Have you got a bath?</button>
+        <button type="button" id="ask-3" data-say="Have you got three cats?">Have you got three cats?</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="frame extra" id="extra" data-title="Homework">
+    <div class="frame-head">
+      <span class="badge" aria-hidden="true">+</span>
+      <div class="head-txt">
+        <span class="eyebrow">Homework</span>
+        <h2>Homework</h2>
+      </div>
+    </div>
+    <h3>For next Saturday · к следующей субботе</h3>
+    <ul>
+      <li>Write the new words in the copybook: a thumb, a mouth, a tooth, a bath, a toothbrush, three.</li>
+      <li>Draw a monster. Under it write: <b>It has got …</b> (two sentences).</li>
+      <li>Show Mum or Dad the &ldquo;tongue out&rdquo; th 😛 and say: <b>three, this, that, my brother</b>.</li>
+      <li>Video: <a href="https://www.youtube.com/results?search_query=th+sound+phonics+for+kids" target="_blank" rel="noopener">th sound for kids (YouTube search)</a></li>
+    </ul>
+  </section>
+
+</main>
+
+<div class="stars" id="starbox" aria-live="polite"><span class="star" aria-hidden="true">★</span><span id="stars">0</span><span class="sr">stars</span></div>
+
+<script>
+(function(){
+  const $ = (s, r = document) => r.querySelector(s);
+  // the teacher's page shows the answers; scripts/student-site.sh turns data-view into "student"
+  const TEACHER = (($('main.page') || document.body).getAttribute('data-view')) === 'teacher';
+  // tints (tile fills) and full accents (box borders) from Catppuccin Latte
+  const COLORS = ['yellow', 'sky', 'mauve', 'peach', 'pink', 'green', 'teal', 'lav'].map(c => 'var(--t-' + c + ')');
+  const BORDERS = ['yellow', 'sky', 'mauve', 'peach', 'pink', 'green', 'teal', 'lavender'].map(c => 'var(--' + c + ')');
+  const slug = t => String(t).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  const paper = () => '#ffffff';
+
+  // pictures: flat shapes, soft Latte colours, one thing each, shown on white cards (the ch ones are from Lesson 10)
+  const PICS = {
+    chick: '<svg viewBox="0 0 100 100"><ellipse cx="54" cy="62" rx="27" ry="23" fill="#f2bf4f"/><circle cx="42" cy="38" r="16" fill="#f2bf4f"/><path d="M27 36 18 40.5 27 45Z" fill="#fe8a3d"/><circle cx="38" cy="35" r="2.6" fill="#4c4f69"/><path d="M58 56q12-10 20 2-10 4-20-2Z" fill="#e6a93a"/><path d="M47 85v8m12-8v8" stroke="#fe8a3d" stroke-width="3.5" stroke-linecap="round"/></svg>',
+    chair: '<svg viewBox="0 0 100 100"><rect x="30" y="12" width="40" height="40" rx="7" fill="#dc8a78"/><rect x="37" y="19" width="26" height="26" rx="4" fill="#e9a596"/><rect x="24" y="52" width="52" height="10" rx="4" fill="#c27463"/><rect x="29" y="62" width="7" height="28" rx="3" fill="#c27463"/><rect x="64" y="62" width="7" height="28" rx="3" fill="#c27463"/></svg>',
+    cheese: '<svg viewBox="0 0 100 100"><path d="M12 50 70 26 88 50Z" fill="#f8d77f"/><rect x="12" y="50" width="76" height="30" rx="3" fill="#f2bf4f"/><circle cx="30" cy="63" r="5.5" fill="#e3a83c"/><circle cx="55" cy="69" r="4" fill="#e3a83c"/><circle cx="73" cy="59" r="3.5" fill="#e3a83c"/><circle cx="45" cy="56" r="2.5" fill="#e3a83c"/></svg>',
+    chips: '<svg viewBox="0 0 100 100"><rect x="31" y="22" width="7" height="36" rx="2" fill="#f2bf4f" transform="rotate(-10 34 40)"/><rect x="41" y="16" width="7" height="40" rx="2" fill="#f2bf4f" transform="rotate(-4 44 36)"/><rect x="51" y="14" width="7" height="42" rx="2" fill="#f8d77f" transform="rotate(3 54 35)"/><rect x="60" y="19" width="7" height="38" rx="2" fill="#f2bf4f" transform="rotate(9 63 38)"/><path d="M26 48h48l-7 40H33Z" fill="#e64553"/><path d="M26 48h48l-1.5 8h-45Z" fill="#d03a4a"/></svg>',
+    chocolate: '<svg viewBox="0 0 100 100"><g transform="rotate(-12 50 50)"><rect x="28" y="12" width="44" height="76" rx="6" fill="#8b5e3c"/><g fill="#a0704b"><rect x="33" y="17" width="15" height="13" rx="2"/><rect x="52" y="17" width="15" height="13" rx="2"/><rect x="33" y="34" width="15" height="13" rx="2"/><rect x="52" y="34" width="15" height="13" rx="2"/></g><path d="M28 54h44v28a6 6 0 0 1-6 6H34a6 6 0 0 1-6-6Z" fill="#7287fd"/><path d="M28 54l6 4 6-4 6 4 6-4 6 4 6-4 6 4 4-3v3H28Z" fill="#5f75f0"/></g></svg>',
+    cherry: '<svg viewBox="0 0 100 100"><path d="M38 64Q42 36 58 18M64 60Q62 38 58 18" fill="none" stroke="#40a02b" stroke-width="3.5" stroke-linecap="round"/><path d="M58 18q16-8 26 2-14 8-26-2Z" fill="#6dbb5a"/><circle cx="37" cy="70" r="15" fill="#e64553"/><circle cx="65" cy="66" r="15" fill="#e64553"/><circle cx="32" cy="65" r="3.5" fill="#fff" opacity=".55"/><circle cx="60" cy="61" r="3.5" fill="#fff" opacity=".55"/></svg>',
+    jam: '<svg viewBox="0 0 100 100"><rect x="29" y="30" width="42" height="56" rx="10" fill="#e64553"/><rect x="27" y="18" width="46" height="14" rx="4" fill="#dc8a78"/><rect x="36" y="50" width="28" height="18" rx="4" fill="#fafbfc"/><circle cx="50" cy="59" r="4" fill="#e64553"/></svg>',
+    thumb: '<svg viewBox="0 0 100 100"><rect x="36" y="14" width="15" height="40" rx="7.5" fill="#efb796" transform="rotate(-8 43 34)"/><rect x="34" y="42" width="40" height="40" rx="13" fill="#f3c6a8"/><g fill="#e6ac8b"><rect x="58" y="51" width="16" height="4" rx="2"/><rect x="58" y="61" width="16" height="4" rx="2"/><rect x="58" y="71" width="16" height="4" rx="2"/></g><rect x="38" y="80" width="32" height="12" rx="3" fill="#7287fd"/></svg>',
+    mouth: '<svg viewBox="0 0 100 100"><path d="M14 44Q32 30 50 38Q68 30 86 44Q74 80 50 80Q26 80 14 44Z" fill="#e64553"/><path d="M24 48Q50 42 76 48Q68 70 50 70Q32 70 24 48Z" fill="#a8304a"/><path d="M26 48Q50 42 74 48L71 55Q50 50 29 55Z" fill="#fff"/><path d="M38 64Q50 58 62 64Q56 70 50 70Q44 70 38 64Z" fill="#ea76cb"/></svg>',
+    tooth: '<svg viewBox="0 0 100 100"><path d="M30 20Q40 13 50 20Q60 13 70 20Q83 32 76 52Q71 66 68 84Q65 92 59 85Q55 64 50 64Q45 64 41 85Q35 92 32 84Q29 66 24 52Q17 32 30 20Z" fill="#c9d3fb"/><path d="M34 26Q40 22 46 26Q40 32 38 42Q32 34 34 26Z" fill="#fff" opacity=".8"/></svg>',
+    bath: '<svg viewBox="0 0 100 100"><circle cx="34" cy="38" r="6" fill="#b4e4f7"/><circle cx="47" cy="33" r="8" fill="#b4e4f7"/><circle cx="60" cy="39" r="5" fill="#b4e4f7"/><path d="M82 46V30q0-7-7-7h-5" fill="none" stroke="#9ca0b0" stroke-width="4" stroke-linecap="round"/><path d="M14 52h72v6q0 22-22 22H36q-22 0-22-22Z" fill="#5bbfe8"/><rect x="10" y="46" width="80" height="9" rx="4.5" fill="#209fb5"/><rect x="26" y="78" width="7" height="9" rx="2" fill="#209fb5"/><rect x="67" y="78" width="7" height="9" rx="2" fill="#209fb5"/></svg>',
+    toothbrush: '<svg viewBox="0 0 100 100"><g transform="rotate(-35 50 50)"><rect x="8" y="50" width="62" height="9" rx="4.5" fill="#ea76cb"/><rect x="66" y="47" width="22" height="13" rx="4" fill="#ea76cb"/><rect x="68" y="35" width="18" height="12" rx="2" fill="#7fd0f2"/><rect x="70" y="27" width="14" height="8" rx="4" fill="#d5dbfe"/></g></svg>'
+  };
+  const picEl = (k, cls = 'pic') => { const s = document.createElement('span'); s.className = cls; s.setAttribute('aria-hidden', 'true'); if (k === 'three'){ s.classList.add('num'); s.textContent = '3'; } else s.innerHTML = PICS[k]; return s; };
+  document.querySelectorAll('[data-pic]').forEach(s => { s.innerHTML = PICS[s.dataset.pic]; });
+
+  function shuffle(a){ a = [...a]; for (let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+  function el(tag, props = {}, ...kids){
+    const e = document.createElement(tag);
+    for (const [k, v] of Object.entries(props)){
+      if (k === 'class') e.className = v;
+      else if (k === 'text') e.textContent = v;
+      else e.setAttribute(k, v);
+    }
+    for (const k of kids) if (k != null) e.append(k);
+    return e;
+  }
+  // the red "wrong" border is temporary; a timer (not animationend) so it also clears under reduced motion
+  function nope(e){ e.classList.remove('shake'); void e.offsetWidth; e.classList.add('shake'); clearTimeout(e._nt); e._nt = setTimeout(() => e.classList.remove('shake'), 450); }
+  function sayIcon(){ const s = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); const u = document.createElementNS('http://www.w3.org/2000/svg', 'use'); u.setAttribute('href', '#i-say'); s.append(u); return s; }
+  // "I have got a brother." with the colour code from Lesson 9
+  function coloured(who, v, rest){ return [who + ' ', el('span', {class: v === 'have' ? 'hv' : 'hs', text: v}), ' ', el('span', {class: 'gt', text: 'got'}), ' ' + rest]; }
+
+  // lesson timer: one coloured segment per section, as long as that section's minutes
+  if (TEACHER && $('#tmr')) (function(){
+    const box = $('#tmr'), go = $('#tm-go'), clock = $('#tm-clock'), now = $('#tm-now'), bar = $('#tm-bar');
+    const COLORS = ['#1e66f5', '#40a02b', '#df8e1d', '#fe640b', '#8839ef', '#04a5e5', '#ea76cb', '#179299'];
+    const KEY = 'lesson-timer:' + document.title;
+    const fmt = s => Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0');
+    let from = 0;
+    const segs = box.dataset.segs.split(',').map((part, i) => {
+      const bits = part.split(':'), sec = document.getElementById(bits[0]), len = (+bits[1] || 1) * 60;
+      const a = document.createElement('a'), fill = document.createElement('i'), num = document.createElement('b');
+      const title = (sec && sec.dataset.title) || bits[0];
+      a.className = 'tm-seg'; a.href = '#' + bits[0];
+      a.style.flexGrow = len; a.style.setProperty('--c', COLORS[i % COLORS.length]);
+      a.title = (i + 1) + '. ' + title + ' · ' + (len / 60) + ' min';
+      a.setAttribute('aria-label', a.title);
+      num.textContent = i + 1;
+      a.append(fill, num); bar.append(a);
+      const seg = {a, fill, title, n: i + 1, from, len};
+      from += len;
+      return seg;
+    });
+    const total = from;
+    let base = 0, t0 = null, tick = null;
+    try {
+      const saved = JSON.parse(localStorage.getItem(KEY) || 'null');
+      if (saved && (!saved.t0 || (Date.now() - saved.t0) / 1000 + saved.base < total + 1800)) { base = +saved.base || 0; t0 = saved.t0 || null; }
+    } catch (e) {}
+    const save = () => { try { localStorage.setItem(KEY, JSON.stringify({base, t0})); } catch (e) {} };
+    const elapsed = () => base + (t0 ? (Date.now() - t0) / 1000 : 0);
+    function render(){
+      const s = elapsed();
+      clock.innerHTML = '';
+      const small = document.createElement('small');
+      small.textContent = ' / ' + fmt(total);
+      clock.append(fmt(s), small);
+      clock.classList.toggle('over', s >= total);
+      let cur = null;
+      segs.forEach(g => {
+        const done = Math.max(0, Math.min(1, (s - g.from) / g.len));
+        g.fill.style.width = (done * 100) + '%';
+        const on = s >= g.from && s < g.from + g.len && (t0 || s > 0);
+        g.a.classList.toggle('now', !!on);
+        if (on) cur = g;
+      });
+      now.textContent = cur ? cur.n + '. ' + cur.title + ' · ' + fmt(cur.from + cur.len - s + 0.999) + ' left'
+        : s >= total ? 'Time is up · ' + fmt(s - total) + ' over' : segs.length + ' sections';
+      go.textContent = t0 ? 'Pause' : s > 0 ? 'Continue' : 'Start';
+    }
+    function run(){ clearInterval(tick); if (t0) tick = setInterval(render, 500); render(); }
+    go.addEventListener('click', () => {
+      if (t0) { base = elapsed(); t0 = null; } else { t0 = Date.now(); }
+      save(); run();
+    });
+    $('#tm-reset').addEventListener('click', () => { base = 0; t0 = null; save(); run(); });
+    run();
+  })();
+
+  // lesson notes: a quick strip under every section, a notes block at the bottom, saved as one file
+  if (TEACHER && $('#tmr') && $('#tmr').dataset.notes) (function(){
+    const where = $('#tmr').dataset.notes.split('/');           // student / lesson folder
+    const FILE = where.join('-') + '-notes.md';
+    const KEY = 'lesson-notes:' + where.join('/');
+    const MARKS = ['Easy', 'OK', 'Hard', 'Skipped'];
+    const TAGS = ['Grammar', 'Words', 'Pronunciation', 'Speaking', 'Understanding', 'Too slow'];
+    const HW = ['Done', 'Partly', 'Not done'];
+    let st = {sec: {}, hw: '', went: '', next: ''};
+    try {
+      const saved = JSON.parse(localStorage.getItem(KEY) || 'null');
+      if (saved && typeof saved === 'object') st = Object.assign(st, saved, {sec: saved.sec || {}});
+    } catch (e) {}
+    const secs = Array.from(document.querySelectorAll('main.page section[data-title]')).map((sec, i) => ({id: sec.id, n: i + 1, title: sec.dataset.title || sec.id, sec}));
+    const of = id => st.sec[id] || (st.sec[id] = {mark: '', tags: [], text: ''});
+    const status = el('p', {class: 'tn-status', id: 'tn-status', role: 'status'});
+    const sumBody = el('tbody');
+    function changed(){
+      try { localStorage.setItem(KEY, JSON.stringify(st)); } catch (e) {}
+      summary();
+      status.textContent = 'Kept in this browser. Press “Save notes” at the end of the lesson to make the file.';
+    }
+    function chip(label, id, isOn, toggle){
+      const b = el('button', {type: 'button', class: 'tn-chip', id, 'aria-pressed': String(isOn()), text: label});
+      b.addEventListener('click', () => { toggle(); changed(); b.closest('.tn-row').querySelectorAll('.tn-chip').forEach(x => x.setAttribute('aria-pressed', String(x._on()))); });
+      b._on = isOn;
+      return b;
+    }
+    function row(label, chips){ return el('div', {class: 'tn-row'}, el('span', {class: 'tn-lab', text: label}), ...chips); }
+
+    secs.forEach(s => {
+      const d = of(s.id);
+      const text = el('input', {type: 'text', class: 'tn-text', id: 'tn-' + s.id + '-text', placeholder: 'A quick note: what was hard, what to repeat', 'aria-label': 'Note for section ' + s.n, autocomplete: 'off'});
+      text.value = d.text || '';
+      text.addEventListener('input', () => { d.text = text.value; changed(); });
+      s.sec.append(el('div', {class: 'tn', role: 'group', 'aria-label': 'Notes for section ' + s.n},
+        row('How it went', MARKS.map(m => chip(m, 'tn-' + s.id + '-m-' + m.toLowerCase(), () => d.mark === m, () => { d.mark = d.mark === m ? '' : m; }))),
+        row('What was hard', TAGS.map(g => chip(g, 'tn-' + s.id + '-t-' + g.toLowerCase().replace(/\s+/g, '-'), () => d.tags.includes(g), () => { d.tags = d.tags.includes(g) ? d.tags.filter(x => x !== g) : d.tags.concat(g); }))),
+        text));
+    });
+
+    function summary(){
+      sumBody.replaceChildren(...secs.map(s => {
+        const d = of(s.id);
+        return el('tr', {}, el('td', {text: String(s.n)}), el('td', {text: s.title}), el('td', {text: d.mark || '–'}), el('td', {text: d.tags.join(', ') || '–'}), el('td', {text: d.text || '–'}));
+      }));
+    }
+    function area(id, label, key, hint){
+      const ta = el('textarea', {id, placeholder: hint});
+      ta.value = st[key] || '';
+      ta.addEventListener('input', () => { st[key] = ta.value; changed(); });
+      return el('div', {class: 'tn-field'}, el('label', {for: id, text: label}), ta);
+    }
+    const cell = v => String(v || '–').replace(/\|/g, '/').replace(/\s*\n\s*/g, ' ');
+    function markdown(){
+      const now = new Date(), two = n => String(n).padStart(2, '0');
+      const stamp = now.getFullYear() + '-' + two(now.getMonth() + 1) + '-' + two(now.getDate()) + ' ' + two(now.getHours()) + ':' + two(now.getMinutes());
+      const lines = ['# Lesson notes: ' + document.title, '',
+        'Lesson folder: ' + where.join('/') + '. Notes saved ' + stamp + '.', '',
+        '## Section by section', '',
+        '| # | Section | How it went | What was hard | Note |', '|---|---|---|---|---|'];
+      secs.forEach(s => { const d = of(s.id); lines.push('| ' + [s.n, cell(s.title), cell(d.mark), cell(d.tags.join(', ')), cell(d.text)].join(' | ') + ' |'); });
+      lines.push('', '## Homework brought to this lesson', '', st.hw || 'Not marked.', '',
+        '## How the lesson went', '', (st.went || '').trim() || 'No notes.', '',
+        '## Practise next time', '', (st.next || '').trim() || 'No notes.', '');
+      return lines.join('\n');
+    }
+    const out = el('textarea', {class: 'tn-out', id: 'tn-out', readonly: '', 'aria-label': 'Your notes as text'});
+    out.hidden = true;
+    const save = el('button', {type: 'button', class: 'btn main', id: 'tn-save', text: 'Save notes'});
+    save.addEventListener('click', () => {
+      try {
+        const a = el('a', {href: URL.createObjectURL(new Blob([markdown()], {type: 'text/markdown;charset=utf-8'})), download: FILE});
+        document.body.append(a); a.click(); a.remove();
+        setTimeout(() => { try { URL.revokeObjectURL(a.href); } catch (e) {} }, 4000);
+        status.textContent = 'Saved as “' + FILE + '” in your Downloads folder. Tell Claude the lesson is done and it goes into the lesson folder.';
+      } catch (e) {
+        out.hidden = false; out.value = markdown(); out.focus(); out.select();
+        status.textContent = 'The file could not be saved here. Copy this text and send it to Claude.';
+      }
+    });
+    const copy = el('button', {type: 'button', class: 'btn', id: 'tn-copy', text: 'Copy notes'});
+    copy.addEventListener('click', () => {
+      const text = markdown();
+      const show = () => { out.hidden = false; out.value = text; out.focus(); out.select(); status.textContent = 'Press ⌘C to copy the notes.'; };
+      try { navigator.clipboard.writeText(text).then(() => { status.textContent = 'Notes copied.'; }, show); } catch (e) { show(); }
+    });
+    let armed = null;
+    const clear = el('button', {type: 'button', class: 'btn', id: 'tn-clear', text: 'Clear notes'});
+    clear.addEventListener('click', () => {
+      if (!armed) { clear.textContent = 'Press again to clear everything'; armed = setTimeout(() => { armed = null; clear.textContent = 'Clear notes'; }, 4000); return; }
+      clearTimeout(armed);
+      try { localStorage.removeItem(KEY); } catch (e) {}
+      location.reload();
+    });
+
+    const fin = el('section', {class: 'tn-final', id: 'lesson-notes', 'aria-label': 'Lesson notes'},
+      el('h2', {text: 'Lesson notes'}),
+      el('div', {class: 'tn'}, row('His homework', HW.map(h => chip(h, 'tn-hw-' + h.toLowerCase().replace(/\s+/g, '-'), () => st.hw === h, () => { st.hw = st.hw === h ? '' : h; })))),
+      area('tn-went', 'How the lesson went', 'went', 'Your thoughts about the lesson'),
+      area('tn-next', 'Practise next time', 'next', 'What to come back to in the next lessons'),
+      el('div', {class: 'tn-sum scroll'}, el('table', {}, el('thead', {}, el('tr', {}, ...['#', 'Section', 'How it went', 'What was hard', 'Note'].map(h => el('th', {text: h})))), sumBody)),
+      el('div', {class: 'row'}, save, copy, clear),
+      status, out);
+    const last = secs[secs.length - 1];
+    if (last) last.sec.after(fin); else $('main.page').append(fin);
+    summary();
+    status.textContent = 'Notes are kept in this browser while you work. Press “Save notes” at the end of the lesson.';
+  })();
+
+  // speech (only ever called from click handlers)
+  const synth = window.speechSynthesis;
+  let voice = null;
+  function pickVoice(){
+    try {
+      const vs = synth ? synth.getVoices() : [];
+      voice = vs.find(v => v.lang === 'en-GB') || vs.find(v => /^en[-_]/i.test(v.lang)) || null;
+    } catch (e) { voice = null; }
+  }
+  if (synth){ pickVoice(); try { synth.addEventListener('voiceschanged', pickVoice); } catch (e) {} }
+  function speak(text){
+    try {
+      if (!synth) return;
+      synth.cancel();
+      const u = new SpeechSynthesisUtterance(String(text).replace(/\s*—\s*/g, ', ').replace(/…/g, ''));
+      u.lang = 'en-GB'; if (voice) u.voice = voice; u.rate = 0.85;
+      synth.speak(u);
+    } catch (e) {}
+  }
+  document.addEventListener('click', e => { const b = e.target.closest('[data-say]'); if (b) speak(b.dataset.say); });
+
+  // stars: every item gives its star once, "Again" never gives more
+  let stars = 0;
+  const given = new Set();
+  function award(n, id){ if (given.has(id)) return; given.add(id); stars += n; $('#stars').textContent = stars; const b = $('#starbox'); b.classList.remove('pop'); void b.offsetWidth; b.classList.add('pop'); }
+
+  // 1 listen and tap: yesterday's words
+  (function(){
+    const ITEMS = [['chick', 'a chick'], ['chair', 'a chair'], ['cheese', 'cheese'], ['chips', 'chips'], ['chocolate', 'chocolate'], ['cherry', 'a cherry'], ['jam', 'jam']];
+    const ROUNDS = 5;
+    const grid = $('#lt-grid'), play = $('#lt-play'), msg = $('#lt-msg'), dots = $('#lt-dots');
+    let queue, target, got;
+    const key = TEACHER ? el('span', {class: 'key'}) : null;
+    if (key) $('#lt-again').after(key);
+    function render(){
+      queue = shuffle(ITEMS).slice(0, ROUNDS); target = null; got = 0;
+      if (key) key.textContent = 'Words: ' + queue.map(q => q[1]).join(', ');
+      msg.textContent = ''; play.textContent = 'Listen'; play.disabled = false;
+      dots.replaceChildren(...Array.from({length: ROUNDS}, () => el('i')));
+      grid.replaceChildren();
+      shuffle(ITEMS).forEach(([k, word]) => {
+        const b = el('button', {class: 'lt', type: 'button', id: 'lt-' + k, 'aria-label': 'Picture'});
+        b.innerHTML = PICS[k];
+        b.addEventListener('click', () => {
+          if (b.classList.contains('got') || got >= ROUNDS) return;
+          if (!target){ msg.textContent = 'Сначала нажми «Listen».'; return nope(play); }
+          if (word !== target) return nope(b);
+          b.classList.add('got'); b.setAttribute('aria-label', word);
+          dots.children[got].classList.add('on'); got++; target = null; award(1, 'lt-' + k);
+          if (got === ROUNDS){ msg.textContent = 'All done! Super!'; play.disabled = true; speak('Well done!'); }
+          else { msg.textContent = 'Yes! ' + word[0].toUpperCase() + word.slice(1) + '.'; play.textContent = 'Next word'; speak('Yes! ' + word); }
+        });
+        grid.append(b);
+      });
+    }
+    play.addEventListener('click', () => {
+      if (got >= ROUNDS) return;
+      if (!target) target = queue[got][1];
+      msg.textContent = ''; play.textContent = 'Listen again';
+      speak(target);
+    });
+    $('#lt-again').addEventListener('click', render);
+    render();
+  })();
+
+  // the new words: [picture, before, th, after, Russian, what is said]
+  const TH = [
+    ['thumb', 'a ', 'th', 'umb', 'большой палец', 'a thumb'],
+    ['mouth', 'a mou', 'th', '', 'рот', 'a mouth'],
+    ['tooth', 'a too', 'th', '', 'зуб', 'a tooth'],
+    ['bath', 'a ba', 'th', '', 'ванна', 'a bath'],
+    ['toothbrush', 'a too', 'th', 'brush', 'зубная щётка', 'a toothbrush'],
+    ['three', '', 'th', 'ree', 'три', 'three'],
+  ];
+
+  // 2 th words
+  (function(){
+    const grid = $('#th-grid');
+    TH.forEach(([k, a, th, z, ru, say]) => {
+      const b = el('button', {class: 'word', type: 'button', id: 'th-' + k, 'aria-label': 'Listen: ' + say},
+        picEl(k), el('span', {class: 'w'}, a, el('span', {class: 'thl', text: th}), z), el('span', {class: 'ru', text: ru}));
+      b.addEventListener('click', () => speak(say));
+      grid.append(b);
+    });
+  })();
+
+  // 3 sort quiet / buzzy th
+  (function(){
+    const WORDS = [['three','q'],['thumb','q'],['mouth','q'],['tooth','q'],['bath','q'],['this','b'],['that','b'],['the','b'],['brother','b']];
+    const pool = $('#sort-pool'), bins = {q: $('#bin-q'), b: $('#bin-b')};
+    let sel, left;
+    if (TEACHER) pool.after(el('p', {class: 'key', text: 'quiet: three, thumb, mouth, tooth, bath · buzzy: this, that, the, brother'}));
+    function render(){
+      sel = null; left = WORDS.length;
+      pool.replaceChildren(); Object.values(bins).forEach(b => b.replaceChildren());
+      shuffle(WORDS).forEach(([w, k], i) => {
+        const b = el('button', {class: 'chip', type: 'button', id: 'sort-' + w, text: w});
+        b.dataset.k = k; b.style.setProperty('--c', COLORS[i % COLORS.length]);
+        b.addEventListener('click', () => {
+          if (b.parentElement !== pool){ speak(w); return; }
+          pool.querySelectorAll('.sel').forEach(x => x.classList.remove('sel'));
+          sel = b; b.classList.add('sel'); speak(w);
+        });
+        pool.append(b);
+      });
+    }
+    document.querySelectorAll('#sort .bin-drop').forEach(bin => bin.addEventListener('click', () => {
+      if (!sel) return nope(bin);
+      if (sel.dataset.k !== bin.dataset.k) return nope(sel);
+      sel.classList.remove('sel'); sel.classList.add('placed');
+      bins[bin.dataset.k].append(sel); sel = null; left--;
+      if (left === 0) award(2, 'sort');
+    }));
+    $('#sort-again').addEventListener('click', render);
+    render();
+  })();
+
+  // 4 read and match (the five picture words)
+  (function(){
+    const ITEMS = TH.filter(t => t[0] !== 'three');
+    const words = $('#mt-words'), pics = $('#mt-pics');
+    let sel, done;
+    if (TEACHER) $('#match .mt').after(el('p', {class: 'key', text: 'a thumb (палец) · a mouth (рот) · a tooth (зуб) · a bath (ванна) · a toothbrush (щётка)'}));
+    function render(){
+      sel = null; done = 0; words.replaceChildren(); pics.replaceChildren();
+      shuffle(ITEMS).forEach(([k, , , , , w]) => {
+        const b = el('button', {class: 'mt-word', type: 'button', id: 'mt-word-' + k, text: w});
+        b.dataset.k = k;
+        b.addEventListener('click', () => {
+          if (b.classList.contains('matched')) return;
+          words.querySelectorAll('.sel').forEach(x => x.classList.remove('sel'));
+          sel = b; b.classList.add('sel');
+        });
+        words.append(b);
+      });
+      shuffle(ITEMS).forEach(([k, , , , , w]) => {
+        const b = el('button', {class: 'mt-pic', type: 'button', id: 'mt-pic-' + k, 'aria-label': 'Picture'});
+        b.innerHTML = PICS[k];
+        b.addEventListener('click', () => {
+          if (b.classList.contains('matched')) return;
+          if (!sel || sel.dataset.k !== k) return nope(b);
+          const ci = done % COLORS.length;
+          sel.style.setProperty('--c', COLORS[ci]); b.style.setProperty('--c2', BORDERS[ci]);
+          [sel, b].forEach(x => { x.classList.remove('sel'); x.classList.add('matched'); });
+          b.setAttribute('aria-label', w);
+          speak(w); sel = null; done++;
+          if (done === ITEMS.length) award(2, 'match');
+        });
+        pics.append(b);
+      });
+    }
+    $('#mt-again').addEventListener('click', render);
+    render();
+  })();
+
+  // 5 spelling cards
+  (function(){
+    const ITEMS = ['thumb', 'mouth', 'bath', 'tooth', 'three'];
+    const resets = [];
+    ITEMS.forEach((word, i) => {
+      const card = el('div', {class: 'spell'});
+      card.style.setProperty('--c', COLORS[i % COLORS.length]);
+      card.style.setProperty('--c2', BORDERS[i % BORDERS.length]);
+      const pic = el('button', {class: 'spell-pic' + (word === 'three' ? ' num' : ''), type: 'button', id: 'spell-' + word + '-pic', 'aria-label': 'Listen: ' + word});
+      if (word === 'three') pic.textContent = '3'; else pic.innerHTML = PICS[word];
+      pic.addEventListener('click', () => speak(word));
+      const boxes = el('div', {class: 'spell-boxes'}), tiles = el('div', {class: 'spell-tiles'});
+      let pos = 0;
+      function reset(){
+        pos = 0; card.classList.remove('solved');
+        boxes.replaceChildren(...[...word].map(() => el('span', {class: 'box'})));
+        tiles.replaceChildren();
+        shuffle([...word]).forEach((ch, k) => {
+          const t = el('button', {class: 'tile', type: 'button', id: 'spell-' + word + '-' + k, text: ch});
+          t.addEventListener('click', () => {
+            if (pos >= word.length) return;
+            if (ch !== word[pos]) return nope(t);
+            boxes.children[pos].textContent = ch; boxes.children[pos].classList.add('filled');
+            t.disabled = true; t.classList.add('used'); pos++;
+            if (pos === word.length){ card.classList.add('solved'); speak(word); award(1, 'spell-' + word); }
+          });
+          tiles.append(t);
+        });
+      }
+      reset(); resets.push(reset);
+      card.append(pic, el('div', {class: 'spell-right'}, boxes, tiles, TEACHER ? el('span', {class: 'key', text: 'Answer: ' + word}) : null));
+      $('#spell-words').append(card);
+    });
+    $('#spell-again').addEventListener('click', () => resets.forEach(r => r()));
+  })();
+
+  // 6 this or that: near (big, next to the boy) or far (small, at the end of a dotted road)
+  (function(){
+    const ITEMS = [['chair', 'a chair', 'This'], ['chick', 'a chick', 'That'], ['toothbrush', 'a toothbrush', 'This'], ['bath', 'a bath', 'That'], ['cherry', 'a cherry', 'That'], ['cheese', 'cheese', 'This']];
+    const box = $('#tt');
+    ITEMS.forEach(([k, w, ans], i) => {
+      const near = ans === 'This';
+      const scene = el('div', {class: 'scene', role: 'img', 'aria-label': (near ? 'Near: ' : 'Far away: ') + w},
+        el('span', {class: 'me', 'aria-hidden': 'true', text: '👦👉'}),
+        near ? null : el('span', {class: 'road', 'aria-hidden': 'true'}),
+        picEl(k, 'pic ' + (near ? 'big' : 'small')));
+      const blank = el('span', {class: 'blank', text: ' '});
+      const opts = el('div', {class: 'tt-opts'});
+      const item = el('div', {class: 'tt-item'}, scene, el('div', {class: 'tt-line'}, el('span', {class: 's'}, blank, ' is ' + w + '.'), opts));
+      ['This', 'That'].forEach(o => {
+        const b = el('button', {type: 'button', id: 'tt-' + (i + 1) + '-' + o.toLowerCase(), text: o});
+        b.addEventListener('click', () => {
+          if (item.classList.contains('done')) return;
+          if (o !== ans) return nope(b);
+          blank.textContent = o; item.classList.add('done');
+          speak(o + ' is ' + w + '.'); award(1, 'tt-' + i);
+        });
+        opts.append(b);
+      });
+      if (TEACHER) item.append(el('span', {class: 'key', text: 'Answer: ' + ans + ' is ' + w + '.'}));
+      box.append(item);
+    });
+  })();
+
+  // 7 monster: listen and draw
+  (function(){
+    const SENT = ['It is green.', 'It has got three eyes.', 'It has got a big mouth.', 'It has got one tooth.', 'It has got four legs.', 'It has got two long arms.'];
+    const row = $('#mon-list');
+    const texts = [];
+    SENT.forEach((s, i) => {
+      const txt = el('span', {class: 'txt', text: s}); txt.hidden = true; texts.push(txt);
+      const b = el('button', {class: 'lsn', type: 'button', id: 'mon-' + (i + 1), 'aria-label': 'Listen to sentence ' + (i + 1)}, el('span', {class: 'num', text: String(i + 1)}), sayIcon(), txt);
+      b.querySelector('svg').setAttribute('width', '18'); b.querySelector('svg').setAttribute('height', '18');
+      b.addEventListener('click', () => { b.classList.add('heard'); speak(s); });
+      row.append(b);
+    });
+    if (TEACHER) row.after(el('p', {class: 'key', text: SENT.map((s, i) => (i + 1) + ' ' + s).join(' · ')}));
+    const show = $('#mon-show');
+    show.addEventListener('click', () => { const on = texts[0].hidden; texts.forEach(t => { t.hidden = !on; }); show.textContent = on ? 'hide' : 'show'; });
+    document.querySelectorAll('#mon-say button').forEach((b, i) => b.style.setProperty('--c', i < 2 ? 'var(--t-pink)' : 'var(--has)'));
+  })();
+
+  // 7 drawing pad
+  (function(){
+    const cv = $('#pad'), ctx = cv.getContext('2d');
+    let color = '#40a02b', size = 9, drawing = false, last = null;
+    function fit(){
+      const r = cv.getBoundingClientRect(), dpr = window.devicePixelRatio || 1;
+      const w = Math.max(1, Math.round(r.width * dpr)), h = Math.max(1, Math.round(r.height * dpr));
+      if (w === cv.width && h === cv.height) return;
+      const old = document.createElement('canvas'); old.width = cv.width; old.height = cv.height;
+      if (cv.width && cv.height) old.getContext('2d').drawImage(cv, 0, 0);
+      cv.width = w; cv.height = h;
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.fillStyle = paper(); ctx.fillRect(0, 0, w, h);
+      if (old.width > 1) ctx.drawImage(old, 0, 0);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    }
+    const pt = e => { const r = cv.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; };
+    cv.addEventListener('pointerdown', e => {
+      drawing = true; last = pt(e);
+      try { cv.setPointerCapture(e.pointerId); } catch (err) {}
+      ctx.fillStyle = color; ctx.beginPath(); ctx.arc(last[0], last[1], size / 2, 0, Math.PI * 2); ctx.fill();
+    });
+    cv.addEventListener('pointermove', e => {
+      if (!drawing) return;
+      const p = pt(e);
+      ctx.strokeStyle = color; ctx.lineWidth = size;
+      ctx.beginPath(); ctx.moveTo(last[0], last[1]); ctx.lineTo(p[0], p[1]); ctx.stroke();
+      last = p;
+    });
+    ['pointerup', 'pointercancel', 'pointerleave'].forEach(t => cv.addEventListener(t, () => drawing = false));
+    document.querySelectorAll('.swatch').forEach(s => s.addEventListener('click', () => {
+      document.querySelectorAll('.swatch').forEach(x => x.classList.remove('on'));
+      s.classList.add('on'); color = s.dataset.c;
+    }));
+    document.querySelectorAll('.size').forEach(s => s.addEventListener('click', () => {
+      document.querySelectorAll('.size').forEach(x => x.classList.remove('on'));
+      s.classList.add('on'); size = +s.dataset.s;
+    }));
+    $('#pad-clear').addEventListener('click', () => {
+      ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.fillStyle = paper(); ctx.fillRect(0, 0, cv.width, cv.height); ctx.restore();
+    });
+    fit();
+    window.addEventListener('resize', fit);
+  })();
+
+  // 8 talk cards: true answers about himself, so both answers are right
+  (function(){
+    const QS = [['a brother'], ['a toothbrush'], ['a bath'], ['a dog'], ['three cats'], ['chocolate']];
+    const YES = 'Yes, I have.', NO = 'No, I haven’t.';
+    const box = $('#qs');
+    QS.forEach(([w], i) => {
+      const q = 'Have you got ' + w + '?';
+      const sayBtn = el('button', {class: 'say', type: 'button', id: 'q-' + (i + 1) + '-say', 'aria-label': 'Listen: ' + q}, sayIcon());
+      sayBtn.dataset.say = q;
+      const card = el('div', {class: 'q'}, el('div', {class: 'qt'}, sayBtn, el('span', {text: q})));
+      const opts = el('div', {class: 'row'});
+      const ans = el('p', {class: 'a'}); ans.hidden = true;
+      [[YES, true, 'yes'], [NO, false, 'no']].forEach(([t, v, cls]) => {
+        const b = el('button', {class: cls, type: 'button', id: 'q-' + (i + 1) + '-' + cls, text: t});
+        b.addEventListener('click', () => {
+          if (card.classList.contains('done')) return;
+          card.classList.add('done'); opts.hidden = true;
+          if (v){ ans.replaceChildren(t, el('br'), ...coloured('I', 'have', w + '.')); speak(t + ' I have got ' + w + '.'); }
+          else { ans.textContent = t; speak(t); }
+          ans.hidden = false; award(1, 'q-' + i);
+        });
+        opts.append(b);
+      });
+      card.append(opts, ans);
+      if (TEACHER) card.append(el('span', {class: 'key', text: 'Answer: his true answer; after yes: I have got ' + w + '.'}));
+      box.append(card);
+    });
+    document.querySelectorAll('#ask button').forEach((b, i) => b.style.setProperty('--c', COLORS[i % COLORS.length]));
+    document.querySelectorAll('#aron-say button').forEach(b => b.style.setProperty('--c', 'var(--has)'));
+  })();
+})();
+</script>
+
+</html>
