@@ -1324,7 +1324,7 @@ svg .fig{stroke:var(--pic-line);stroke-width:3.4;stroke-linecap:round;stroke-lin
   // ===== 9. HOMEWORK: write here, send to Alena by email =====
   (function(){
     const MAIL = 'allapteva9@gmail.com';
-    const SUBJECT = 'Homework from Anastasia: Treat yourself (25 October)';
+    const SUBJECT = 'Homework from Anastasia: Treat yourself (1 November)';
     const KEY = 'anastasia-8a-review';
     const ta = $('#hw-draft'), count = $('#hw-count'), send = $('#hw-send'), status = $('#hw-status');
     const fb = $('#hw-fallback'), out = $('#hw-out'), mail = $('#hw-mail');
@@ -1360,7 +1360,7 @@ svg .fig{stroke:var(--pic-line);stroke-width:3.4;stroke-linecap:round;stroke-lin
         fetch('https://formsubmit.co/ajax/' + MAIL, {
           method: 'POST',
           headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
-          body: JSON.stringify({_subject: SUBJECT, _template: 'box', _captcha: 'false', Student: 'Anastasia', Lesson: 'Treat yourself, 25 October', Review: ta.value.trim(), Words: String(words()), 'How did it go': SELF.text()})
+          body: JSON.stringify({_subject: SUBJECT, _template: 'box', _captcha: 'false', Student: 'Anastasia', Lesson: 'Treat yourself, 1 November', Review: ta.value.trim(), Words: String(words()), 'How did it go': SELF.text()})
         }).then(r => r.json()).then(d => {
           if (String(d && d.success) === 'true') done(true, 'Sent. Alena will get it by email.');
           else done(false, 'It could not be sent automatically. Please send it yourself, like this:');
