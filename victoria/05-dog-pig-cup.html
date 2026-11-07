@@ -337,7 +337,7 @@ footer.fin{color:var(--soft);font-size:15px;line-height:1.5;border-top:1px solid
 
 /* the autumn scene (Alena's scrapbook style): paper cards with washi tape on a caramel background, leaves and a pumpkin around them */
 body{background-image:radial-gradient(circle at 8% 12%, color-mix(in srgb, var(--leaf2) 22%, transparent) 0 140px, transparent 141px),radial-gradient(circle at 92% 38%, color-mix(in srgb, var(--leaf1) 14%, transparent) 0 180px, transparent 181px),radial-gradient(circle at 15% 85%, color-mix(in srgb, var(--leaf3) 16%, transparent) 0 150px, transparent 151px)}
-.page{position:relative}
+.page{position:relative;overflow-x:clip}   /* the rotated leaves must not widen the page on a phone */
 .sec{position:relative;box-shadow:0 10px 24px -16px rgb(80 40 10 / .45)}
 .sec::before{content:"";position:absolute;top:-11px;left:30px;width:94px;height:26px;background:var(--tape);transform:rotate(-4deg);border-radius:2px;pointer-events:none}
 .sec:nth-of-type(even)::before{left:auto;right:30px;transform:rotate(5deg)}
